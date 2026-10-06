@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Steam Price Predictor</title>
+  <desc id="desc">Resumo visual da interface experimental de previsão de preços históricos de jogos.</desc>
+  <rect width="640" height="360" fill="#211d1d"/>
+  <path d="M0 0h640v54H0z" fill="#2c2627"/>
+  <circle cx="27" cy="27" r="5" fill="#bd9b62"/><circle cx="45" cy="27" r="5" fill="#8f7778"/><circle cx="63" cy="27" r="5" fill="#55494a"/>
+  <text x="30" y="91" fill="#c7a66d" font-family="Georgia,serif" font-size="12" letter-spacing="2">DATA LAB / 05</text>
+  <text x="30" y="122" fill="#f0e7dd" font-family="Georgia,serif" font-size="26">Steam Price Predictor</text>
+  <text x="30" y="148" fill="#afa3a0" font-family="Arial,sans-serif" font-size="12">Historical dataset · experimental estimate</text>
+  <rect x="30" y="171" width="228" height="153" rx="5" fill="#2b2627" stroke="#55494a"/>
+  <text x="48" y="197" fill="#c7a66d" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.4">GAME FEATURES</text>
+  <text x="48" y="224" fill="#d9ceca" font-family="Arial,sans-serif" font-size="12">Owners</text><path d="M154 219h82" stroke="#68585a" stroke-width="4" stroke-linecap="round"/><circle cx="181" cy="219" r="5" fill="#c7a66d"/>
+  <text x="48" y="252" fill="#d9ceca" font-family="Arial,sans-serif" font-size="12">Reviews</text><path d="M154 247h82" stroke="#68585a" stroke-width="4" stroke-linecap="round"/><circle cx="209" cy="247" r="5" fill="#c7a66d"/>
+  <text x="48" y="280" fill="#d9ceca" font-family="Arial,sans-serif" font-size="12">Playtime</text><path d="M154 275h82" stroke="#68585a" stroke-width="4" stroke-linecap="round"/><circle cx="194" cy="275" r="5" fill="#c7a66d"/>
+  <text x="48" y="307" fill="#d9ceca" font-family="Arial,sans-serif" font-size="12">Genre</text><rect x="154" y="292" width="82" height="20" rx="3" fill="#3a3233" stroke="#68585a"/><text x="165" y="306" fill="#e4d9ce" font-family="Arial,sans-serif" font-size="10">Select</text>
+  <rect x="278" y="171" width="332" height="153" rx="5" fill="#262222" stroke="#55494a"/>
+  <text x="299" y="197" fill="#c7a66d" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.4">MODEL WORKFLOW</text>
+  <rect x="300" y="222" width="75" height="54" rx="4" fill="#352e2f" stroke="#766264"/><text x="337.5" y="246" text-anchor="middle" fill="#e9ded4" font-family="Arial,sans-serif" font-size="10">Historical</text><text x="337.5" y="262" text-anchor="middle" fill="#e9ded4" font-family="Arial,sans-serif" font-size="10">data</text>
+  <path d="M379 249h23m-6-6 6 6-6 6" fill="none" stroke="#bd9b62" stroke-width="1.5"/>
+  <rect x="410" y="222" width="75" height="54" rx="4" fill="#352e2f" stroke="#766264"/><text x="447.5" y="246" text-anchor="middle" fill="#e9ded4" font-family="Arial,sans-serif" font-size="10">Feature</text><text x="447.5" y="262" text-anchor="middle" fill="#e9ded4" font-family="Arial,sans-serif" font-size="10">pipeline</text>
+  <path d="M489 249h23m-6-6 6 6-6 6" fill="none" stroke="#bd9b62" stroke-width="1.5"/>
+  <rect x="520" y="222" width="68" height="54" rx="4" fill="#49393a" stroke="#bd9b62"/><text x="554" y="246" text-anchor="middle" fill="#f0e7dd" font-family="Arial,sans-serif" font-size="10">Random</text><text x="554" y="262" text-anchor="middle" fill="#f0e7dd" font-family="Arial,sans-serif" font-size="10">Forest</text>
+  <text x="299" y="302" fill="#afa3a0" font-family="Arial,sans-serif" font-size="10">RandomizedSearchCV · held-out evaluation</text>
+</svg>

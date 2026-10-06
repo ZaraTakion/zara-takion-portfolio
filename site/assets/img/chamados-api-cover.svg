@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Chamados API</title>
+  <desc id="desc">Fluxo de solicitações de suporte com autenticação, papéis e estados descritos no projeto.</desc>
+  <rect width="640" height="360" fill="#211d1d"/>
+  <path d="M0 0h640v54H0z" fill="#2c2627"/>
+  <circle cx="27" cy="27" r="5" fill="#bd9b62"/><circle cx="45" cy="27" r="5" fill="#8f7778"/><circle cx="63" cy="27" r="5" fill="#55494a"/>
+  <text x="30" y="91" fill="#c7a66d" font-family="Georgia,serif" font-size="12" letter-spacing="2">SUPPORT SYSTEM / 07</text>
+  <text x="30" y="122" fill="#f0e7dd" font-family="Georgia,serif" font-size="26">Chamados API</text>
+  <text x="30" y="148" fill="#afa3a0" font-family="Arial,sans-serif" font-size="12">Django REST Framework · JWT authentication</text>
+  <rect x="30" y="171" width="580" height="153" rx="5" fill="#262222" stroke="#55494a"/>
+  <text x="51" y="198" fill="#c7a66d" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.4">REQUEST LIFECYCLE</text>
+  <rect x="51" y="218" width="123" height="72" rx="4" fill="#352e2f" stroke="#766264"/><circle cx="80" cy="245" r="12" fill="#49393a" stroke="#bd9b62"/><path d="M76 245h8m-4-4v8" stroke="#f0e7dd" stroke-width="1.2"/><text x="101" y="243" fill="#e9ded4" font-family="Arial,sans-serif" font-size="10">Requester</text><text x="101" y="261" fill="#afa3a0" font-family="Arial,sans-serif" font-size="9">creates ticket</text>
+  <path d="M180 254h36m-6-6 6 6-6 6" fill="none" stroke="#bd9b62" stroke-width="1.5"/>
+  <rect x="225" y="218" width="147" height="72" rx="4" fill="#352e2f" stroke="#766264"/><text x="298.5" y="244" text-anchor="middle" fill="#e9ded4" font-family="monospace" font-size="11">/api/tickets/</text><text x="298.5" y="264" text-anchor="middle" fill="#afa3a0" font-family="Arial,sans-serif" font-size="9">JWT protected</text>
+  <path d="M378 254h36m-6-6 6 6-6 6" fill="none" stroke="#bd9b62" stroke-width="1.5"/>
+  <rect x="423" y="218" width="165" height="72" rx="4" fill="#352e2f" stroke="#766264"/><circle cx="452" cy="245" r="12" fill="#49393a" stroke="#bd9b62"/><path d="M446 249c1-5 10-5 11 0m-9-9a3 3 0 1 0 6 0" fill="none" stroke="#f0e7dd" stroke-width="1.2"/><text x="474" y="243" fill="#e9ded4" font-family="Arial,sans-serif" font-size="10">Support staff</text><text x="474" y="261" fill="#afa3a0" font-family="Arial,sans-serif" font-size="9">triage &amp; reply</text>
+  <text x="51" y="309" fill="#afa3a0" font-family="Arial,sans-serif" font-size="10">open</text><path d="M78 306h30" stroke="#766264"/><text x="114" y="309" fill="#afa3a0" font-family="Arial,sans-serif" font-size="10">in_progress</text><path d="M178 306h30" stroke="#766264"/><text x="214" y="309" fill="#afa3a0" font-family="Arial,sans-serif" font-size="10">waiting</text><path d="M266 306h30" stroke="#766264"/><text x="302" y="309" fill="#afa3a0" font-family="Arial,sans-serif" font-size="10">resolved</text><path d="M357 306h30" stroke="#766264"/><text x="393" y="309" fill="#afa3a0" font-family="Arial,sans-serif" font-size="10">closed</text>
+</svg>

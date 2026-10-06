@@ -17,7 +17,7 @@
     "technologies": ["Python", "Pandas", "Streamlit", "Scikit-learn"],
     "url": "https://github.com/ZaraTakion/brazil-traffic-insight",
     "image": "/assets/img/traffic-insight.png",
-    "alt": "Mapa de pontos geográficos do conjunto real de acidentes usado no projeto"
+    "alt": "Mapa de pontos geográficos presentes no arquivo de acidentes usado pelo projeto"
   },
   {
     "number": "03",

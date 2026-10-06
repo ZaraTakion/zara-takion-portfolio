@@ -14,7 +14,18 @@ class StaticBuildTests(unittest.TestCase):
         built_html = (build_site.OUTPUT / "index.html").read_text(encoding="utf-8")
         self.assertIn("<h3>Air Quality Analysis</h3>", built_html)
         self.assertIn('alt="Gráfico original com a média de PM2.5 por cidade, calculado a partir dos dados do projeto"', built_html)
-        self.assertEqual(built_html.count('class="project-card"'), 4)
+        projects = json.loads((build_site.SOURCE / "data" / "projects.json").read_text(encoding="utf-8"))
+        self.assertEqual(built_html.count('class="project-card"'), len(projects))
+        for repository in (
+            "nba-dashboard",
+            "air-quality-analysis",
+            "brazil-traffic-insight",
+            "steam-price-predictor",
+            "task-manager-backend",
+            "chamados-api",
+        ):
+            with self.subTest(repository=repository):
+                self.assertIn(f"https://github.com/ZaraTakion/{repository}", built_html)
         self.assertIn("<!-- PROJECTS:END -->", built_html)
         self.assertIn('data-netlify="true"', built_html)
         self.assertIn('name="form-name" value="contact"', built_html)

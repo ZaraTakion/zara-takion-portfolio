@@ -6,6 +6,7 @@ Portfólio de Rodrigo Araújo Maciel Pinheiro (Zara Takion), desenvolvedor web j
 
 - site/: páginas localizadas (`/` em português e `/en/` em inglês), políticas de privacidade nos dois idiomas, estilos, scripts, dados e imagens do portfólio.
 - site/styles/: tokens e folhas CSS organizadas por fundação, navegação, seções, movimento e responsividade. O build as reúne em um único arquivo para publicação.
+- site/styles/retro-desktop.css: camada visual da interface retrô de janelas, com contornos fortes e paleta vinho, vermelho, carvão e off-white.
 - site/scripts/: módulos JavaScript nativos separados para navegação, contato e inicialização.
 - site/scripts/project-filters.js: filtros acessíveis para localizar projetos por aplicações web, APIs ou dados; os projetos continuam visíveis sem JavaScript.
 - scripts/build_site.py: valida os dados e monta a pasta dist para Netlify.

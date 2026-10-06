@@ -1,19 +1,19 @@
 /* Color, type, width, spacing, and motion tokens. */
 :root {
   color-scheme: light;
-  --ink: #271b1b;
-  --ink-soft: #3b2b2a;
-  --wine: #632631;
-  --wine-deep: #421922;
-  --wine-light: #a75d62;
-  --bronze: #98734f;
-  --bronze-light: #c2a47f;
-  --paper: #f0e8db;
-  --paper-bright: #faf6ee;
-  --paper-shadow: #e5d9c8;
-  --muted: #665a52;
-  --line: #c9b9a6;
-  --line-dark: #6b4e49;
+  --ink: #140f17;
+  --ink-soft: #210207;
+  --wine: #730c1e;
+  --wine-deep: #210207;
+  --wine-light: #ca1b50;
+  --bronze: #8d6470;
+  --bronze-light: #d6bdc6;
+  --paper: #e8dde5;
+  --paper-bright: #fbf8fa;
+  --paper-shadow: #d8cbd5;
+  --muted: #514851;
+  --line: #140f17;
+  --line-dark: #140f17;
   --color-brand: var(--wine);
   --color-accent: var(--bronze);
   --color-surface: var(--paper);
@@ -21,8 +21,8 @@
   --color-text: var(--ink);
   --color-text-muted: var(--muted);
   --color-border: var(--line);
-  --color-success: #245b3a;
-  --color-error: #762c32;
+  --color-success: #285a43;
+  --color-error: #730c1e;
   --content-wide: 1180px;
   --content-reading: 68ch;
   --project-media: 640px;
@@ -59,6 +59,6 @@
   --z-frame: 1;
   --z-stamp: 2;
   --z-decoration: 3;
-  --focus-light: #241719;
-  --focus-dark: #fff1d9;
+  --focus-light: #ca1b50;
+  --focus-dark: #fbf8fa;
 }

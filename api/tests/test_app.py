@@ -116,6 +116,20 @@ class ContactApiTests(unittest.TestCase):
         )
         self.assertEqual(response.headers["Access-Control-Allow-Origin"], "https://portfolio.example")
 
+    def test_contact_endpoint_limits_repeated_submissions(self):
+        payload = {"name": "Zara", "email": "zara@example.com", "message": "Olá, gostaria de conversar sobre um projeto."}
+        with patch("api.app.send_contact_email") as send:
+            responses = [self.client.post("/api/contact", json=payload) for _ in range(6)]
+        self.assertEqual([response.status_code for response in responses[:5]], [200] * 5)
+        self.assertEqual(responses[5].status_code, 429)
+        self.assertIn("Muitas tentativas", responses[5].get_json()["error"])
+        self.assertEqual(send.call_count, 5)
+
+    def test_production_requires_shared_redis_rate_limit_storage(self):
+        with patch.dict(os.environ, {"CONTACT_API_ENV": "production"}, clear=True):
+            with self.assertRaisesRegex(RuntimeError, "RATELIMIT_STORAGE_URI"):
+                create_app({"TESTING": True})
+
 
 if __name__ == "__main__":
     unittest.main()

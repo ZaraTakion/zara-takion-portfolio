@@ -19,7 +19,16 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn('data-netlify="true"', built_html)
         self.assertIn('name="form-name" value="contact"', built_html)
         self.assertIn('mailto:rm20022101@gmail.com', built_html)
+        self.assertIn('href="/privacidade.html"', built_html)
+        self.assertIn("Abrir repositório", built_html)
         self.assertNotIn("rodzmaciel21@gmail.com", built_html)
+
+    def test_build_includes_404_and_privacy_pages(self):
+        build_site.build()
+        self.assertTrue((build_site.OUTPUT / "404.html").is_file())
+        privacy = (build_site.OUTPUT / "privacidade.html").read_text(encoding="utf-8")
+        self.assertIn("Política de privacidade", privacy)
+        self.assertIn("rm20022101@gmail.com", privacy)
 
     def test_every_project_cover_exists_locally(self):
         build_site.validate_projects()

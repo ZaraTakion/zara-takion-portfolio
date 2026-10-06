@@ -62,6 +62,8 @@ O formulário tem dois caminhos de produção. Se PORTFOLIO_API_BASE_URL estiver
 
 O recebimento por e-mail ainda depende da configuração da hospedagem. Para Netlify Forms, habilite a detecção de formulários e crie uma notificação por e-mail para rm20022101@gmail.com. Até essa configuração e um envio de teste, não considere o recebimento ativo. As submissões também ficam disponíveis no painel Netlify. Na alternativa SMTP, defina CONTACT_TO=rm20022101@gmail.com junto com as credenciais SMTP no serviço da API; sem elas, a API recusa o envio.
 
+O site inclui uma política de privacidade em `/privacidade.html` que descreve os campos do formulário e as diferenças entre os fluxos Netlify Forms e SMTP. Revise o texto se mudar os provedores ou o tratamento de dados.
+
 ## Hospedar a API Flask
 
 A API precisa de um serviço Python separado, pois o Netlify Functions não executa Flask. Um exemplo de hospedagem é o Render:
@@ -71,8 +73,9 @@ A API precisa de um serviço Python separado, pois o Netlify Functions não exec
 3. Use gunicorn --chdir api app:app como comando de inicialização.
 4. Configure as variáveis secretas descritas em .env.example no painel do serviço.
 5. Defina ALLOWED_ORIGINS com o domínio Netlify real e configure as credenciais SMTP no painel, nunca no Git.
+6. Defina CONTACT_API_ENV=production e RATELIMIT_STORAGE_URI com a URL privada `rediss://` de um Redis gerenciado. A API aplica até cinco envios por endereço IP por hora e não inicia em produção sem armazenamento compartilhado protegido por TLS para esse limite.
 
-O endpoint GET /api/health permite verificar se a API está respondendo. O formulário usa POST /api/contact, valida os dados, aplica um campo honeypot e encaminha o e-mail sem manter uma cópia no site.
+O endpoint GET /api/health permite verificar se a API está respondendo. O formulário usa POST /api/contact, valida os dados, aplica um campo honeypot e limita tentativas antes de encaminhar o e-mail sem manter uma cópia própria na API. Defina TRUSTED_PROXY_HOPS apenas com a quantidade de proxies confiáveis documentada pelo host; não confie em cabeçalhos de proxy enviados diretamente pelo visitante.
 
 ## Projetos apresentados
 

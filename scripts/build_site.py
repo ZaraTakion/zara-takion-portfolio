@@ -70,7 +70,7 @@ def render_project_card(project: dict[str, object]) -> str:
     <h3>{text(project["title"])}</h3>
     <p class="project-description">{text(project["description"])}</p>
     <ul class="project-tags" aria-label="Tecnologias utilizadas">{tags}</ul>
-    <a class="project-link" href="{text(project["url"])}" target="_blank" rel="noopener noreferrer">Ver projeto <span aria-hidden="true">↗</span></a>
+    <a class="project-link" href="{text(project["url"])}" target="_blank" rel="noopener noreferrer">Abrir repositório <span aria-hidden="true">↗</span></a>
   </div>
 </article>"""
 
@@ -100,6 +100,7 @@ def build() -> None:
     for required_path in (
         SOURCE / "index.html",
         SOURCE / "404.html",
+        SOURCE / "privacidade.html",
         SOURCE / "assets" / "css" / "site.css",
         SOURCE / "assets" / "js" / "main.js",
     ):

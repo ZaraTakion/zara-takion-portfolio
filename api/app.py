@@ -10,6 +10,9 @@ from email.message import EmailMessage
 from typing import Any
 
 from flask import Flask, jsonify, make_response, request
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 EMAIL_PATTERN = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 MAX_MESSAGE_LENGTH = 2500
@@ -84,8 +87,25 @@ def create_app(overrides: dict[str, Any] | None = None) -> Flask:
     app = Flask(__name__)
     app.config["MAX_CONTENT_LENGTH"] = 8 * 1024
     app.config["ALLOWED_ORIGINS"] = _allowed_origins()
+    storage_uri = os.getenv("RATELIMIT_STORAGE_URI", "memory://").strip()
+    is_production = os.getenv("CONTACT_API_ENV", "").lower() == "production"
+    if is_production and not storage_uri.startswith("rediss://"):
+        raise RuntimeError("Configure RATELIMIT_STORAGE_URI com Redis e TLS (rediss://) antes de iniciar a API em produção.")
+    try:
+        trusted_proxy_hops = max(0, int(os.getenv("TRUSTED_PROXY_HOPS", "0")))
+    except ValueError as error:
+        raise RuntimeError("TRUSTED_PROXY_HOPS precisa ser um número inteiro não negativo.") from error
+    if trusted_proxy_hops:
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=trusted_proxy_hops)
+    app.config["RATELIMIT_STORAGE_URI"] = storage_uri
     if overrides:
         app.config.update(overrides)
+    limiter = Limiter(
+        key_func=get_remote_address,
+        app=app,
+        storage_uri=app.config["RATELIMIT_STORAGE_URI"],
+        headers_enabled=False,
+    )
 
     @app.after_request
     def add_safety_headers(response):
@@ -104,7 +124,12 @@ def create_app(overrides: dict[str, Any] | None = None) -> Flask:
     def health():
         return jsonify(status="ok"), 200
 
+    @app.errorhandler(429)
+    def too_many_requests(_error):
+        return jsonify(error="Muitas tentativas de contato. Aguarde antes de enviar outra mensagem."), 429
+
     @app.route("/api/contact", methods=["POST", "OPTIONS"])
+    @limiter.limit("5 per hour", methods=["POST"])
     def contact():
         origin = request.headers.get("Origin", "").rstrip("/")
         allowed_origins = app.config["ALLOWED_ORIGINS"]

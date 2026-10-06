@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Task Manager API</title>
+  <desc id="desc">Diagrama das rotas CRUD para tarefas e do armazenamento SQLite.</desc>
+  <rect width="640" height="360" fill="#211d1d"/>
+  <path d="M0 0h640v54H0z" fill="#2c2627"/>
+  <circle cx="27" cy="27" r="5" fill="#bd9b62"/><circle cx="45" cy="27" r="5" fill="#8f7778"/><circle cx="63" cy="27" r="5" fill="#55494a"/>
+  <text x="30" y="91" fill="#c7a66d" font-family="Georgia,serif" font-size="12" letter-spacing="2">BACKEND / 06</text>
+  <text x="30" y="122" fill="#f0e7dd" font-family="Georgia,serif" font-size="26">Task Manager API</text>
+  <text x="30" y="148" fill="#afa3a0" font-family="Arial,sans-serif" font-size="12">FastAPI · persistent SQLite storage</text>
+  <rect x="30" y="171" width="365" height="153" rx="5" fill="#262222" stroke="#55494a"/>
+  <text x="50" y="198" fill="#c7a66d" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.4">TASK RESOURCE</text>
+  <path d="M50 215h325" stroke="#55494a"/>
+  <rect x="51" y="229" width="55" height="20" rx="3" fill="#49393a"/><text x="78.5" y="243" text-anchor="middle" fill="#e8c7c7" font-family="Arial,sans-serif" font-size="10">POST</text><text x="122" y="243" fill="#e5dcd6" font-family="monospace" font-size="12">/tasks</text><text x="337" y="243" text-anchor="end" fill="#afa3a0" font-family="Arial,sans-serif" font-size="10">Create</text>
+  <rect x="51" y="258" width="55" height="20" rx="3" fill="#3c4540"/><text x="78.5" y="272" text-anchor="middle" fill="#c8decb" font-family="Arial,sans-serif" font-size="10">GET</text><text x="122" y="272" fill="#e5dcd6" font-family="monospace" font-size="12">/tasks/{id}</text><text x="337" y="272" text-anchor="end" fill="#afa3a0" font-family="Arial,sans-serif" font-size="10">Read</text>
+  <rect x="51" y="287" width="55" height="20" rx="3" fill="#3c414c"/><text x="78.5" y="301" text-anchor="middle" fill="#d0d6eb" font-family="Arial,sans-serif" font-size="10">PATCH</text><text x="122" y="301" fill="#e5dcd6" font-family="monospace" font-size="12">/tasks/{id}</text><text x="337" y="301" text-anchor="end" fill="#afa3a0" font-family="Arial,sans-serif" font-size="10">Update</text>
+  <rect x="414" y="171" width="196" height="153" rx="5" fill="#2b2627" stroke="#55494a"/>
+  <text x="434" y="198" fill="#c7a66d" font-family="Arial,sans-serif" font-size="10" letter-spacing="1.4">PERSISTENCE</text>
+  <ellipse cx="512" cy="236" rx="47" ry="13" fill="#49393a" stroke="#bd9b62"/><path d="M465 236v45c0 8 21 14 47 14s47-6 47-14v-45" fill="#362d2e" stroke="#bd9b62"/><path d="M465 257c0 8 21 14 47 14s47-6 47-14" fill="none" stroke="#bd9b62"/>
+  <text x="512" y="253" text-anchor="middle" fill="#f0e7dd" font-family="Georgia,serif" font-size="14">SQLite</text>
+  <text x="512" y="315" text-anchor="middle" fill="#afa3a0" font-family="Arial,sans-serif" font-size="10">data survives restarts</text>
+</svg>

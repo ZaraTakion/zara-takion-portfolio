@@ -1,1 +1,0 @@
-window.PORTFOLIO_CONFIG = Object.freeze({ apiBaseUrl: "", netlifyFormsEnabled: false });

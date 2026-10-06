@@ -3,28 +3,27 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#241719">
+    <meta name="theme-color" content="#aee4e2">
     <meta name="description" content="Portfolio of Rodrigo Araújo Maciel Pinheiro, Zara Takion. Web developer focused on Python, Django, REST APIs, and full-stack applications.">
     <meta property="og:title" content="Zara Takion — Web Developer">
     <meta property="og:description" content="Back-end Python, REST API, and full-stack projects presented with clarity and a distinct visual identity.">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="en_US">
-    <meta property="og:url" content="https://zara-takion-atelier.netlify.app/en/">
-    <meta property="og:image" content="https://zara-takion-atelier.netlify.app/assets/img/oc-portrait.jpg">
+    <meta property="og:url" content="https://zara-takion-portfolio.rodzmaciel21.workers.dev/en/">
+    <meta property="og:image" content="https://zara-takion-portfolio.rodzmaciel21.workers.dev/assets/img/oc-portrait.jpg">
     <meta property="og:image:alt" content="Original character artwork as the visual signature of Zara Takion's portfolio">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Zara Takion — Web Developer">
     <meta name="twitter:description" content="Back-end Python, REST API, and full-stack projects presented with clarity and a distinct visual identity.">
-    <meta name="twitter:image" content="https://zara-takion-atelier.netlify.app/assets/img/oc-portrait.jpg">
+    <meta name="twitter:image" content="https://zara-takion-portfolio.rodzmaciel21.workers.dev/assets/img/oc-portrait.jpg">
     <meta name="twitter:image:alt" content="Original character artwork as the visual signature of Zara Takion's portfolio">
-    <link rel="canonical" href="https://zara-takion-atelier.netlify.app/en/">
-    <link rel="alternate" hreflang="pt-BR" href="https://zara-takion-atelier.netlify.app/">
-    <link rel="alternate" hreflang="en" href="https://zara-takion-atelier.netlify.app/en/">
-    <link rel="alternate" hreflang="x-default" href="https://zara-takion-atelier.netlify.app/">
+    <link rel="canonical" href="https://zara-takion-portfolio.rodzmaciel21.workers.dev/en/">
+    <link rel="alternate" hreflang="pt-BR" href="https://zara-takion-portfolio.rodzmaciel21.workers.dev/">
+    <link rel="alternate" hreflang="en" href="https://zara-takion-portfolio.rodzmaciel21.workers.dev/en/">
+    <link rel="alternate" hreflang="x-default" href="https://zara-takion-portfolio.rodzmaciel21.workers.dev/">
     <title>Zara Takion — Web Developer</title>
     <link rel="icon" type="image/svg+xml" href="/assets/img/mark.svg">
     <link rel="stylesheet" href="/assets/css/site.css">
-    <script src="/config.js"></script>
     <script type="module" src="/scripts/main.js"></script>
   </head>
   <body>
@@ -40,7 +39,23 @@
       </div>
     </header>
 
-    <main id="content">
+    <main id="content" class="retro-desktop-stage">
+      <section class="startup-screen" aria-labelledby="startup-title">
+        <div class="startup-window">
+          <div class="startup-titlebar"><span>● ●　ZARA TAKION PORTFOLIO SYSTEM</span><span>— □ ×</span></div>
+          <div class="startup-content"><p class="startup-kicker">DIGITAL ARCHIVE · PARAÍBA, BRAZIL</p><h1 id="startup-title">Your desktop is ready.</h1><p>Enter the portfolio or watch a brief retro startup sequence.</p><div class="startup-actions"><button class="button button-wine" type="button" data-desktop-start>Open desktop <span aria-hidden="true">↗</span></button><button class="button button-outline" type="button" data-desktop-boot>Watch startup <span aria-hidden="true">▶</span></button></div></div>
+        </div>
+      </section>
+      <section class="boot-screen" aria-labelledby="boot-title" hidden>
+        <div class="boot-terminal"><h1 id="boot-title">ZARA TAKION PORTFOLIO SYSTEM</h1><p>Starting desktop environment...</p><p>Loading selected projects <span>[ OK ]</span></p><p>Starting profile <span>[ OK ]</span></p><div class="boot-progress" aria-hidden="true"><span></span></div><button class="boot-skip" type="button" data-boot-skip>Skip intro ↗</button></div>
+      </section>
+      <nav class="desktop-apps" aria-label="Portfolio apps">
+        <a href="#projects" data-app-open="projects"><span aria-hidden="true">▧</span>Projects</a><a href="#about" data-app-open="about"><span aria-hidden="true">▤</span>About</a><a href="#archive" data-app-open="archive"><span aria-hidden="true">▣</span>Archive</a><a href="#education" data-app-open="education"><span aria-hidden="true">▥</span>Education</a><a href="#contact" data-app-open="contact"><span aria-hidden="true">✉</span>Contact</a>
+      </nav>
+      <aside class="desktop-widgets" aria-label="Desktop widgets">
+        <section class="desktop-widget music-widget" aria-label="Music player"><h2 class="widget-title">now_playing.exe</h2><div class="music-widget-body"><span class="music-cover" aria-hidden="true">♫</span><div><p class="music-track">Your favorite song</p><p class="music-artist">Choose a track</p><a href="https://open.spotify.com/" target="_blank" rel="noopener noreferrer">Open Spotify ↗</a></div></div></section>
+        <section class="desktop-widget system-widget" aria-label="System status"><h2 class="widget-title">system_status.exe</h2><div class="system-widget-body"><time class="system-clock" data-system-clock>--:--</time><p>PARAÍBA, BR</p><p><span class="status-led" aria-hidden="true"></span> Available for projects</p></div></section>
+      </aside>
       <section class="hero" id="home" aria-labelledby="hero-title">
         <div class="wrap hero-grid">
           <div class="hero-copy">
@@ -52,10 +67,8 @@
             <div class="hero-actions"><a class="button button-wine" href="#projects">Explore my projects <span aria-hidden="true">↓</span></a><a class="button button-outline" href="mailto:rm20022101@gmail.com">Get in touch <span aria-hidden="true">↗</span></a></div>
             <div class="hero-socials" aria-label="Professional profiles"><a href="https://github.com/ZaraTakion" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a><a href="https://www.linkedin.com/in/rodrigo-pinheiro-94aa74358/" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a></div>
           </div>
-          <aside class="hero-portrait" aria-label="Zara Takion visual signature">
-            <div class="portrait-topline"><span>PERSONAL ARCHIVE</span><span>NO. 01</span></div>
-            <figure class="portrait-frame"><span class="portrait-frame-inner" aria-hidden="true"></span><img src="/assets/img/oc-portrait.jpg" alt="Illustration of Zara Takion's original character, with black hair, mechanical red eyes, and a brown vest." width="1000" height="603" fetchpriority="high"><span class="portrait-stamp" aria-hidden="true">Z<br><span>·</span><br>T</span></figure>
-            <div class="portrait-caption"><span>ORIGINAL CHARACTER</span><span>VISUAL SIGNATURE</span></div>
+          <aside class="digital-profile" aria-label="Zara Takion digital profile">
+            <div class="digital-monogram" aria-hidden="true">ZT</div><p class="digital-profile-name">Zara Takion</p><p class="digital-profile-status"><span class="status-led" aria-hidden="true"></span> SYSTEM ONLINE</p><p class="digital-profile-location">Paraíba · Brazil</p>
           </aside>
         </div>
         <div class="hero-index" aria-hidden="true"><span>PORTFOLIO · 2026</span><span>PARAÍBA, BRAZIL</span></div>
@@ -107,14 +120,11 @@
 
       <section class="contact-section" id="contact" aria-labelledby="contact-title">
         <div class="wrap contact-layout"><div class="contact-copy"><p class="section-kicker section-kicker-light"><span>05</span> Correspondence</p><h2>Shall we talk about your next project?</h2><p>I'm open to professional opportunities and conversations about web development, APIs, and full-stack applications.</p><a class="contact-email" href="mailto:rm20022101@gmail.com">rm20022101@gmail.com <span aria-hidden="true">↗</span></a></div>
-          <form id="contact-form" class="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="website" aria-label="Contact form">
-            <input type="hidden" name="form-name" value="contact"><p class="form-intro" id="contact-form-help">Send a message using the form. All fields are required.</p>
-            <div class="field-row"><div class="field"><label for="contact-name">Your name <span>required</span></label><input id="contact-name" name="name" type="text" autocomplete="name" maxlength="80" aria-describedby="contact-form-help" required></div><div class="field"><label for="contact-email-input">Your email <span>required</span></label><input id="contact-email-input" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" aria-describedby="contact-form-help" required></div></div>
-            <div class="field"><label for="contact-message">Message <span>10–2,500 characters</span></label><textarea id="contact-message" name="message" rows="5" minlength="10" maxlength="2500" aria-describedby="contact-form-help" required></textarea></div>
-            <div class="hp-field" aria-hidden="true"><label for="contact-company">Leave this field empty</label><input id="contact-company" name="website" type="text" tabindex="-1" autocomplete="off"></div>
-            <div class="form-end"><p>I will use your information only to respond. Read the <a href="/en/privacy.html">privacy policy</a>.</p><button class="button button-paper" type="submit">Send message <span aria-hidden="true">↗</span></button></div>
-            <p id="form-status" class="form-status" role="status" aria-live="polite" aria-atomic="true"></p>
-          </form>
+          <div class="contact-direct-links" aria-label="Direct contact links">
+            <a href="mailto:rm20022101@gmail.com"><span aria-hidden="true">✉</span><span><strong>Email</strong><small>rm20022101@gmail.com</small></span><span aria-hidden="true">↗</span></a>
+            <a href="https://github.com/ZaraTakion" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">⌘</span><span><strong>GitHub</strong><small>github.com/ZaraTakion</small></span><span aria-hidden="true">↗</span></a>
+            <a href="https://www.linkedin.com/in/rodrigo-pinheiro-94aa74358/" target="_blank" rel="noopener noreferrer"><span aria-hidden="true">in</span><span><strong>LinkedIn</strong><small>Professional profile</small></span><span aria-hidden="true">↗</span></a>
+          </div>
         </div>
       </section>
     </main>

@@ -39,10 +39,8 @@ jobs:
           node --check site/scripts/main.js
           node --check site/scripts/navigation.js
           node --check site/scripts/project-filters.js
-          node --check site/scripts/contact.js
-          node --check site/config.js
           node --test tests/project-filters.test.mjs
       - name: Build static site
         run: python scripts/build_site.py
       - name: Check generated output
-        run: test -s dist/index.html && test -s dist/config.js && test -s dist/data/projects.json
+        run: test -s dist/index.html && test -s dist/_headers && test -s dist/data/projects.json

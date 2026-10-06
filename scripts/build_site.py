@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Validate the site content and assemble the static Netlify publish folder."""
+"""Validate portfolio content and assemble static Cloudflare Worker assets."""
 
 from __future__ import annotations
 
 import json
 import html
-import os
 import re
 import shutil
 from pathlib import Path
@@ -215,22 +214,6 @@ def render_page(source_path: Path, output_path: Path, language: str) -> None:
     output_path.write_text(built_html, encoding="utf-8")
 
 
-def api_config_script() -> str:
-    api_base_url = os.environ.get("PORTFOLIO_API_BASE_URL", "").strip().rstrip("/")
-    if api_base_url:
-        parsed_url = urlparse(api_base_url)
-        is_local_http = parsed_url.scheme == "http" and parsed_url.hostname in {"127.0.0.1", "localhost"}
-        if parsed_url.scheme != "https" and not is_local_http:
-            raise ValueError("PORTFOLIO_API_BASE_URL precisa usar HTTPS (HTTP só é permitido em localhost).")
-    return "window.PORTFOLIO_CONFIG = Object.freeze(" + json.dumps(
-        {
-            "apiBaseUrl": api_base_url,
-            "netlifyFormsEnabled": os.environ.get("NETLIFY", "").lower() == "true",
-        },
-        ensure_ascii=False,
-    ) + ");\n"
-
-
 def build_stylesheet() -> str:
     """Combine source CSS modules in a stable order for one production request."""
     chunks = []
@@ -254,7 +237,6 @@ def build() -> None:
         SOURCE / "scripts" / "main.js",
         SOURCE / "scripts" / "project-filters.js",
         SOURCE / "scripts" / "navigation.js",
-        SOURCE / "scripts" / "contact.js",
     ):
         if not required_path.is_file():
             raise FileNotFoundError(f"Arquivo obrigatório ausente: {required_path.relative_to(ROOT)}")
@@ -268,7 +250,6 @@ def build() -> None:
     css_output = OUTPUT / "assets" / "css" / "site.css"
     css_output.parent.mkdir(parents=True, exist_ok=True)
     css_output.write_text(build_stylesheet(), encoding="utf-8")
-    (OUTPUT / "config.js").write_text(api_config_script(), encoding="utf-8")
     print(f"Site preparado em {OUTPUT.relative_to(ROOT)}.")
 
 

@@ -1,9 +1,7 @@
 from __future__ import annotations
 
 import json
-import os
 import unittest
-from unittest.mock import patch
 
 from scripts import build_site
 
@@ -42,8 +40,10 @@ class StaticBuildTests(unittest.TestCase):
             with self.subTest(repository=repository):
                 self.assertIn(f"https://github.com/ZaraTakion/{repository}", built_html)
         self.assertIn("<!-- PROJECTS:ARCHIVE:END -->", built_html)
-        self.assertIn('data-netlify="true"', built_html)
-        self.assertIn('name="form-name" value="contact"', built_html)
+        self.assertIn('class="contact-direct-links"', built_html)
+        self.assertIn('data-desktop-start', built_html)
+        self.assertIn('data-desktop-boot', built_html)
+        self.assertIn('data-app-open="projetos"', built_html)
         self.assertIn('mailto:rm20022101@gmail.com', built_html)
         self.assertIn('href="/privacidade.html"', built_html)
         self.assertIn("Ver repositório", built_html)
@@ -52,7 +52,7 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("Os testes unittest cobrem o CRUD", built_html)
         self.assertIn("não demonstram desempenho preditivo superior ao baseline da média", built_html)
         self.assertNotIn("rodzmaciel21@gmail.com", built_html)
-        self.assertIn('minlength="10"', built_html)
+        self.assertNotIn('id="contact-form"', built_html)
         css = (build_site.OUTPUT / "assets" / "css" / "site.css").read_text(encoding="utf-8")
         self.assertNotIn("overflow-x: clip", css)
         self.assertIn("@media (forced-colors: active)", css)
@@ -68,9 +68,10 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("View repository", english)
         self.assertIn("Technical notes", english)
         self.assertIn("Concept illustration — not a product screenshot", english)
-        self.assertIn('minlength="10"', english)
+        self.assertIn('class="contact-direct-links"', english)
         self.assertIn('href="/" hreflang="pt-BR"', english)
-        self.assertIn('data-netlify="true"', english)
+        self.assertIn('data-app-open="projects"', english)
+        self.assertNotIn('id="contact-form"', english)
         self.assertNotIn("tel:+55", english)
 
     def test_build_includes_404_and_privacy_pages(self):
@@ -90,7 +91,7 @@ class StaticBuildTests(unittest.TestCase):
         build_site.build()
         self.assertTrue((build_site.OUTPUT / "robots.txt").is_file())
         sitemap = (build_site.OUTPUT / "sitemap.xml").read_text(encoding="utf-8")
-        self.assertIn("https://zara-takion-atelier.netlify.app/en/", sitemap)
+        self.assertIn("https://zara-takion-portfolio.rodzmaciel21.workers.dev/en/", sitemap)
         self.assertIn("hreflang=\"pt-BR\"", sitemap)
 
     def test_rebuilt_story_orders_work_before_profile_and_contact(self):
@@ -124,25 +125,27 @@ class StaticBuildTests(unittest.TestCase):
         css = (build_site.OUTPUT / "assets" / "css" / "site.css").read_text(encoding="utf-8")
         javascript = (build_site.SOURCE / "scripts" / "main.js").read_text(encoding="utf-8")
         navigation = (build_site.SOURCE / "scripts" / "navigation.js").read_text(encoding="utf-8")
-        contact = (build_site.SOURCE / "scripts" / "contact.js").read_text(encoding="utf-8")
         filters = (build_site.SOURCE / "scripts" / "project-filters.js").read_text(encoding="utf-8")
         for html in (portuguese, english):
             is_portuguese = '<html lang="pt-BR">' in html
             with self.subTest(language="pt-BR" if is_portuguese else "en"):
-                self.assertIn('class="hero-portrait"', html)
+                self.assertIn('class="digital-profile"', html)
                 self.assertIn('id="projetos"' if is_portuguese else 'id="projects"', html)
                 self.assertIn('id="contato"' if is_portuguese else 'id="contact"', html)
-                self.assertIn('data-netlify="true"', html)
+                self.assertIn('class="contact-direct-links"', html)
+                self.assertIn('data-desktop-start', html)
+                self.assertIn('data-desktop-boot', html)
                 self.assertIn('aria-controls="main-nav"', html)
                 self.assertIn('type="module" src="/scripts/main.js"', html)
         self.assertIn("@media (max-width: 800px)", css)
         self.assertIn('matchMedia("(min-width: 801px)")', navigation)
-        self.assertIn('fetch(`${apiBaseUrl}/api/contact`', contact)
         self.assertIn('data-project-filters', portuguese)
         self.assertIn('data-project-filters', english)
         self.assertIn('aria-pressed', filters)
         self.assertIn('project-filters.css', css)
         self.assertIn('retro-desktop.css', css)
+        self.assertIn('.retro-desktop-stage.retro-enhanced > .boot-screen:not([hidden])', css)
+        self.assertIn('mobile-app-open > #projects.retro-app-window.is-mobile-active', css)
         self.assertIn("prefers-reduced-motion: reduce", css)
         self.assertNotIn("overflow-x: hidden", css)
         self.assertNotIn("overflow-x: clip", css)
@@ -154,27 +157,14 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("/* --- responsive.css --- */", bundled_css)
         self.assertFalse((build_site.OUTPUT / "styles").exists())
 
-    def test_build_writes_empty_api_config_by_default(self):
-        with patch.dict(os.environ, {}, clear=True):
-            build_site.build()
-        config = (build_site.OUTPUT / "config.js").read_text(encoding="utf-8")
-        self.assertIn('"apiBaseUrl": ""', config)
-        self.assertIn('"netlifyFormsEnabled": false', config)
-
-    def test_netlify_build_enables_native_form_submission(self):
-        with patch.dict(os.environ, {"NETLIFY": "true"}, clear=True):
-            config = build_site.api_config_script()
-        self.assertIn('"netlifyFormsEnabled": true', config)
-
-    def test_public_http_api_url_is_rejected(self):
-        with patch.dict(os.environ, {"PORTFOLIO_API_BASE_URL": "http://api.example.com"}, clear=False):
-            with self.assertRaises(ValueError):
-                build_site.api_config_script()
-
-    def test_local_http_api_url_is_allowed(self):
-        with patch.dict(os.environ, {"PORTFOLIO_API_BASE_URL": "http://127.0.0.1:5000/"}, clear=False):
-            config = build_site.api_config_script()
-        self.assertIn("http://127.0.0.1:5000", config)
+    def test_cloudflare_worker_configuration_and_headers_are_in_build_output(self):
+        build_site.build()
+        config = (build_site.ROOT / "wrangler.jsonc").read_text(encoding="utf-8")
+        headers = (build_site.OUTPUT / "_headers").read_text(encoding="utf-8")
+        self.assertIn('"name": "zara-takion-portfolio"', config)
+        self.assertIn('"directory": "./dist"', config)
+        self.assertIn("Content-Security-Policy:", headers)
+        self.assertTrue((build_site.OUTPUT / "404.html").is_file())
 
     def test_project_tracks_are_validated(self):
         projects_path = build_site.SOURCE / "data" / "projects.json"

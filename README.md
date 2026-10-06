@@ -1,21 +1,23 @@
 # Zara Takion — Portfólio
 
-Portfólio de Rodrigo Araújo Maciel Pinheiro (Zara Takion), desenvolvedor web júnior com foco em back-end Python, Django, APIs REST e aplicações full-stack. A experiência é estática, rápida e disponível em português e inglês; uma API independente em Python/Flask pode processar o formulário de contato.
+Portfólio de Rodrigo Araújo Maciel Pinheiro (Zara Takion), desenvolvedor web júnior com foco em back-end Python, Django, APIs REST e aplicações full-stack. A experiência é estática, bilíngue e apresenta os projetos em um desktop retrô Aqua, com inicialização opcional, janelas organizadas, explorador de projetos, status do sistema e links diretos.
 
 ## Estrutura
 
 - site/: páginas localizadas (`/` em português e `/en/` em inglês), políticas de privacidade nos dois idiomas, estilos, scripts, dados e imagens do portfólio.
 - site/styles/: tokens e folhas CSS organizadas por fundação, navegação, seções, movimento e responsividade. O build as reúne em um único arquivo para publicação.
-- site/styles/retro-desktop.css: camada visual da interface retrô de janelas, com contornos fortes e paleta vinho, vermelho, carvão e off-white.
-- site/scripts/: módulos JavaScript nativos separados para navegação, contato e inicialização.
+- site/styles/retro-desktop.css: interface de desktop retrô em Aqua e creme, com detalhes vinho.
+- site/scripts/: módulos JavaScript nativos separados para navegação, filtros, desktop e explorador de projetos.
 - site/scripts/project-filters.js: filtros acessíveis para localizar projetos por aplicações web, APIs ou dados; os projetos continuam visíveis sem JavaScript.
-- scripts/build_site.py: valida os dados e monta a pasta dist para Netlify.
-- api/: API Flask independente para validar e encaminhar mensagens de contato.
+- scripts/build_site.py: valida os dados e monta a pasta dist para publicação estática.
+- wrangler.jsonc: configuração do Cloudflare Workers Static Assets para publicar os arquivos de dist.
+- site/_headers: cabeçalhos de segurança aplicados pelo Cloudflare Workers.
+- api/: API Flask independente mantida no repositório, mas não conectada aos links de contato do site.
 - api/tests/: testes da API.
 
 ## Gerar e visualizar o site
 
-Requer Python 3.13 para acompanhar a versão configurada no Netlify.
+Requer Python 3.10 ou superior.
 
 ~~~bash
 python scripts/build_site.py
@@ -41,7 +43,7 @@ py scripts/build_site.py
 py -m http.server 8000 --directory dist
 ~~~
 
-Depois, acesse http://localhost:8000. Para encerrar o servidor, pressione Ctrl+C no PowerShell. Na prévia local, o formulário abre um rascunho no aplicativo de e-mail; o envio pelo site depende da configuração do provedor de contato em produção.
+Depois, acesse http://localhost:8000. Para encerrar o servidor, pressione Ctrl+C no PowerShell. O contato abre o aplicativo de e-mail escolhido pela pessoa visitante; GitHub e LinkedIn abrem seus respectivos perfis.
 
 ## Testar a API de contato
 
@@ -66,28 +68,33 @@ python -m api.app
 
 A API responde em http://127.0.0.1:5000. Sem variáveis SMTP, o endpoint de contato retorna uma mensagem clara e não envia nem armazena dados.
 
-## Publicação do site no Netlify
+## Publicação automática no Cloudflare Workers
 
-O netlify.toml configura o comando python3 scripts/build_site.py, publica dist e seleciona Python 3.13. Conecte o repositório ao Netlify usando a branch main.
+O site está preparado para o endereço `https://zara-takion-portfolio.rodzmaciel21.workers.dev/`. O `wrangler.jsonc` aponta os arquivos estáticos para `dist`; o build é `python scripts/build_site.py` e o comando de deploy é `npx wrangler deploy`.
 
-O formulário tem dois caminhos de produção. Se PORTFOLIO_API_BASE_URL estiver configurada no Netlify, ele envia para a API Flask e esta encaminha por SMTP. Sem essa variável, o formulário usa Netlify Forms. A detecção de formulários e as notificações por e-mail devem ser confirmadas no painel do Netlify e com um envio de teste; a aceitação de uma submissão não comprova a entrega na caixa de entrada. A prévia local, onde nenhum desses serviços está ativo, abre um rascunho de e-mail para revisão.
+Para ativar publicação automática a cada atualização da branch `main`:
 
-As submissões do Netlify Forms também ficam disponíveis no painel da hospedagem. Na alternativa SMTP, defina CONTACT_TO=rm20022101@gmail.com junto com as credenciais SMTP no serviço da API; sem elas, a API recusa o envio.
+1. No painel Cloudflare, abra **Workers & Pages** e conecte o repositório `ZaraTakion/zara-takion-portfolio` em **Builds**.
+2. Escolha a branch `main`.
+3. Configure o comando de build como `python scripts/build_site.py` e o comando de deploy como `npx wrangler deploy`.
+4. Salve e acompanhe o primeiro build. Depois, cada push para `main` inicia uma nova publicação.
 
-O site inclui políticas de privacidade em `/privacidade.html` e `/en/privacy.html`, que descrevem os campos do formulário e as diferenças entre os fluxos Netlify Forms e SMTP. Revise o texto se mudar os provedores ou o tratamento de dados.
+Também é possível publicar pela CLI com `npx wrangler deploy`, depois de autenticar o Wrangler na conta Cloudflare. O build produz `dist/404.html`, mantém páginas em português e inglês e aplica `site/_headers` à saída estática.
+
+As páginas em `/privacidade.html` e `/en/privacy.html` explicam que o portfólio não coleta mensagens por formulário e que os links externos seguem as políticas dos respectivos serviços.
 
 ## Hospedar a API Flask
 
-A API precisa de um serviço Python separado, pois o Netlify Functions não executa Flask. Um exemplo de hospedagem é o Render:
+A API Flask permanece independente e precisa de um serviço Python separado. Ela não faz parte do Worker estático nem está ligada ao contato do portfólio. Se for usada separadamente, um exemplo de hospedagem é o Render:
 
 1. Crie um Web Service ligado a este repositório.
 2. Use pip install -r api/requirements.txt como comando de build.
 3. Use gunicorn --chdir api app:app como comando de inicialização.
 4. Configure as variáveis secretas descritas em .env.example no painel do serviço.
-5. Defina ALLOWED_ORIGINS com o domínio Netlify real e configure as credenciais SMTP no painel, nunca no Git.
+5. Defina ALLOWED_ORIGINS com o domínio autorizado e configure as credenciais SMTP no painel, nunca no Git.
 6. Defina CONTACT_API_ENV=production e RATELIMIT_STORAGE_URI com a URL privada `rediss://` de um Redis gerenciado. A API aplica até cinco envios por endereço IP por hora e não inicia em produção sem armazenamento compartilhado protegido por TLS para esse limite.
 
-O endpoint GET /api/health permite verificar se a API está respondendo. O formulário usa POST /api/contact, valida os dados, aplica um campo honeypot e limita tentativas antes de encaminhar o e-mail sem manter uma cópia própria na API. Defina TRUSTED_PROXY_HOPS apenas com a quantidade de proxies confiáveis documentada pelo host; não confie em cabeçalhos de proxy enviados diretamente pelo visitante.
+O endpoint GET /api/health permite verificar se a API está respondendo. Seu endpoint POST /api/contact valida os dados, aplica um campo honeypot e limita tentativas antes de encaminhar o e-mail sem manter uma cópia própria na API. Defina TRUSTED_PROXY_HOPS apenas com a quantidade de proxies confiáveis documentada pelo host; não confie em cabeçalhos de proxy enviados diretamente pelo visitante.
 
 ## Projetos apresentados
 

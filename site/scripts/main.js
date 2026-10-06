@@ -1,6 +1,7 @@
 import { initNavigation } from "./navigation.js";
-import { initContactForm } from "./contact.js";
 import { initProjectFilters } from "./project-filters.js";
+import { initRetroDesktop } from "./retro-desktop.js";
+import { initProjectExplorer } from "./project-explorer.js";
 
 // Progressive enhancement: the static navigation and mail link work without JS.
 document.documentElement.classList.add("js");
@@ -10,4 +11,5 @@ if (currentYear) currentYear.textContent = String(new Date().getFullYear());
 
 initNavigation();
 initProjectFilters();
-initContactForm();
+initProjectExplorer();
+initRetroDesktop();

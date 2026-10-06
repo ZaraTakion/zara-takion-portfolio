@@ -16,7 +16,6 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "site"
 OUTPUT = ROOT / "dist"
 REQUIRED_PROJECT_FIELDS = {
-    "number",
     "title",
     "title_en",
     "category",
@@ -28,6 +27,7 @@ REQUIRED_PROJECT_FIELDS = {
     "image",
     "alt",
     "alt_en",
+    "featured",
 }
 
 
@@ -37,19 +37,27 @@ def validate_projects() -> None:
     if not isinstance(projects, list) or not projects:
         raise ValueError("A lista de projetos precisa conter ao menos um item.")
 
-    numbers: set[str] = set()
+    featured_count = 0
     for index, project in enumerate(projects, start=1):
         if not isinstance(project, dict):
             raise ValueError(f"Projeto {index} precisa ser um objeto.")
         missing = REQUIRED_PROJECT_FIELDS - project.keys()
         if missing:
             raise ValueError(f"Projeto {index} sem os campos: {', '.join(sorted(missing))}.")
-        text_fields = REQUIRED_PROJECT_FIELDS - {"technologies"}
+        text_fields = REQUIRED_PROJECT_FIELDS - {"technologies", "featured"}
         if not all(isinstance(project[key], str) and project[key].strip() for key in text_fields):
             raise ValueError(f"Projeto {index} contém um campo de texto vazio.")
-        if project["number"] in numbers:
-            raise ValueError(f"Número de projeto duplicado: {project['number']}.")
-        numbers.add(project["number"])
+        if not isinstance(project["featured"], bool):
+            raise ValueError(f"Projeto {index} precisa informar se está em destaque.")
+        if project["featured"]:
+            featured_count += 1
+            for locale in ("case_study", "case_study_en"):
+                details = project.get(locale)
+                if not isinstance(details, dict) or not all(
+                    isinstance(details.get(key), str) and details[key].strip()
+                    for key in ("problem", "approach")
+                ):
+                    raise ValueError(f"Projeto em destaque {index} precisa de problema e implementação em {locale}.")
         if not isinstance(project["technologies"], list) or not project["technologies"]:
             raise ValueError(f"Projeto {index} precisa listar tecnologias.")
         parsed_url = urlparse(project["url"])
@@ -69,6 +77,8 @@ def validate_projects() -> None:
             raise ValueError(f"Caminho de imagem inválido: {project['image']}.")
         if not (SOURCE / project["image"].lstrip("/")).is_file():
             raise ValueError(f"Imagem local não encontrada: {project['image']}.")
+    if featured_count != 3:
+        raise ValueError("A seleção precisa conter exatamente três projetos em destaque.")
 
 
 def render_project_card(project: dict[str, object], language: str) -> str:
@@ -90,20 +100,32 @@ def render_project_card(project: dict[str, object], language: str) -> str:
     repository_label = "View repository" if is_english else "Ver repositório"
     demo_label = "Live demo" if is_english else "Abrir demonstração"
     tech_label = "Technologies used" if is_english else "Tecnologias utilizadas"
+    card_class = "project-card featured" if project.get("featured") else "project-card"
+    case_study = project.get("case_study_en" if is_english else "case_study") if project.get("featured") else None
+    case_html = ""
+    if case_study:
+        problem_label = "Problem" if is_english else "Problema"
+        approach_label = "Implementation" if is_english else "Implementação"
+        case_html = (
+            '<dl class="project-case-study">'
+            f'<div><dt>{problem_label}</dt><dd>{text(case_study["problem"])}</dd></div>'
+            f'<div><dt>{approach_label}</dt><dd>{text(case_study["approach"])}</dd></div>'
+            '</dl>'
+        )
     actions = []
     if project.get("demo_url"):
         actions.append(f'<a class="project-link" href="{text(project["demo_url"])}" target="_blank" rel="noopener noreferrer">{demo_label} <span aria-hidden="true">↗</span></a>')
     actions.append(f'<a class="project-link" href="{text(project["url"])}" target="_blank" rel="noopener noreferrer">{repository_label} <span aria-hidden="true">↗</span></a>')
-    return f"""<article class="project-card">
+    return f"""<article class="{card_class}">
   <div class="project-visual">
     <img src="{text(project["image"])}" alt="{text(alt)}" width="640" height="360" loading="lazy">
-    <span class="project-number" aria-hidden="true">{text(project["number"])}</span>
   </div>
   <div class="project-copy">
     <p class="project-category">{text(category)}</p>
     {period_html}
     <h3>{text(title)}</h3>
     <p class="project-description">{text(description)}</p>
+    {case_html}
     {highlight_html}
     <ul class="project-tags" aria-label="{tech_label}">{tags}</ul>
     <div class="project-actions">{"".join(actions)}</div>
@@ -111,22 +133,32 @@ def render_project_card(project: dict[str, object], language: str) -> str:
 </article>"""
 
 
-def render_projects(language: str = "pt") -> str:
+def render_projects(language: str = "pt") -> tuple[str, str]:
     projects = json.loads((SOURCE / "data" / "projects.json").read_text(encoding="utf-8"))
-    return "\n".join(render_project_card(project, language) for project in projects)
+    featured = [project for project in projects if project["featured"]]
+    archive = [project for project in projects if not project["featured"]]
+    return (
+        "\n".join(render_project_card(project, language) for project in featured),
+        "\n".join(render_project_card(project, language) for project in archive),
+    )
 
 
 def render_page(source_path: Path, output_path: Path, language: str) -> None:
     source_html = source_path.read_text(encoding="utf-8")
-    start_marker = "<!-- PROJECTS:START -->"
-    end_marker = "<!-- PROJECTS:END -->"
-    if source_html.count(start_marker) != 1 or source_html.count(end_marker) != 1:
-        raise ValueError(f"{source_path.relative_to(ROOT)} precisa conter exatamente um par de marcadores de projetos.")
-    start = source_html.index(start_marker) + len(start_marker)
-    end = source_html.index(end_marker)
-    if end <= start:
-        raise ValueError(f"Marcadores de projetos fora de ordem em {source_path.relative_to(ROOT)}.")
-    built_html = source_html[:start] + "\n" + render_projects(language) + "\n          " + source_html[end:]
+    markers = (
+        ("<!-- PROJECTS:FEATURED:START -->", "<!-- PROJECTS:FEATURED:END -->"),
+        ("<!-- PROJECTS:ARCHIVE:START -->", "<!-- PROJECTS:ARCHIVE:END -->"),
+    )
+    rendered_groups = render_projects(language)
+    built_html = source_html
+    for (start_marker, end_marker), rendered in zip(markers, rendered_groups):
+        if built_html.count(start_marker) != 1 or built_html.count(end_marker) != 1:
+            raise ValueError(f"{source_path.relative_to(ROOT)} precisa conter exatamente os marcadores {start_marker} e {end_marker}.")
+        start = built_html.index(start_marker) + len(start_marker)
+        end = built_html.index(end_marker)
+        if end <= start:
+            raise ValueError(f"Marcadores de projetos fora de ordem em {source_path.relative_to(ROOT)}.")
+        built_html = built_html[:start] + "\n" + rendered + "\n          " + built_html[end:]
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(built_html, encoding="utf-8")
 
@@ -154,6 +186,8 @@ def build() -> None:
         SOURCE / "404.html",
         SOURCE / "privacidade.html",
         SOURCE / "en" / "privacy.html",
+        SOURCE / "robots.txt",
+        SOURCE / "sitemap.xml",
         SOURCE / "assets" / "css" / "site.css",
         SOURCE / "assets" / "js" / "main.js",
     ):

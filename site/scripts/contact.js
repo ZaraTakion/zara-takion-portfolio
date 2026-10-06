@@ -58,7 +58,7 @@ export function initContactForm() {
     const data = Object.fromEntries(new FormData(form).entries());
     const apiBaseUrl = window.PORTFOLIO_CONFIG?.apiBaseUrl?.replace(/\/+$/, "");
     const netlifyFormsEnabled = window.PORTFOLIO_CONFIG?.netlifyFormsEnabled === true;
-    const originalButtonText = submitButton?.textContent.trim();
+    const originalButtonContent = submitButton?.innerHTML;
 
     if (submitButton) {
       submitButton.disabled = true;
@@ -72,7 +72,7 @@ export function initContactForm() {
       openEmailDraft(data, isEnglish);
       if (submitButton) {
         submitButton.disabled = false;
-        submitButton.textContent = originalButtonText;
+        submitButton.innerHTML = originalButtonContent;
       }
       form.removeAttribute("aria-busy");
       return;
@@ -97,7 +97,7 @@ export function initContactForm() {
     } finally {
       if (submitButton) {
         submitButton.disabled = false;
-        submitButton.textContent = originalButtonText;
+        submitButton.innerHTML = originalButtonContent;
       }
       form.removeAttribute("aria-busy");
     }

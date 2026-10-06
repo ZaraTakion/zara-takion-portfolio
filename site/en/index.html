@@ -64,6 +64,18 @@
       <section class="project-section section-shell" id="projects" aria-labelledby="projects-title">
         <div class="wrap">
           <div class="section-heading"><div><p class="section-kicker"><span>01</span> Project notebook</p><h2 id="projects-title">Selected work<span class="heading-period">.</span></h2></div><p class="section-intro">A selection of applications and APIs. Each project explains what was built, the technical choices, and documented limitations.</p></div>
+          <div class="project-filters" data-project-filters hidden
+            data-count-label="projects" data-count-label-singular="project"
+            data-track-web="web applications" data-track-api="APIs" data-track-data="data projects">
+            <p class="project-filter-label">Filter projects</p>
+            <div class="project-filter-options" role="group" aria-label="Filter projects by area">
+              <button type="button" data-project-filter="all" aria-pressed="true">All <span data-project-total="all"></span></button>
+              <button type="button" data-project-filter="web" aria-pressed="false">Web apps <span data-project-total="web"></span></button>
+              <button type="button" data-project-filter="api" aria-pressed="false">APIs <span data-project-total="api"></span></button>
+              <button type="button" data-project-filter="data" aria-pressed="false">Data <span data-project-total="data"></span></button>
+            </div>
+            <p class="project-filter-status" data-project-filter-status role="status" aria-live="polite" aria-atomic="true"></p>
+          </div>
           <div class="featured-project-grid">
             <!-- PROJECTS:FEATURED:START -->
             <!-- PROJECTS:FEATURED:END -->

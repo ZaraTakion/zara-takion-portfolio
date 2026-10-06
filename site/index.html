@@ -92,6 +92,18 @@
             </div>
             <p class="section-intro">Uma seleção de aplicações e APIs. Cada projeto mostra o que foi construído, as escolhas técnicas e os limites documentados.</p>
           </div>
+          <div class="project-filters" data-project-filters hidden
+            data-count-label="projetos" data-count-label-singular="projeto"
+            data-track-web="aplicações web" data-track-api="APIs" data-track-data="projetos de dados">
+            <p class="project-filter-label">Filtrar projetos</p>
+            <div class="project-filter-options" role="group" aria-label="Filtrar projetos por área">
+              <button type="button" data-project-filter="all" aria-pressed="true">Todos <span data-project-total="all"></span></button>
+              <button type="button" data-project-filter="web" aria-pressed="false">Aplicações web <span data-project-total="web"></span></button>
+              <button type="button" data-project-filter="api" aria-pressed="false">APIs <span data-project-total="api"></span></button>
+              <button type="button" data-project-filter="data" aria-pressed="false">Dados <span data-project-total="data"></span></button>
+            </div>
+            <p class="project-filter-status" data-project-filter-status role="status" aria-live="polite" aria-atomic="true"></p>
+          </div>
           <div class="featured-project-grid">
             <!-- PROJECTS:FEATURED:START -->
             <!-- PROJECTS:FEATURED:END -->

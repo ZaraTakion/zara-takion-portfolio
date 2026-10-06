@@ -2,6 +2,7 @@
   {
     "title": "UPA — Portal Acadêmico",
     "title_en": "UPA — Academic Portal",
+    "track": "web",
     "category": "Full-stack · Educação",
     "category_en": "Full-stack · Education",
     "period": "Abr. 2026 – jun. 2026",
@@ -58,6 +59,7 @@
   {
     "title": "Task Manager API",
     "title_en": "Task Manager API",
+    "track": "api",
     "category": "Backend · API REST",
     "category_en": "Backend · REST API",
     "description": "API REST em FastAPI para criar, consultar, atualizar e excluir tarefas. Usa SQLite para persistir os dados entre reinícios e oferece documentação interativa dos endpoints.",
@@ -98,6 +100,7 @@
   {
     "title": "Chamados API",
     "title_en": "Support Tickets API",
+    "track": "api",
     "category": "Backend · Suporte",
     "category_en": "Backend · Support",
     "description": "API REST em Django REST Framework para chamados, com JWT, permissões por solicitante e equipe, busca e notas internas. Usa SQLite local e oferece Docker Compose com PostgreSQL e volume persistente.",
@@ -138,6 +141,7 @@
   {
     "title": "Air Quality Analysis",
     "title_en": "Air Quality Analysis",
+    "track": "data",
     "category": "Dados · Meio ambiente",
     "category_en": "Data · Environment",
     "description": "Dashboard Dash para explorar um recorte estático de dados de qualidade do ar de 2023. A etapa de modelagem explicativa testa o índice composto com temperatura, umidade, velocidade do vento e mês; os resultados não demonstram desempenho preditivo superior ao baseline da média.",
@@ -167,6 +171,7 @@
   {
     "title": "Brazil Traffic Insight",
     "title_en": "Brazil Traffic Insight",
+    "track": "data",
     "category": "Dados · Mobilidade",
     "category_en": "Data · Mobility",
     "description": "Estudo exploratório de acidentes de trânsito no Brasil (2017–2023), com preparação dos dados, classificação e painel Streamlit documentado no repositório.",
@@ -188,6 +193,7 @@
   {
     "title": "NBA Dashboard",
     "title_en": "NBA Dashboard",
+    "track": "data",
     "category": "Dados · Esportes",
     "category_en": "Data · Sports",
     "description": "Painel para filtrar equipes e temporadas da NBA, comparar pontos, assistências e rebotes, e consultar gráficos e tabelas por ano.",
@@ -209,6 +215,7 @@
   {
     "title": "Steam Price Predictor",
     "title_en": "Steam Price Predictor",
+    "track": "data",
     "category": "Dados · Jogos",
     "category_en": "Data · Gaming",
     "description": "Demonstração de ciência de dados que estima preços históricos de jogos com Random Forest e busca de hiperparâmetros. Inclui avaliação em conjunto de teste e interface Streamlit; não consulta preços atuais da Steam.",

@@ -18,6 +18,11 @@ class StaticBuildTests(unittest.TestCase):
         self.assertEqual(built_html.count('<article class="project-card'), len(projects))
         self.assertEqual(built_html.count('<article class="project-card featured"'), 3)
         self.assertIn('class="project-visual"', built_html)
+        self.assertIn('data-project-track="web"', built_html)
+        self.assertIn('data-project-track="api"', built_html)
+        self.assertIn('data-project-track="data"', built_html)
+        self.assertIn('data-project-filter="all"', built_html)
+        self.assertIn('data-project-filter="api"', built_html)
         self.assertIn("Ilustração conceitual — não é captura de tela", built_html)
         self.assertIn("Diagrama das rotas e da persistência SQLite", built_html)
         self.assertLess(built_html.index('<h3>UPA — Portal Acadêmico</h3>'), built_html.index('<h3>Task Manager API</h3>'))
@@ -119,6 +124,7 @@ class StaticBuildTests(unittest.TestCase):
         javascript = (build_site.SOURCE / "scripts" / "main.js").read_text(encoding="utf-8")
         navigation = (build_site.SOURCE / "scripts" / "navigation.js").read_text(encoding="utf-8")
         contact = (build_site.SOURCE / "scripts" / "contact.js").read_text(encoding="utf-8")
+        filters = (build_site.SOURCE / "scripts" / "project-filters.js").read_text(encoding="utf-8")
         for html in (portuguese, english):
             is_portuguese = '<html lang="pt-BR">' in html
             with self.subTest(language="pt-BR" if is_portuguese else "en"):
@@ -131,6 +137,10 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("@media (max-width: 800px)", css)
         self.assertIn('matchMedia("(min-width: 801px)")', navigation)
         self.assertIn('fetch(`${apiBaseUrl}/api/contact`', contact)
+        self.assertIn('data-project-filters', portuguese)
+        self.assertIn('data-project-filters', english)
+        self.assertIn('aria-pressed', filters)
+        self.assertIn('project-filters.css', css)
         self.assertIn("prefers-reduced-motion: reduce", css)
         self.assertNotIn("overflow-x: hidden", css)
         self.assertNotIn("overflow-x: clip", css)
@@ -163,6 +173,18 @@ class StaticBuildTests(unittest.TestCase):
         with patch.dict(os.environ, {"PORTFOLIO_API_BASE_URL": "http://127.0.0.1:5000/"}, clear=False):
             config = build_site.api_config_script()
         self.assertIn("http://127.0.0.1:5000", config)
+
+    def test_project_tracks_are_validated(self):
+        projects_path = build_site.SOURCE / "data" / "projects.json"
+        original = projects_path.read_text(encoding="utf-8")
+        projects = json.loads(original)
+        projects[0]["track"] = "misc"
+        try:
+            projects_path.write_text(json.dumps(projects), encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "categoria de navegação inválida"):
+                build_site.validate_projects()
+        finally:
+            projects_path.write_text(original, encoding="utf-8")
 
 
 if __name__ == "__main__":

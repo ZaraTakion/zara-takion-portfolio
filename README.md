@@ -79,9 +79,19 @@ O endpoint GET /api/health permite verificar se a API está respondendo. O formu
 
 ## Projetos apresentados
 
-- Air Quality Analysis — análise estatística, modelagem e dashboard interativo sobre qualidade do ar: https://github.com/ZaraTakion/air-quality-analysis
-- Brazil Traffic Insight — análise de acidentes de trânsito no Brasil (2017–2023), modelagem e dashboard: https://github.com/ZaraTakion/brazil-traffic-insight
-- NBA Dashboard — dashboard de estatísticas de equipes da NBA (2000–2023): https://github.com/ZaraTakion/nba-dashboard
-- UPA — Portal Acadêmico — portal full-stack com React e Django REST Framework: https://github.com/ZaraTakion/upa-portal-academico
+O portfólio destaca três trabalhos que evidenciam integrações e decisões de implementação. Os demais ficam organizados em um arquivo de projetos complementar; os sete continuam acessíveis no site.
 
-As imagens de Air Quality, Brazil Traffic Insight e NBA são gráficos próprios feitos a partir dos arquivos de dados disponíveis nos respectivos repositórios. O mapa mostra uma amostra visual das coordenadas exportadas pelo projeto para manter a leitura clara. A capa do UPA é uma ilustração vetorial conceitual, não uma captura de tela do sistema. As descrições devem acompanhar o estado dos repositórios; métricas e qualificações não são inferidas.
+### Em destaque
+
+- [UPA — Portal Acadêmico](https://github.com/ZaraTakion/upa-portal-academico) — aplicação full-stack com React/Vite, Django REST, JWT e PostgreSQL.
+- [Air Quality Analysis](https://github.com/ZaraTakion/air-quality-analysis) — análise de qualidade do ar, comparação de modelos e dashboard.
+- [Chamados API](https://github.com/ZaraTakion/chamados-api) — API Django REST com JWT, permissões de solicitante/equipe, filtros e comentários.
+
+### Arquivo
+
+- [Brazil Traffic Insight](https://github.com/ZaraTakion/brazil-traffic-insight) — análise de acidentes de trânsito no Brasil (2017–2023), classificação e dashboard.
+- [NBA Dashboard](https://github.com/ZaraTakion/nba-dashboard) — dashboard de estatísticas de equipes da NBA no período coberto pelo projeto.
+- [Steam Price Predictor](https://github.com/ZaraTakion/steam-price-predictor) — demonstração de estimativa de preços históricos de jogos.
+- [Task Manager API](https://github.com/ZaraTakion/task-manager-backend) — API FastAPI com persistência SQLite.
+
+As imagens de Air Quality, Brazil Traffic Insight e NBA são gráficos próprios feitos a partir dos dados dos projetos. A capa do UPA é uma ilustração vetorial conceitual, não uma captura de tela. As descrições acompanham a documentação dos repositórios; métricas e qualificações não são inferidas.

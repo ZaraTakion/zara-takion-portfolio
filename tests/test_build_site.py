@@ -21,7 +21,7 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn('mailto:rm20022101@gmail.com', built_html)
         self.assertIn('href="/privacidade.html"', built_html)
         self.assertIn("Ver repositório", built_html)
-        self.assertIn("+55 (83) 98664-5113", built_html)
+        self.assertNotIn("tel:+55", built_html)
         self.assertIn("Django REST Framework", built_html)
         self.assertNotIn("rodzmaciel21@gmail.com", built_html)
 
@@ -36,6 +36,7 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("View repository", english)
         self.assertIn('href="/" hreflang="pt-BR"', english)
         self.assertIn('data-netlify="true"', english)
+        self.assertNotIn("tel:+55", english)
 
     def test_build_includes_404_and_privacy_pages(self):
         build_site.build()

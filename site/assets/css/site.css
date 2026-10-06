@@ -148,7 +148,6 @@ h1, h2, h3, p { margin-top: 0; }
 .contact-copy > p { max-width: 380px; margin-bottom: 22px; color: #e0d0c7; }
 .contact-email { display: inline-flex; gap: 10px; border-bottom: 1px solid #bd9b7a; color: #fff7ef; font-size: .88rem; font-weight: 700; }
 .contact-email span { color: #d49e77; }
-.contact-phone { display: flex; width: fit-content; min-height: 44px; align-items: center; color: #e0d0c7; font-size: .88rem; text-decoration: underline; text-underline-offset: 3px; }
 .contact-form { padding: clamp(24px, 4vw, 42px); border: 1px solid #c9b9a5; background: var(--paper-bright); color: var(--ink); box-shadow: 12px 12px 0 rgb(170 137 97 / 18%); }
 .contact-form :focus-visible { outline-color: var(--wine); }
 .form-help { margin: 0 0 20px; color: #594c45; font-size: .9rem; line-height: 1.55; }

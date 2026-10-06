@@ -15,7 +15,10 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("<h3>Air Quality Analysis</h3>", built_html)
         self.assertIn('alt="Gráfico original com a média de PM2.5 por cidade, calculado a partir dos dados do projeto"', built_html)
         projects = json.loads((build_site.SOURCE / "data" / "projects.json").read_text(encoding="utf-8"))
-        self.assertEqual(built_html.count('class="project-card"'), len(projects))
+        self.assertEqual(built_html.count('<article class="project-card'), len(projects))
+        self.assertEqual(built_html.count('<article class="project-card featured"'), 3)
+        self.assertNotIn('class="project-number"', built_html)
+        self.assertLess(built_html.index('id="projetos"'), built_html.index('id="sobre"'))
         for repository in (
             "nba-dashboard",
             "air-quality-analysis",
@@ -26,7 +29,7 @@ class StaticBuildTests(unittest.TestCase):
         ):
             with self.subTest(repository=repository):
                 self.assertIn(f"https://github.com/ZaraTakion/{repository}", built_html)
-        self.assertIn("<!-- PROJECTS:END -->", built_html)
+        self.assertIn("<!-- PROJECTS:ARCHIVE:END -->", built_html)
         self.assertIn('data-netlify="true"', built_html)
         self.assertIn('name="form-name" value="contact"', built_html)
         self.assertIn('mailto:rm20022101@gmail.com', built_html)
@@ -42,7 +45,7 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn('<html lang="en">', english)
         self.assertIn("Junior Web Developer", english)
         self.assertIn("Technology degree in Internet Systems", english)
-        self.assertIn("reading B2; listening and speaking B1", english)
+        self.assertIn("intermediate, with B2 reading proficiency", english)
         self.assertIn("UPA — Academic Portal", english)
         self.assertIn("View repository", english)
         self.assertIn('href="/" hreflang="pt-BR"', english)
@@ -58,6 +61,13 @@ class StaticBuildTests(unittest.TestCase):
         english_privacy = (build_site.OUTPUT / "en" / "privacy.html").read_text(encoding="utf-8")
         self.assertIn('<html lang="en">', english_privacy)
         self.assertIn("Privacy policy", english_privacy)
+
+    def test_build_includes_search_crawl_files(self):
+        build_site.build()
+        self.assertTrue((build_site.OUTPUT / "robots.txt").is_file())
+        sitemap = (build_site.OUTPUT / "sitemap.xml").read_text(encoding="utf-8")
+        self.assertIn("https://zara-takion-atelier.netlify.app/en/", sitemap)
+        self.assertIn("hreflang=\"pt-BR\"", sitemap)
 
     def test_every_project_cover_exists_locally(self):
         build_site.validate_projects()

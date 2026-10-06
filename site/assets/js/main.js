@@ -1,5 +1,8 @@
 "use strict";
 
+// Keep navigation available when the browser has JavaScript disabled.
+document.documentElement.classList.add("js");
+
 const menuButton = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector("#main-nav");
 const year = document.querySelector("#current-year");
@@ -42,9 +45,15 @@ if (menuButton && mainNav) {
     if (event.key === "Escape" && menuButton.getAttribute("aria-expanded") === "true") closeMobileMenu(true);
   });
 
-  window.matchMedia("(min-width: 641px)").addEventListener("change", (event) => {
+  const desktopViewport = window.matchMedia("(min-width: 761px)");
+  const closeMenuOnDesktop = (event) => {
     if (event.matches) closeMobileMenu();
-  });
+  };
+  if (typeof desktopViewport.addEventListener === "function") {
+    desktopViewport.addEventListener("change", closeMenuOnDesktop);
+  } else {
+    desktopViewport.addListener(closeMenuOnDesktop);
+  }
 }
 
 function setFormStatus(message, isError = false) {

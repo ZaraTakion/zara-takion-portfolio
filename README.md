@@ -84,7 +84,7 @@ O portfólio destaca três trabalhos que evidenciam integrações e decisões de
 ### Em destaque
 
 - [UPA — Portal Acadêmico](https://github.com/ZaraTakion/upa-portal-academico) — aplicação full-stack com React/Vite, Django REST, JWT e PostgreSQL.
-- [Air Quality Analysis](https://github.com/ZaraTakion/air-quality-analysis) — análise de qualidade do ar, comparação de modelos e dashboard.
+- [Air Quality Analysis](https://github.com/ZaraTakion/air-quality-analysis) — dashboard e modelagem explicativa de um recorte estático; os resultados são apresentados com suas limitações.
 - [Chamados API](https://github.com/ZaraTakion/chamados-api) — API Django REST com JWT, permissões de solicitante/equipe, filtros e comentários.
 
 ### Arquivo

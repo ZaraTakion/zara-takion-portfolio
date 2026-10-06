@@ -21,7 +21,16 @@
       "Academic features for courses, grades, calendar, notifications, and profiles",
       "PostgreSQL in production; SQLite for local development"
     ],
-    "technologies": ["React", "Vite", "JavaScript", "Python", "Django REST Framework", "JWT", "PostgreSQL", "SQLite"],
+    "technologies": [
+      "React",
+      "Vite",
+      "JavaScript",
+      "Python",
+      "Django REST Framework",
+      "JWT",
+      "PostgreSQL",
+      "SQLite"
+    ],
     "url": "https://github.com/ZaraTakion/upa-portal-academico",
     "demo_url": "https://upa-portal-academico.vercel.app/",
     "image": "/assets/img/upa-cover.svg",
@@ -36,7 +45,12 @@
     "category_en": "Data · Environment",
     "description": "Analisa relações entre poluentes e variáveis meteorológicas, compara modelos preditivos e apresenta os dados em um painel interativo.",
     "description_en": "Explores relationships between air pollutants and weather variables, compares predictive models, and presents the data in an interactive dashboard.",
-    "technologies": ["Python", "Pandas", "Dash", "Plotly"],
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Dash",
+      "Plotly"
+    ],
     "url": "https://github.com/ZaraTakion/air-quality-analysis",
     "image": "/assets/img/air-quality.png",
     "alt": "Gráfico original com a média de PM2.5 por cidade, calculado a partir dos dados do projeto",
@@ -50,7 +64,12 @@
     "category_en": "Data · Mobility",
     "description": "Estudo exploratório de acidentes de trânsito no Brasil (2017–2023), com preparação dos dados, classificação e painel Streamlit documentado no repositório.",
     "description_en": "An exploratory study of road crashes in Brazil (2017–2023), covering data preparation, classification, and a Streamlit dashboard documented in the repository.",
-    "technologies": ["Python", "Pandas", "Streamlit", "Scikit-learn"],
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Streamlit",
+      "Scikit-learn"
+    ],
     "url": "https://github.com/ZaraTakion/brazil-traffic-insight",
     "image": "/assets/img/traffic-insight.png",
     "alt": "Mapa de pontos geográficos presentes no arquivo de acidentes usado pelo projeto",
@@ -62,9 +81,14 @@
     "title_en": "NBA Dashboard",
     "category": "Dados · Esportes",
     "category_en": "Data · Sports",
-    "description": "Painel para filtrar equipes e temporadas da NBA, comparar pontos, assistências e rebotes, e consultar gráficos e tabelas por ano.",
-    "description_en": "An interactive dashboard for filtering NBA teams and seasons, comparing points, assists, and rebounds, and exploring yearly charts and tables.",
-    "technologies": ["Python", "Pandas", "Streamlit", "Plotly"],
+    "description": "Painel interativo com estatísticas de equipes da NBA (2000–2023), histórico por franquia, comparações por temporada e filtros por indicador.",
+    "description_en": "Interactive dashboard of NBA team statistics (2000–2023), with franchise histories, season comparisons, and metric filters.",
+    "technologies": [
+      "Python",
+      "Pandas",
+      "Streamlit",
+      "Plotly"
+    ],
     "url": "https://github.com/ZaraTakion/nba-dashboard",
     "image": "/assets/img/nba-cover.png",
     "alt": "Gráfico de pontos por partida das seis equipes líderes da temporada 2023 no conjunto do projeto",

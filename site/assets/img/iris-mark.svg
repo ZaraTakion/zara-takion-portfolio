@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 560" fill="none">
+  <g stroke="#aa8d69" stroke-width="1.2" opacity=".76">
+    <circle cx="240" cy="280" r="166"/>
+    <circle cx="240" cy="280" r="143" stroke-dasharray="2 8"/>
+    <circle cx="240" cy="280" r="111"/>
+    <path d="M240 83v72m0 250v72M43 280h72m250 0h72M101 141l51 51m176 176 51 51m0-278-51 51m-176 176-51 51"/>
+    <path d="M101 280c38-69 84-103 139-103s101 34 139 103c-38 69-84 103-139 103S139 349 101 280Z" stroke-width="2"/>
+    <circle cx="240" cy="280" r="57" stroke-width="2"/>
+    <circle cx="240" cy="280" r="31" stroke="#a5454b" stroke-width="3"/>
+    <path d="M240 216v32m0 64v32m-64-64h32m64 0h32" stroke="#a5454b"/>
+    <path d="M240 249a31 31 0 0 0-31 31m62 0a31 31 0 0 1-31 31" stroke="#d8c8b6" stroke-width="2"/>
+  </g>
+  <circle cx="240" cy="280" r="12" fill="#a52b3a"/>
+  <circle cx="240" cy="280" r="4" fill="#f0e8df"/>
+  <g fill="#d7c8b7" font-family="Georgia,serif" font-size="10" letter-spacing="3">
+    <text x="240" y="45" text-anchor="middle">OBSERVAR</text>
+    <text x="240" y="531" text-anchor="middle">COM PRECISÃO</text>
+  </g>
+</svg>

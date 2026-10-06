@@ -1,0 +1,44 @@
+[
+  {
+    "number": "01",
+    "title": "Air Quality Analysis",
+    "category": "Dados · Meio ambiente",
+    "description": "Investiga fatores associados à poluição do ar por meio de análise estatística, modelagem e um dashboard interativo.",
+    "technologies": ["Python", "Pandas", "Dash", "Plotly"],
+    "url": "https://github.com/ZaraTakion/air-quality-analysis",
+    "image": "/assets/img/air-quality.png",
+    "fallback": "https://raw.githubusercontent.com/ZaraTakion/portifolio-zara/main/src/assets/air-quality.png",
+    "alt": "Prévia do dashboard de análise de qualidade do ar"
+  },
+  {
+    "number": "02",
+    "title": "Brazil Traffic Insight",
+    "category": "Dados · Mobilidade",
+    "description": "Explora dados de acidentes de trânsito no Brasil entre 2017 e 2023, com análises, modelo preditivo e dashboard.",
+    "technologies": ["Python", "Pandas", "Streamlit", "Scikit-learn"],
+    "url": "https://github.com/ZaraTakion/brazil-traffic-insight",
+    "image": "/assets/img/traffic-insight.png",
+    "fallback": "https://raw.githubusercontent.com/ZaraTakion/portifolio-zara/main/src/assets/traffic-insight.png",
+    "alt": "Prévia do projeto de análise de acidentes de trânsito"
+  },
+  {
+    "number": "03",
+    "title": "NBA Dashboard",
+    "category": "Dados · Esportes",
+    "description": "Dashboard interativo para explorar estatísticas de equipes da NBA entre 2000 e 2023.",
+    "technologies": ["Python", "Pandas", "Streamlit", "Plotly"],
+    "url": "https://github.com/ZaraTakion/nba-dashboard",
+    "image": "/assets/img/nba-cover.svg",
+    "alt": "Ilustração gráfica do projeto NBA Dashboard"
+  },
+  {
+    "number": "04",
+    "title": "UPA — Portal Acadêmico",
+    "category": "Full-stack · Educação",
+    "description": "Portal acadêmico com API Django REST Framework e interface React para estudantes, professores e equipes administrativas.",
+    "technologies": ["Python", "Django REST", "React", "PostgreSQL"],
+    "url": "https://github.com/ZaraTakion/upa-portal-academico",
+    "image": "/assets/img/upa-cover.svg",
+    "alt": "Ilustração gráfica do portal acadêmico UPA"
+  }
+]

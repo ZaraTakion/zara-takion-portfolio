@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
+  <rect width="640" height="480" fill="#e4e93c"/>
+  <rect x="90" y="80" width="460" height="320" fill="#fbf9f4" stroke="#171715" stroke-width="9"/>
+  <rect x="90" y="80" width="460" height="54" fill="#171715"/>
+  <circle cx="115" cy="107" r="7" fill="#f0543e"/><circle cx="138" cy="107" r="7" fill="#e4e93c"/>
+  <rect x="127" y="168" width="104" height="190" fill="#f3f0e8"/>
+  <rect x="254" y="168" width="250" height="57" fill="#e9e5db"/>
+  <rect x="254" y="249" width="112" height="109" fill="#f0543e"/>
+  <rect x="391" y="249" width="113" height="109" fill="#171715"/>
+  <path d="M149 193h61M149 217h61M149 241h61M149 265h61M149 289h44" stroke="#77756d" stroke-width="8"/>
+  <text x="270" y="204" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#171715">PORTAL ACADÊMICO</text>
+</svg>

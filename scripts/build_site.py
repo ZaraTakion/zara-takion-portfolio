@@ -29,6 +29,8 @@ STYLESHEETS = (
     "footer.css",
     "responsive.css",
     "motion.css",
+    "project-filters.css",
+    "retro-desktop.css",
 )
 REQUIRED_PROJECT_FIELDS = {
     "title",
@@ -45,6 +47,7 @@ REQUIRED_PROJECT_FIELDS = {
     "visual_note",
     "visual_note_en",
     "featured",
+    "track",
 }
 
 
@@ -66,6 +69,8 @@ def validate_projects() -> None:
             raise ValueError(f"Projeto {index} contém um campo de texto vazio.")
         if not isinstance(project["featured"], bool):
             raise ValueError(f"Projeto {index} precisa informar se está em destaque.")
+        if project["track"] not in {"web", "api", "data"}:
+            raise ValueError(f"Projeto {index} contém uma categoria de navegação inválida.")
         if project["featured"]:
             featured_count += 1
             for locale in ("case_study", "case_study_en"):
@@ -126,6 +131,7 @@ def render_project_card(project: dict[str, object], language: str) -> str:
     repository_label = "View repository" if is_english else "Ver repositório"
     demo_label = "Live demo" if is_english else "Abrir demonstração"
     tech_label = "Technologies used" if is_english else "Tecnologias utilizadas"
+    project_window_label = "PROJECT FILE" if is_english else "ARQUIVO DO PROJETO"
     card_class = "project-card featured" if project.get("featured") else "project-card"
     case_study = project.get("case_study_en" if is_english else "case_study") if project.get("featured") else None
     case_html = ""
@@ -160,7 +166,8 @@ def render_project_card(project: dict[str, object], language: str) -> str:
     if project.get("demo_url"):
         actions.append(f'<a class="project-link" href="{text(project["demo_url"])}" target="_blank" rel="noopener noreferrer">{demo_label} <span aria-hidden="true">↗</span></a>')
     actions.append(f'<a class="project-link" href="{text(project["url"])}" target="_blank" rel="noopener noreferrer">{repository_label} <span aria-hidden="true">↗</span></a>')
-    return f"""<article class="{card_class}">
+    return f"""<article class="{card_class}" data-project-track="{text(project["track"])}">
+  <div class="project-windowbar" aria-hidden="true"><span class="window-controls"><i></i><i></i></span><span>{project_window_label} · {text(title)}</span><span class="window-close">×</span></div>
   <figure class="project-visual">
     <img src="{text(project["image"])}" alt="{text(alt)}" width="640" height="360" loading="lazy">
     <figcaption>{text(visual_note)}</figcaption>
@@ -245,6 +252,7 @@ def build() -> None:
         SOURCE / "robots.txt",
         SOURCE / "sitemap.xml",
         SOURCE / "scripts" / "main.js",
+        SOURCE / "scripts" / "project-filters.js",
         SOURCE / "scripts" / "navigation.js",
         SOURCE / "scripts" / "contact.js",
     ):

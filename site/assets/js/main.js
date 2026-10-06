@@ -51,6 +51,8 @@ function setFormStatus(message, isError = false) {
   if (!status) return;
   status.textContent = message;
   status.dataset.state = isError ? "error" : "success";
+  status.setAttribute("role", isError ? "alert" : "status");
+  status.setAttribute("aria-live", isError ? "assertive" : "polite");
 }
 
 function openEmailDraft(data) {
@@ -79,13 +81,22 @@ async function submitContact(event) {
   const apiBaseUrl = window.PORTFOLIO_CONFIG?.apiBaseUrl?.replace(/\/+$/, "");
   const netlifyFormsEnabled = window.PORTFOLIO_CONFIG?.netlifyFormsEnabled === true;
   const submitButton = form.querySelector('button[type="submit"]');
-  submitButton.disabled = true;
-  setFormStatus("Preparando sua mensagem…");
+  const originalButtonText = submitButton?.textContent.trim() || "Enviar mensagem";
+  if (submitButton) {
+    submitButton.disabled = true;
+    submitButton.textContent = "Enviando…";
+  }
+  form.setAttribute("aria-busy", "true");
+  setFormStatus("Enviando sua mensagem…");
 
   if (!apiBaseUrl && !netlifyFormsEnabled) {
     setFormStatus("A API ainda não está configurada. Abrindo um rascunho de e-mail para você revisar e enviar.");
     openEmailDraft(data);
-    submitButton.disabled = false;
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = originalButtonText;
+    }
+    form.removeAttribute("aria-busy");
     return;
   }
 
@@ -103,12 +114,16 @@ async function submitContact(event) {
     }
     form.reset();
     setFormStatus(apiBaseUrl
-      ? "Mensagem enviada. Obrigado por entrar em contato!"
-      : "Mensagem recebida. Obrigado por entrar em contato!");
+      ? "Mensagem enviada. Obrigado pelo contato; responderei pelo e-mail informado."
+      : "Mensagem recebida. Obrigado pelo contato; responderei pelo e-mail informado.");
   } catch (error) {
     setFormStatus((error instanceof Error ? error.message : "Falha de conexão.") + " Nenhuma mensagem foi enviada; tente novamente ou use o e-mail direto.", true);
   } finally {
-    submitButton.disabled = false;
+    if (submitButton) {
+      submitButton.disabled = false;
+      submitButton.textContent = originalButtonText;
+    }
+    form.removeAttribute("aria-busy");
   }
 }
 

@@ -108,31 +108,32 @@
             <p>Estou aberto a conversas sobre desenvolvimento web, dados e oportunidades profissionais.</p>
             <a class="contact-email" href="mailto:rm20022101@gmail.com">rm20022101@gmail.com <span aria-hidden="true">↗</span></a>
           </div>
-          <form id="contact-form" class="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="website" novalidate>
+          <form id="contact-form" class="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="website" aria-label="Formulário de contato">
             <input type="hidden" name="form-name" value="contact">
+            <p class="form-help" id="contact-form-help">Preencha todos os campos e informe um e-mail válido para que eu possa responder.</p>
             <div class="field-row">
               <div class="field">
-                <label for="contact-name">Seu nome</label>
-                <input id="contact-name" name="name" type="text" autocomplete="name" maxlength="80" required>
+                <label for="contact-name">Seu nome <span>(obrigatório)</span></label>
+                <input id="contact-name" name="name" type="text" autocomplete="name" maxlength="80" aria-describedby="contact-form-help" required>
               </div>
               <div class="field">
-                <label for="contact-email-input">Seu e-mail</label>
-                <input id="contact-email-input" name="email" type="email" autocomplete="email" maxlength="254" required>
+                <label for="contact-email-input">Seu e-mail <span>(obrigatório)</span></label>
+                <input id="contact-email-input" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" aria-describedby="contact-form-help" required>
               </div>
             </div>
             <div class="field">
-              <label for="contact-message">Mensagem</label>
-              <textarea id="contact-message" name="message" rows="4" maxlength="2500" required></textarea>
+              <label for="contact-message">Mensagem <span>(obrigatório)</span></label>
+              <textarea id="contact-message" name="message" rows="5" maxlength="2500" aria-describedby="contact-form-help" required></textarea>
             </div>
             <div class="hp-field" aria-hidden="true">
               <label for="contact-company">Deixe este campo vazio</label>
               <input id="contact-company" name="website" type="text" tabindex="-1" autocomplete="off">
             </div>
             <div class="form-end">
-              <p class="form-privacy">Usarei seus dados apenas para responder. Consulte a <a href="/privacidade.html">política de privacidade</a>. O recebimento por e-mail depende da configuração do formulário.</p>
+              <p class="form-privacy">Usarei seus dados apenas para responder. Consulte a <a href="/privacidade.html">política de privacidade</a>.</p>
               <button class="button button-paper" type="submit">Enviar mensagem <span aria-hidden="true">↗</span></button>
             </div>
-            <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
+            <p id="form-status" class="form-status" role="status" aria-live="polite" aria-atomic="true"></p>
           </form>
         </div>
       </section>

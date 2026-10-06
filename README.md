@@ -1,10 +1,10 @@
 # Zara Takion — Portfólio
 
-Portfólio pessoal de Rodrigo Araújo Maciel Pinheiro (Zara Takion), desenvolvedor web júnior. O projeto combina um site estático em HTML, CSS e JavaScript com uma API de contato em Python/Flask.
+Portfólio profissional de Rodrigo Araújo Maciel Pinheiro (Zara Takion), desenvolvedor web júnior. O site estático em HTML, CSS e JavaScript oferece páginas em português e inglês, com API de contato independente em Python/Flask.
 
 ## Estrutura
 
-- site/: páginas, estilos, scripts, dados e imagens do portfólio.
+- site/: páginas localizadas (`/` em português e `/en/` em inglês), políticas de privacidade nos dois idiomas, estilos, scripts, dados e imagens do portfólio.
 - scripts/build_site.py: valida os dados e monta a pasta dist para Netlify.
 - api/: API Flask independente para validar e encaminhar mensagens de contato.
 - api/tests/: testes da API.
@@ -58,11 +58,11 @@ A API responde em http://127.0.0.1:5000. Sem variáveis SMTP, o endpoint de cont
 
 O netlify.toml configura o comando python3 scripts/build_site.py, publica dist e seleciona Python 3.13. Conecte o repositório ao Netlify usando a branch main.
 
-O formulário tem dois caminhos de produção. Se PORTFOLIO_API_BASE_URL estiver configurada no Netlify, ele envia para a API Flask e esta encaminha por SMTP. Sem essa variável, o formulário usa Netlify Forms. A prévia local, onde nenhum desses serviços está ativo, abre um rascunho de e-mail para revisão.
+O formulário tem dois caminhos de produção. Se PORTFOLIO_API_BASE_URL estiver configurada no Netlify, ele envia para a API Flask e esta encaminha por SMTP. Sem essa variável, o formulário usa Netlify Forms. A detecção de formulários e a notificação para rm20022101@gmail.com estão configuradas no Netlify. A prévia local, onde nenhum desses serviços está ativo, abre um rascunho de e-mail para revisão.
 
-O recebimento por e-mail ainda depende da configuração da hospedagem. Para Netlify Forms, habilite a detecção de formulários e crie uma notificação por e-mail para rm20022101@gmail.com. Até essa configuração e um envio de teste, não considere o recebimento ativo. As submissões também ficam disponíveis no painel Netlify. Na alternativa SMTP, defina CONTACT_TO=rm20022101@gmail.com junto com as credenciais SMTP no serviço da API; sem elas, a API recusa o envio.
+As submissões do Netlify Forms também ficam disponíveis no painel da hospedagem. Na alternativa SMTP, defina CONTACT_TO=rm20022101@gmail.com junto com as credenciais SMTP no serviço da API; sem elas, a API recusa o envio.
 
-O site inclui uma política de privacidade em `/privacidade.html` que descreve os campos do formulário e as diferenças entre os fluxos Netlify Forms e SMTP. Revise o texto se mudar os provedores ou o tratamento de dados.
+O site inclui políticas de privacidade em `/privacidade.html` e `/en/privacy.html`, que descrevem os campos do formulário e as diferenças entre os fluxos Netlify Forms e SMTP. Revise o texto se mudar os provedores ou o tratamento de dados.
 
 ## Hospedar a API Flask
 

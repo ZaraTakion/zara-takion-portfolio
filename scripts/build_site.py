@@ -18,12 +18,16 @@ OUTPUT = ROOT / "dist"
 REQUIRED_PROJECT_FIELDS = {
     "number",
     "title",
+    "title_en",
     "category",
+    "category_en",
     "description",
+    "description_en",
     "technologies",
     "url",
     "image",
     "alt",
+    "alt_en",
 }
 
 
@@ -51,33 +55,80 @@ def validate_projects() -> None:
         parsed_url = urlparse(project["url"])
         if parsed_url.scheme != "https" or parsed_url.hostname != "github.com":
             raise ValueError(f"Link de projeto inválido: {project['url']}.")
+        if project.get("demo_url"):
+            parsed_demo_url = urlparse(project["demo_url"])
+            if parsed_demo_url.scheme != "https" or not parsed_demo_url.hostname:
+                raise ValueError(f"Link de demonstração inválido: {project['demo_url']}.")
+        for field in ("highlights", "highlights_en"):
+            if field in project and (
+                not isinstance(project[field], list)
+                or not all(isinstance(item, str) and item.strip() for item in project[field])
+            ):
+                raise ValueError(f"Projeto {index} contém destaques inválidos em {field}.")
         if not re.fullmatch(r"/assets/img/[A-Za-z0-9._-]+", project["image"]):
             raise ValueError(f"Caminho de imagem inválido: {project['image']}.")
         if not (SOURCE / project["image"].lstrip("/")).is_file():
             raise ValueError(f"Imagem local não encontrada: {project['image']}.")
 
 
-def render_project_card(project: dict[str, object]) -> str:
+def render_project_card(project: dict[str, object], language: str) -> str:
     text = lambda value: html.escape(str(value), quote=True)
+    is_english = language == "en"
+    title = project["title_en"] if is_english else project["title"]
+    category = project["category_en"] if is_english else project["category"]
+    description = project["description_en"] if is_english else project["description"]
+    alt = project["alt_en"] if is_english else project["alt"]
+    period = project.get("period_en" if is_english else "period")
     tags = "".join(f"<li>{text(tag)}</li>" for tag in project["technologies"])
+    highlights = project.get("highlights_en" if is_english else "highlights", [])
+    highlight_label = "Project highlights" if is_english else "Destaques do projeto"
+    highlight_html = ""
+    if highlights:
+        items = "".join(f"<li>{text(item)}</li>" for item in highlights)
+        highlight_html = f'<ul class="project-highlights" aria-label="{highlight_label}">{items}</ul>'
+    period_html = f'<p class="project-period">{text(period)}</p>' if period else ""
+    repository_label = "View repository" if is_english else "Ver repositório"
+    demo_label = "Live demo" if is_english else "Abrir demonstração"
+    tech_label = "Technologies used" if is_english else "Tecnologias utilizadas"
+    actions = []
+    if project.get("demo_url"):
+        actions.append(f'<a class="project-link" href="{text(project["demo_url"])}" target="_blank" rel="noopener noreferrer">{demo_label} <span aria-hidden="true">↗</span></a>')
+    actions.append(f'<a class="project-link" href="{text(project["url"])}" target="_blank" rel="noopener noreferrer">{repository_label} <span aria-hidden="true">↗</span></a>')
     return f"""<article class="project-card">
   <div class="project-visual">
-    <img src="{text(project["image"])}" alt="{text(project["alt"])}" width="640" height="360" loading="lazy">
-    <span class="project-number">{text(project["number"])}</span>
+    <img src="{text(project["image"])}" alt="{text(alt)}" width="640" height="360" loading="lazy">
+    <span class="project-number" aria-hidden="true">{text(project["number"])}</span>
   </div>
   <div class="project-copy">
-    <p class="project-category">{text(project["category"])}</p>
-    <h3>{text(project["title"])}</h3>
-    <p class="project-description">{text(project["description"])}</p>
-    <ul class="project-tags" aria-label="Tecnologias utilizadas">{tags}</ul>
-    <a class="project-link" href="{text(project["url"])}" target="_blank" rel="noopener noreferrer">Abrir repositório <span aria-hidden="true">↗</span></a>
+    <p class="project-category">{text(category)}</p>
+    {period_html}
+    <h3>{text(title)}</h3>
+    <p class="project-description">{text(description)}</p>
+    {highlight_html}
+    <ul class="project-tags" aria-label="{tech_label}">{tags}</ul>
+    <div class="project-actions">{"".join(actions)}</div>
   </div>
 </article>"""
 
 
-def render_projects() -> str:
+def render_projects(language: str = "pt") -> str:
     projects = json.loads((SOURCE / "data" / "projects.json").read_text(encoding="utf-8"))
-    return "\n".join(render_project_card(project) for project in projects)
+    return "\n".join(render_project_card(project, language) for project in projects)
+
+
+def render_page(source_path: Path, output_path: Path, language: str) -> None:
+    source_html = source_path.read_text(encoding="utf-8")
+    start_marker = "<!-- PROJECTS:START -->"
+    end_marker = "<!-- PROJECTS:END -->"
+    if source_html.count(start_marker) != 1 or source_html.count(end_marker) != 1:
+        raise ValueError(f"{source_path.relative_to(ROOT)} precisa conter exatamente um par de marcadores de projetos.")
+    start = source_html.index(start_marker) + len(start_marker)
+    end = source_html.index(end_marker)
+    if end <= start:
+        raise ValueError(f"Marcadores de projetos fora de ordem em {source_path.relative_to(ROOT)}.")
+    built_html = source_html[:start] + "\n" + render_projects(language) + "\n          " + source_html[end:]
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(built_html, encoding="utf-8")
 
 
 def api_config_script() -> str:
@@ -99,8 +150,10 @@ def api_config_script() -> str:
 def build() -> None:
     for required_path in (
         SOURCE / "index.html",
+        SOURCE / "en" / "index.html",
         SOURCE / "404.html",
         SOURCE / "privacidade.html",
+        SOURCE / "en" / "privacy.html",
         SOURCE / "assets" / "css" / "site.css",
         SOURCE / "assets" / "js" / "main.js",
     ):
@@ -108,19 +161,11 @@ def build() -> None:
             raise FileNotFoundError(f"Arquivo obrigatório ausente: {required_path.relative_to(ROOT)}")
 
     validate_projects()
-    source_html = (SOURCE / "index.html").read_text(encoding="utf-8")
-    if source_html.count("<!-- PROJECTS:START -->") != 1 or source_html.count("<!-- PROJECTS:END -->") != 1:
-        raise ValueError("A página precisa conter exatamente um marcador de projetos.")
     if OUTPUT.exists():
         shutil.rmtree(OUTPUT)
     shutil.copytree(SOURCE, OUTPUT)
-    built_html = source_html.replace(
-        "<!-- PROJECTS:START -->\n          <!-- PROJECTS:END -->",
-        "<!-- PROJECTS:START -->\n" + render_projects() + "\n          <!-- PROJECTS:END -->",
-    )
-    if built_html == source_html:
-        raise ValueError("Não foi possível inserir os cartões de projetos na página.")
-    (OUTPUT / "index.html").write_text(built_html, encoding="utf-8")
+    render_page(SOURCE / "index.html", OUTPUT / "index.html", "pt")
+    render_page(SOURCE / "en" / "index.html", OUTPUT / "en" / "index.html", "en")
     (OUTPUT / "config.js").write_text(api_config_script(), encoding="utf-8")
     print(f"Site preparado em {OUTPUT.relative_to(ROOT)}.")
 

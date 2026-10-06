@@ -20,8 +20,22 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn('name="form-name" value="contact"', built_html)
         self.assertIn('mailto:rm20022101@gmail.com', built_html)
         self.assertIn('href="/privacidade.html"', built_html)
-        self.assertIn("Abrir repositório", built_html)
+        self.assertIn("Ver repositório", built_html)
+        self.assertIn("+55 (83) 98664-5113", built_html)
+        self.assertIn("Django REST Framework", built_html)
         self.assertNotIn("rodzmaciel21@gmail.com", built_html)
+
+    def test_build_renders_complete_english_portfolio(self):
+        build_site.build()
+        english = (build_site.OUTPUT / "en" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('<html lang="en">', english)
+        self.assertIn("Junior Web Developer", english)
+        self.assertIn("Technology degree in Internet Systems", english)
+        self.assertIn("reading B2; listening and speaking B1", english)
+        self.assertIn("UPA — Academic Portal", english)
+        self.assertIn("View repository", english)
+        self.assertIn('href="/" hreflang="pt-BR"', english)
+        self.assertIn('data-netlify="true"', english)
 
     def test_build_includes_404_and_privacy_pages(self):
         build_site.build()
@@ -29,6 +43,9 @@ class StaticBuildTests(unittest.TestCase):
         privacy = (build_site.OUTPUT / "privacidade.html").read_text(encoding="utf-8")
         self.assertIn("Política de privacidade", privacy)
         self.assertIn("rm20022101@gmail.com", privacy)
+        english_privacy = (build_site.OUTPUT / "en" / "privacy.html").read_text(encoding="utf-8")
+        self.assertIn('<html lang="en">', english_privacy)
+        self.assertIn("Privacy policy", english_privacy)
 
     def test_every_project_cover_exists_locally(self):
         build_site.validate_projects()

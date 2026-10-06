@@ -4,7 +4,7 @@ import os
 import unittest
 from unittest.mock import patch
 
-from api.app import create_app
+from api.app import create_app, send_contact_email
 
 
 class ContactApiTests(unittest.TestCase):
@@ -81,6 +81,20 @@ class ContactApiTests(unittest.TestCase):
             with patch("api.app.send_contact_email", side_effect=RuntimeError):
                 response = self.client.post("/api/contact", json=payload)
         self.assertEqual(response.status_code, 503)
+
+    def test_smtp_defaults_to_work_email_recipient(self):
+        smtp_environment = {
+            "SMTP_HOST": "smtp.example.com",
+            "SMTP_PORT": "587",
+            "SMTP_USER": "sender@example.com",
+            "SMTP_PASSWORD": "test-password",
+            "CONTACT_FROM": "sender@example.com",
+        }
+        with patch.dict(os.environ, smtp_environment, clear=True):
+            with patch("api.app.smtplib.SMTP") as smtp:
+                send_contact_email("Zara", "reply@example.com", "Olá, quero falar sobre um projeto.")
+        message = smtp.return_value.__enter__.return_value.send_message.call_args.args[0]
+        self.assertEqual(message["To"], "rm20022101@gmail.com")
 
     def test_unknown_browser_origin_is_rejected(self):
         payload = {"name": "Zara", "email": "zara@example.com", "message": "Olá, gostaria de conversar."}

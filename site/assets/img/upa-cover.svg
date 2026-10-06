@@ -1,12 +1,46 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480">
-  <rect width="640" height="480" fill="#e4e93c"/>
-  <rect x="90" y="80" width="460" height="320" fill="#fbf9f4" stroke="#171715" stroke-width="9"/>
-  <rect x="90" y="80" width="460" height="54" fill="#171715"/>
-  <circle cx="115" cy="107" r="7" fill="#f0543e"/><circle cx="138" cy="107" r="7" fill="#e4e93c"/>
-  <rect x="127" y="168" width="104" height="190" fill="#f3f0e8"/>
-  <rect x="254" y="168" width="250" height="57" fill="#e9e5db"/>
-  <rect x="254" y="249" width="112" height="109" fill="#f0543e"/>
-  <rect x="391" y="249" width="113" height="109" fill="#171715"/>
-  <path d="M149 193h61M149 217h61M149 241h61M149 265h61M149 289h44" stroke="#77756d" stroke-width="8"/>
-  <text x="270" y="204" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="#171715">PORTAL ACADÊMICO</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Conceito visual do portal acadêmico UPA</title>
+  <desc id="desc">Ilustração autoral de uma interface acadêmica, identificada como conceito visual, com a estrutura React, Django REST e PostgreSQL.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f5eee3"/><stop offset="1" stop-color="#e8dac8"/></linearGradient>
+    <pattern id="grain" width="34" height="34" patternUnits="userSpaceOnUse"><circle cx="4" cy="7" r=".7" fill="#816d5e" opacity=".18"/><circle cx="27" cy="25" r=".6" fill="#816d5e" opacity=".12"/></pattern>
+  </defs>
+  <rect width="1600" height="900" fill="#211e20"/>
+  <rect x="34" y="34" width="1532" height="832" rx="8" fill="none" stroke="#887052" stroke-width="2"/>
+  <path d="M58 96V58h38M1504 58h38v38M58 804v38h38M1504 842h38v-38" fill="none" stroke="#c4a36c" stroke-width="2"/>
+  <text x="92" y="112" fill="#c4a36c" font-family="Arial,sans-serif" font-size="19" letter-spacing="4">PROJETO 04  /  EDUCAÇÃO</text>
+  <text x="1508" y="112" text-anchor="end" fill="#b9aaa0" font-family="Arial,sans-serif" font-size="17" letter-spacing="3">CONCEITO VISUAL · NÃO É CAPTURA DE TELA</text>
+  <rect x="92" y="158" width="1416" height="614" rx="10" fill="url(#paper)"/>
+  <rect x="92" y="158" width="1416" height="614" rx="10" fill="url(#grain)"/>
+  <path d="M92 168a10 10 0 0 1 10-10h1410a10 10 0 0 1 10 10v56H92z" fill="#33282b"/>
+  <circle cx="125" cy="191" r="6" fill="#ba8f80"/><circle cx="149" cy="191" r="6" fill="#c4a36c"/><circle cx="173" cy="191" r="6" fill="#87927e"/>
+  <text x="800" y="198" text-anchor="middle" fill="#d8c9b8" font-family="Arial,sans-serif" font-size="15" letter-spacing="2">PORTAL ACADÊMICO  /  UPA</text>
+  <rect x="92" y="224" width="285" height="548" fill="#493639"/>
+  <circle cx="164" cy="291" r="37" fill="none" stroke="#c4a36c" stroke-width="2"/><path d="M144 303l20-31 20 31m-30-9h20" fill="none" stroke="#c4a36c" stroke-width="2"/>
+  <text x="221" y="286" fill="#f0e8dc" font-family="Georgia,serif" font-size="25">UPA</text>
+  <text x="221" y="311" fill="#b9aaa0" font-family="Arial,sans-serif" font-size="13" letter-spacing="2">ACADÊMICO</text>
+  <path d="M126 351h218" stroke="#765c57"/>
+  <text x="132" y="399" fill="#c4a36c" font-family="Arial,sans-serif" font-size="13" letter-spacing="2">ESTRUTURA</text>
+  <rect x="117" y="420" width="235" height="57" rx="4" fill="#64494b"/><circle cx="146" cy="448" r="7" fill="#d4b889"/><text x="169" y="455" fill="#f0e8dc" font-family="Arial,sans-serif" font-size="17">Interface React</text>
+  <circle cx="146" cy="515" r="7" fill="#c4a36c"/><text x="169" y="522" fill="#d7c9bb" font-family="Arial,sans-serif" font-size="17">API Django REST</text>
+  <circle cx="146" cy="582" r="7" fill="#c4a36c"/><text x="169" y="589" fill="#d7c9bb" font-family="Arial,sans-serif" font-size="17">PostgreSQL</text>
+  <path d="M126 630h218" stroke="#765c57"/>
+  <text x="132" y="671" fill="#b9aaa0" font-family="Arial,sans-serif" font-size="14" letter-spacing="1.5">FULL-STACK  ·  EDUCAÇÃO</text>
+  <text x="427" y="311" fill="#8e6e58" font-family="Arial,sans-serif" font-size="15" letter-spacing="3">INTERFACE  /  SERVIÇOS  /  DADOS</text>
+  <text x="427" y="383" fill="#33282b" font-family="Georgia,serif" font-size="43">Portal acadêmico</text>
+  <text x="427" y="422" fill="#76685f" font-family="Arial,sans-serif" font-size="19">Uma proposta visual para conectar experiência web e API.</text>
+  <path d="M427 454h1010" stroke="#c8b9a7" stroke-width="1.5"/>
+  <rect x="427" y="490" width="309" height="177" rx="6" fill="#f8f3ec" stroke="#d7c7b5"/>
+  <path d="M461 530h48v48h-48z" fill="#493639"/><path d="M474 564l11-20 11 20m-16-7h10" fill="none" stroke="#d6b98a" stroke-width="2"/>
+  <text x="461" y="615" fill="#493639" font-family="Georgia,serif" font-size="22">Interface</text>
+  <text x="461" y="643" fill="#82736a" font-family="Arial,sans-serif" font-size="14">React</text>
+  <rect x="763" y="490" width="309" height="177" rx="6" fill="#f8f3ec" stroke="#d7c7b5"/>
+  <circle cx="807" cy="554" r="24" fill="#493639"/><path d="M795 554h24m-12-12v24" stroke="#d6b98a" stroke-width="2"/>
+  <text x="797" y="615" fill="#493639" font-family="Georgia,serif" font-size="22">Serviços</text>
+  <text x="797" y="643" fill="#82736a" font-family="Arial,sans-serif" font-size="14">Django REST Framework</text>
+  <rect x="1099" y="490" width="309" height="177" rx="6" fill="#f8f3ec" stroke="#d7c7b5"/>
+  <ellipse cx="1143" cy="541" rx="24" ry="9" fill="none" stroke="#493639" stroke-width="2"/><path d="M1119 541v27c0 5 11 9 24 9s24-4 24-9v-27m-48 13c0 5 11 9 24 9s24-4 24-9" fill="none" stroke="#493639" stroke-width="2"/>
+  <text x="1133" y="615" fill="#493639" font-family="Georgia,serif" font-size="22">Dados</text>
+  <text x="1133" y="643" fill="#82736a" font-family="Arial,sans-serif" font-size="14">PostgreSQL</text>
+  <text x="427" y="718" fill="#8e6e58" font-family="Arial,sans-serif" font-size="14" letter-spacing="2">ILUSTRAÇÃO AUTORAL  /  ARQUITETURA INFORMADA NO REPOSITÓRIO</text>
 </svg>

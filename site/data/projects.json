@@ -7,8 +7,7 @@
     "technologies": ["Python", "Pandas", "Dash", "Plotly"],
     "url": "https://github.com/ZaraTakion/air-quality-analysis",
     "image": "/assets/img/air-quality.png",
-    "fallback": "https://raw.githubusercontent.com/ZaraTakion/portifolio-zara/main/src/assets/air-quality.png",
-    "alt": "Prévia do dashboard de análise de qualidade do ar"
+    "alt": "Gráfico original com a média de PM2.5 por cidade, calculado a partir dos dados do projeto"
   },
   {
     "number": "02",
@@ -18,8 +17,7 @@
     "technologies": ["Python", "Pandas", "Streamlit", "Scikit-learn"],
     "url": "https://github.com/ZaraTakion/brazil-traffic-insight",
     "image": "/assets/img/traffic-insight.png",
-    "fallback": "https://raw.githubusercontent.com/ZaraTakion/portifolio-zara/main/src/assets/traffic-insight.png",
-    "alt": "Prévia do projeto de análise de acidentes de trânsito"
+    "alt": "Mapa de pontos geográficos do conjunto real de acidentes usado no projeto"
   },
   {
     "number": "03",
@@ -28,8 +26,8 @@
     "description": "Dashboard interativo para explorar estatísticas de equipes da NBA entre 2000 e 2023.",
     "technologies": ["Python", "Pandas", "Streamlit", "Plotly"],
     "url": "https://github.com/ZaraTakion/nba-dashboard",
-    "image": "/assets/img/nba-cover.svg",
-    "alt": "Ilustração gráfica do projeto NBA Dashboard"
+    "image": "/assets/img/nba-cover.png",
+    "alt": "Gráfico de pontos por partida das seis equipes líderes da temporada 2023 no conjunto do projeto"
   },
   {
     "number": "04",
@@ -39,6 +37,6 @@
     "technologies": ["Python", "Django REST", "React", "PostgreSQL"],
     "url": "https://github.com/ZaraTakion/upa-portal-academico",
     "image": "/assets/img/upa-cover.svg",
-    "alt": "Ilustração gráfica do portal acadêmico UPA"
+    "alt": "Ilustração vetorial conceitual do portal acadêmico e das tecnologias React, Django REST e PostgreSQL"
   }
 ]

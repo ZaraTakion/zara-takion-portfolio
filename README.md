@@ -60,7 +60,7 @@ O netlify.toml configura o comando python3 scripts/build_site.py, publica dist e
 
 O formulário tem dois caminhos de produção. Se PORTFOLIO_API_BASE_URL estiver configurada no Netlify, ele envia para a API Flask e esta encaminha por SMTP. Sem essa variável, o formulário usa Netlify Forms. A prévia local, onde nenhum desses serviços está ativo, abre um rascunho de e-mail para revisão.
 
-Para ativar Netlify Forms, habilite a detecção de formulários no painel Netlify antes do deploy. Configure também uma notificação por e-mail em Forms > Submission notifications para receber cada mensagem. As submissões ficam disponíveis no painel Netlify. O site informa esse encaminhamento junto ao formulário.
+O recebimento por e-mail ainda depende da configuração da hospedagem. Para Netlify Forms, habilite a detecção de formulários e crie uma notificação por e-mail para rm20022101@gmail.com. Até essa configuração e um envio de teste, não considere o recebimento ativo. As submissões também ficam disponíveis no painel Netlify. Na alternativa SMTP, defina CONTACT_TO=rm20022101@gmail.com junto com as credenciais SMTP no serviço da API; sem elas, a API recusa o envio.
 
 ## Hospedar a API Flask
 
@@ -81,4 +81,4 @@ O endpoint GET /api/health permite verificar se a API está respondendo. O formu
 - NBA Dashboard — dashboard de estatísticas de equipes da NBA (2000–2023): https://github.com/ZaraTakion/nba-dashboard
 - UPA — Portal Acadêmico — portal full-stack com React e Django REST Framework: https://github.com/ZaraTakion/upa-portal-academico
 
-As descrições devem acompanhar o estado real dos repositórios; métricas e qualificações não são inferidas.
+As imagens de Air Quality, Brazil Traffic Insight e NBA são gráficos próprios feitos a partir dos dados reais disponíveis nos respectivos repositórios. O mapa mostra uma amostra visual das coordenadas do arquivo original para manter a leitura clara. A capa do UPA é uma ilustração vetorial conceitual, não uma captura de tela do sistema. As descrições devem acompanhar o estado real dos repositórios; métricas e qualificações não são inferidas.

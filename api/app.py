@@ -28,7 +28,7 @@ def send_contact_email(name: str, email: str, message: str) -> None:
     host = os.getenv("SMTP_HOST", "").strip()
     username = os.getenv("SMTP_USER", "").strip()
     password = os.getenv("SMTP_PASSWORD", "")
-    recipient = os.getenv("CONTACT_TO", "").strip()
+    recipient = os.getenv("CONTACT_TO", "rm20022101@gmail.com").strip()
     sender = os.getenv("CONTACT_FROM", "").strip() or username
 
     if not all((host, recipient, sender, username, password)):

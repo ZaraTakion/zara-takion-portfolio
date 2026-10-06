@@ -53,25 +53,16 @@ def validate_projects() -> None:
             raise ValueError(f"Link de projeto inválido: {project['url']}.")
         if not re.fullmatch(r"/assets/img/[A-Za-z0-9._-]+", project["image"]):
             raise ValueError(f"Caminho de imagem inválido: {project['image']}.")
-        if project["image"].endswith(".svg") and not (SOURCE / project["image"].lstrip("/")).is_file():
+        if not (SOURCE / project["image"].lstrip("/")).is_file():
             raise ValueError(f"Imagem local não encontrada: {project['image']}.")
-        if project.get("fallback"):
-            fallback_url = urlparse(project["fallback"])
-            if fallback_url.scheme != "https" or fallback_url.hostname != "raw.githubusercontent.com":
-                raise ValueError(f"Fallback de imagem inválido: {project['fallback']}.")
 
 
 def render_project_card(project: dict[str, object]) -> str:
     text = lambda value: html.escape(str(value), quote=True)
     tags = "".join(f"<li>{text(tag)}</li>" for tag in project["technologies"])
-    fallback = (
-        f' data-fallback="{text(project["fallback"])}"'
-        if project.get("fallback")
-        else ""
-    )
     return f"""<article class="project-card">
   <div class="project-visual">
-    <img src="{text(project["image"])}" alt="{text(project["alt"])}" width="640" height="480" loading="lazy"{fallback}>
+    <img src="{text(project["image"])}" alt="{text(project["alt"])}" width="640" height="360" loading="lazy">
     <span class="project-number">{text(project["number"])}</span>
   </div>
   <div class="project-copy">

@@ -6,41 +6,43 @@ const year = document.querySelector("#current-year");
 
 if (year) year.textContent = String(new Date().getFullYear());
 
-document.querySelectorAll("img[data-fallback]").forEach((image) => {
-  image.addEventListener("error", () => {
-    if (image.dataset.fallbackTried) {
-      image.hidden = true;
-      image.closest(".project-visual")?.classList.add("project-visual-empty");
-      return;
-    }
-    image.dataset.fallbackTried = "true";
-    image.src = image.dataset.fallback;
-  });
-});
+function closeMobileMenu(restoreFocus = false) {
+  if (!menuButton || !mainNav) return;
+  menuButton.setAttribute("aria-expanded", "false");
+  menuButton.setAttribute("aria-label", "Abrir menu");
+  mainNav.classList.remove("is-open");
+  if (restoreFocus) menuButton.focus();
+}
 
 if (menuButton && mainNav) {
   menuButton.addEventListener("click", () => {
     const isOpen = menuButton.getAttribute("aria-expanded") === "true";
-    menuButton.setAttribute("aria-expanded", String(!isOpen));
-    menuButton.setAttribute("aria-label", isOpen ? "Abrir menu" : "Fechar menu");
-    mainNav.classList.toggle("is-open", !isOpen);
+    if (isOpen) {
+      closeMobileMenu();
+    } else {
+      menuButton.setAttribute("aria-expanded", "true");
+      menuButton.setAttribute("aria-label", "Fechar menu");
+      mainNav.classList.add("is-open");
+    }
   });
 
   mainNav.addEventListener("click", (event) => {
-    if (event.target.closest("a")) {
-      menuButton.setAttribute("aria-expanded", "false");
-      menuButton.setAttribute("aria-label", "Abrir menu");
-      mainNav.classList.remove("is-open");
+    if (event.target.closest("a")) closeMobileMenu();
+  });
+
+  document.addEventListener("pointerdown", (event) => {
+    const isOpen = menuButton.getAttribute("aria-expanded") === "true";
+    if (isOpen && !menuButton.contains(event.target) && !mainNav.contains(event.target)) {
+      closeMobileMenu();
     }
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && mainNav.classList.contains("is-open")) {
-      menuButton.setAttribute("aria-expanded", "false");
-      menuButton.setAttribute("aria-label", "Abrir menu");
-      mainNav.classList.remove("is-open");
-      menuButton.focus();
-    }
+    if (event.key === "Escape" && menuButton.getAttribute("aria-expanded") === "true") closeMobileMenu(true);
+  });
+
+  window.matchMedia("(min-width: 641px)").addEventListener("change", (event) => {
+    if (event.matches) closeMobileMenu();
   });
 }
 
@@ -54,7 +56,7 @@ function setFormStatus(message, isError = false) {
 function openEmailDraft(data) {
   const subject = encodeURIComponent("Contato pelo portfólio — " + data.name);
   const body = encodeURIComponent("Nome: " + data.name + "\nE-mail: " + data.email + "\n\n" + data.message);
-  window.location.href = "mailto:rodzmaciel21@gmail.com?subject=" + subject + "&body=" + body;
+  window.location.href = "mailto:rm20022101@gmail.com?subject=" + subject + "&body=" + body;
 }
 
 async function submitNetlifyForm(form) {

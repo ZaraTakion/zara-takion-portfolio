@@ -27,6 +27,8 @@ REQUIRED_PROJECT_FIELDS = {
     "image",
     "alt",
     "alt_en",
+    "visual_note",
+    "visual_note_en",
     "featured",
 }
 
@@ -96,6 +98,7 @@ def render_project_card(project: dict[str, object], language: str) -> str:
     category = project["category_en"] if is_english else project["category"]
     description = project["description_en"] if is_english else project["description"]
     alt = project["alt_en"] if is_english else project["alt"]
+    visual_note = project["visual_note_en"] if is_english else project["visual_note"]
     period = project.get("period_en" if is_english else "period")
     tags = "".join(f"<li>{text(tag)}</li>" for tag in project["technologies"])
     highlights = project.get("highlights_en" if is_english else "highlights", [])
@@ -143,9 +146,10 @@ def render_project_card(project: dict[str, object], language: str) -> str:
         actions.append(f'<a class="project-link" href="{text(project["demo_url"])}" target="_blank" rel="noopener noreferrer">{demo_label} <span aria-hidden="true">↗</span></a>')
     actions.append(f'<a class="project-link" href="{text(project["url"])}" target="_blank" rel="noopener noreferrer">{repository_label} <span aria-hidden="true">↗</span></a>')
     return f"""<article class="{card_class}">
-  <div class="project-visual">
+  <figure class="project-visual">
     <img src="{text(project["image"])}" alt="{text(alt)}" width="640" height="360" loading="lazy">
-  </div>
+    <figcaption>{text(visual_note)}</figcaption>
+  </figure>
   <div class="project-copy">
     <p class="project-category">{text(category)}</p>
     {period_html}

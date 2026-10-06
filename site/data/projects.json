@@ -51,7 +51,9 @@
         "architecture": "A React/Vite interface integrates with a Django REST API; the repository documents JWT and PostgreSQL for production.",
         "verification": "The README documents Django checks and backend tests, plus frontend linting and build commands."
       }
-    }
+    },
+    "visual_note": "Ilustração conceitual — não é captura de tela",
+    "visual_note_en": "Concept illustration — not a product screenshot"
   },
   {
     "title": "Task Manager API",
@@ -89,7 +91,9 @@
         "verification": "The unittest suite covers CRUD and recreates the application with the same SQLite file to check persistence after restart.",
         "boundary": "Persistence depends on the SQLite file remaining on disk; the documentation recommends a shared database such as PostgreSQL for multi-server replicas."
       }
-    }
+    },
+    "visual_note": "Diagrama das rotas e da persistência SQLite",
+    "visual_note_en": "Diagram of routes and SQLite persistence"
   },
   {
     "title": "Chamados API",
@@ -127,7 +131,9 @@
         "verification": "The repository documents automated tests, OpenAPI, and runnable route examples.",
         "boundary": "SQLite is the local option; production should use persistent storage. Internal ticket notes are restricted to staff."
       }
-    }
+    },
+    "visual_note": "Diagrama dos papéis e estados dos chamados",
+    "visual_note_en": "Diagram of ticket roles and states"
   },
   {
     "title": "Air Quality Analysis",
@@ -154,7 +160,9 @@
     "case_study_en": {
       "problem": "Examine whether weather variables and month help explain the project dataset’s composite pollution index.",
       "approach": "OLS and Random Forest use temperature, humidity, wind speed, and month. The recorded Random Forest test scored R² −0.082, below the mean baseline."
-    }
+    },
+    "visual_note": "Gráfico derivado dos dados do projeto",
+    "visual_note_en": "Chart derived from the project data"
   },
   {
     "title": "Brazil Traffic Insight",
@@ -173,7 +181,9 @@
     "image": "/assets/img/traffic-insight.png",
     "alt": "Mapa de pontos geográficos presentes no arquivo de acidentes usado pelo projeto",
     "alt_en": "Map of geographic points contained in the crash records used by the project",
-    "featured": false
+    "featured": false,
+    "visual_note": "Mapa produzido a partir dos dados do projeto",
+    "visual_note_en": "Map produced from the project data"
   },
   {
     "title": "NBA Dashboard",
@@ -192,7 +202,9 @@
     "image": "/assets/img/nba-cover.png",
     "alt": "Gráfico de pontos por partida das seis equipes líderes da temporada 2023 no conjunto do projeto",
     "alt_en": "Chart of points per game for the six leading teams in the project's 2023 season dataset",
-    "featured": false
+    "featured": false,
+    "visual_note": "Gráfico derivado do recorte de temporada do projeto",
+    "visual_note_en": "Chart derived from the project season data"
   },
   {
     "title": "Steam Price Predictor",
@@ -212,6 +224,8 @@
     "image": "/assets/img/steam-price-cover.svg",
     "alt": "Composição vetorial feita à mão que resume os campos e as etapas da demonstração de previsão do preço de jogos; não apresenta resultados fabricados",
     "alt_en": "Handcrafted vector composition summarizing the fields and steps in the game price prediction demo; it does not show fabricated results",
-    "featured": false
+    "featured": false,
+    "visual_note": "Ilustração técnica — sem resultados fabricados",
+    "visual_note_en": "Technical illustration — no fabricated results"
   }
 ]

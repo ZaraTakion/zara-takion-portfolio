@@ -4,7 +4,7 @@
   --ink-soft: #302522;
   --paper: #eee5d7;
   --paper-bright: #f7f1e7;
-  --muted: #75685e;
+  --muted: #69594f;
   --line: #c9b9a5;
   --wine: #762c32;
   --wine-light: #a64c4d;
@@ -87,11 +87,11 @@ h1, h2, h3, p { margin-top: 0; }
 .intro-band { position: relative; z-index: 0; padding-block: 82px; background: var(--paper); color: var(--ink); }
 .intro-band::before { position: absolute; z-index: -1; inset: 0; border-bottom: 1px solid var(--line); background: var(--paper); content: ""; }
 .intro-grid { display: grid; grid-template-columns: minmax(0, .42fr) minmax(0, 1.18fr) minmax(0, .55fr); gap: 36px; }
-.section-marker { display: flex; align-items: center; gap: 12px; color: #79695b; }
+.section-marker { display: flex; align-items: center; gap: 12px; color: #69594f; }
 .section-marker span:first-child { color: var(--wine); font-family: var(--font-display); font-size: 1rem; }
 .intro-content h2, .section-heading h2 { max-width: 690px; margin: 15px 0 19px; font-family: var(--font-display); font-size: clamp(2.8rem, 5vw, 4.7rem); font-weight: 500; letter-spacing: -.04em; line-height: 1.04; }
 .intro-content > p { max-width: 700px; margin-bottom: 27px; color: #61564f; }
-.skill-groups { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.skill-groups { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 24px; }
 .skill-groups > div { min-height: 82px; padding: 12px 0; border-top: 1px solid #b7a58e; }
 .skill-label { margin: 0; color: var(--wine); font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
 .skill-groups p { margin: 6px 0 0; color: #413832; font-size: .78rem; }
@@ -117,18 +117,25 @@ h1, h2, h3, p { margin-top: 0; }
 .section-heading h2 { margin: 0; }
 .heading-period { color: var(--wine); }
 .section-heading > p { max-width: 275px; margin: 0 0 5px; color: #716258; font-size: .86rem; }
-.project-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+.featured-project-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.project-archive-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin: 64px 0 20px; padding-top: 22px; border-top: 1px solid var(--line); }
+.project-archive-heading p { margin: 0; color: var(--muted); font-size: .95rem; }
+.project-archive-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
 .project-card { display: flex; min-height: 0; flex-direction: column; border: 1px solid #c9b9a5; background: #f0e8dc; transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+.project-card.featured { background: #fbf7f0; }
 .project-card:hover { border-color: var(--bronze); box-shadow: 0 10px 25px rgb(43 31 25 / 9%); transform: translateY(-3px); }
 .project-visual { position: relative; flex: none; aspect-ratio: 16 / 9; overflow: hidden; background: #211e20; }
 .project-visual-empty { background: linear-gradient(145deg, #302522, #762c32); }
 .project-visual img { width: 100%; height: 100%; object-fit: cover; }
-.project-number { position: absolute; z-index: 1; top: 12px; left: 12px; padding: 4px 7px; border: 1px solid rgb(238 233 226 / 70%); background: rgb(33 25 22 / 78%); color: var(--paper); font-family: var(--font-display); font-size: .72rem; }
-.project-copy { display: flex; min-height: 245px; flex: 1; flex-direction: column; align-items: flex-start; padding: 22px; }
+.project-copy { display: flex; min-height: 0; flex: 1; flex-direction: column; align-items: flex-start; padding: 22px; }
 .project-category { margin-bottom: 8px; color: var(--wine); font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .project-copy h3 { margin-bottom: 10px; color: var(--ink); font-family: var(--font-display); font-size: clamp(1.4rem, 2.2vw, 2rem); font-weight: 500; line-height: 1.04; }
 .project-period { margin: -2px 0 10px; color: #6e6156; font-size: .78rem; }
-.project-description { margin-bottom: 15px; color: #62564e; font-size: .75rem; line-height: 1.55; }
+.project-description { margin-bottom: 15px; color: #62564e; font-size: .96rem; line-height: 1.6; }
+.project-case-study { display: grid; gap: 10px; margin: 0 0 16px; padding: 14px 0; border-block: 1px solid #d6c7b4; }
+.project-case-study > div { display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 10px; }
+.project-case-study dt { color: var(--wine); font-size: .67rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.project-case-study dd { margin: 0; color: #51463f; font-size: .86rem; line-height: 1.5; }
 .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: auto 0 14px; padding: 0; list-style: none; }
 .project-tags li { padding: 4px 7px; border: 1px solid #c4b19a; color: #514339; font-size: .75rem; }
 .project-highlights { display: grid; gap: 6px; margin: 0 0 14px; padding-left: 19px; color: #51463f; font-size: .83rem; line-height: 1.5; }
@@ -184,6 +191,7 @@ h1, h2, h3, p { margin-top: 0; }
   .hero { min-height: auto; grid-template-columns: 1fr .76fr; gap: 28px; padding-block: 60px 84px; }
   .hero h1 { font-size: clamp(2.8rem, 6vw, 4rem); }
   .hero-art { padding: 12px; }
+  .featured-project-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .intro-grid { grid-template-columns: minmax(0, .42fr) minmax(0, 1.58fr); }
   .about-aside { display: none; }
   .skill-groups { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -226,9 +234,10 @@ h1, h2, h3, p { margin-top: 0; }
   .credentials-grid { grid-template-columns: 1fr; gap: 16px; }
   .section-heading { display: block; margin-bottom: 28px; }
   .section-heading > p { margin-top: 16px; }
-  .project-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .featured-project-grid, .project-archive-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .project-archive-heading { align-items: flex-start; flex-direction: column; gap: 8px; margin-top: 40px; }
   .project-copy { min-height: 0; padding: 22px; }
-  .project-description { font-size: .88rem; }
+  .project-description { font-size: .96rem; }
   .project-tags li { font-size: .8rem; }
   .contact-section { padding-block: 68px; }
   .contact-grid { grid-template-columns: 1fr; gap: 34px; }

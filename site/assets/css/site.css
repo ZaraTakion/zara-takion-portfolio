@@ -11,11 +11,11 @@
   --bronze: #aa8961;
   --content: 1160px;
   --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
-  --font-body: Inter, "Aptos", "Segoe UI", sans-serif;
+  --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 * { box-sizing: border-box; }
-html { overflow-x: clip; scroll-behavior: smooth; scroll-padding-top: 82px; }
+html { scroll-behavior: smooth; scroll-padding-top: 82px; }
 body { min-width: 320px; margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); line-height: 1.65; }
 body, button, input, textarea { font-family: var(--font-body); }
 a { color: inherit; text-decoration: none; }
@@ -23,7 +23,7 @@ img { display: block; max-width: 100%; }
 button, input, textarea { font: inherit; }
 button { color: inherit; }
 ::selection { background: var(--wine); color: #fff; }
-:focus-visible { outline: 2px solid #bd8960; outline-offset: 5px; }
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 6px var(--paper-bright); }
 .wrap { width: min(var(--content), calc(100% - 56px)); margin-inline: auto; }
 .skip-link { position: fixed; z-index: 100; top: 12px; left: 12px; padding: 10px 16px; background: var(--paper-bright); color: var(--ink); transform: translateY(-160%); }
 .skip-link:focus { transform: translateY(0); }
@@ -136,6 +136,9 @@ h1, h2, h3, p { margin-top: 0; }
 .project-case-study > div { display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 10px; }
 .project-case-study dt { color: var(--wine); font-size: .67rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .project-case-study dd { margin: 0; color: #51463f; font-size: .86rem; line-height: 1.5; }
+.project-case-more { margin: -7px 0 14px; }
+.project-case-more summary { display: flex; min-height: 44px; align-items: center; color: var(--wine); cursor: pointer; font-size: .84rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.project-case-more .project-case-study { margin: 0; padding: 10px 0 0; border-bottom: 0; }
 .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin: auto 0 14px; padding: 0; list-style: none; }
 .project-tags li { padding: 4px 7px; border: 1px solid #c4b19a; color: #514339; font-size: .75rem; }
 .project-highlights { display: grid; gap: 6px; margin: 0 0 14px; padding-left: 19px; color: #51463f; font-size: .83rem; line-height: 1.5; }
@@ -147,6 +150,7 @@ h1, h2, h3, p { margin-top: 0; }
 .contact-section { position: relative; z-index: 0; padding-block: 88px; color: var(--paper-bright); }
 .contact-section::before { position: absolute; z-index: -1; inset: 0; background: #241b1a; background-image: repeating-linear-gradient(90deg, transparent 0 31px, rgb(205 175 137 / 4%) 31px 32px); content: ""; }
 .contact-copy :focus-visible { outline-color: #ffe0ba; }
+.contact-copy :focus-visible { box-shadow: 0 0 0 6px #241b1a; }
 .contact-grid { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(40px, 8vw, 100px); }
 .section-marker-light { margin-bottom: 25px; color: #dbc5b4; }
 .section-marker-light span:first-child { color: #d69c7c; }
@@ -278,9 +282,15 @@ h1, h2, h3, p { margin-top: 0; }
 .not-found { min-height: 100svh; display: grid; align-content: center; justify-items: start; padding-block: 72px; }
 .not-found .eyebrow { color: var(--wine); }
 .not-found h1 { max-width: 780px; margin-bottom: 22px; font-family: var(--font-display); font-size: clamp(3.5rem, 10vw, 7rem); font-weight: 500; letter-spacing: -.04em; line-height: .95; }
+.not-found section { margin-top: 64px; padding-top: 32px; border-top: 1px solid var(--line); }
+.not-found h2 { max-width: 680px; margin-bottom: 16px; font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 500; letter-spacing: -.035em; line-height: 1; }
 .not-found > p:not(.eyebrow) { max-width: 500px; color: #61564f; }
 .privacy-page { min-height: 100svh; padding-block: 70px 90px; background: var(--paper-bright); }
 .privacy-page h1 { max-width: 760px; margin: 18px 0; font-family: var(--font-display); font-size: clamp(2.8rem, 7vw, 5rem); font-weight: 500; line-height: 1; }
+
+@media (forced-colors: active) {
+  :focus-visible { outline: 3px solid CanvasText; outline-offset: 3px; box-shadow: none; }
+}
 .privacy-page .updated { color: #61564f; font-size: .9rem; }
 .privacy-content { max-width: 760px; }
 .privacy-content h2 { margin: 32px 0 8px; font-family: var(--font-display); font-size: 1.65rem; font-weight: 500; }

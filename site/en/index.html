@@ -156,7 +156,7 @@
           </div>
           <form id="contact-form" class="contact-form" name="contact" method="POST" data-netlify="true" data-netlify-honeypot="website" aria-label="Contact form">
             <input type="hidden" name="form-name" value="contact">
-            <p class="form-help" id="contact-form-help">Complete every field and provide a valid email address so I can reply.</p>
+            <p class="form-help" id="contact-form-help">Complete every field. Messages must contain 10 to 2,500 characters so I can reply.</p>
             <div class="field-row">
               <div class="field">
                 <label for="contact-name">Your name <span>(required)</span></label>
@@ -169,7 +169,7 @@
             </div>
             <div class="field">
               <label for="contact-message">Message <span>(required)</span></label>
-              <textarea id="contact-message" name="message" rows="5" maxlength="2500" aria-describedby="contact-form-help" required></textarea>
+              <textarea id="contact-message" name="message" rows="5" minlength="10" maxlength="2500" aria-describedby="contact-form-help" required></textarea>
             </div>
             <div class="hp-field" aria-hidden="true">
               <label for="contact-company">Leave this field empty</label>

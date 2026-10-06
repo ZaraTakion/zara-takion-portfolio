@@ -17,6 +17,9 @@ class StaticBuildTests(unittest.TestCase):
         projects = json.loads((build_site.SOURCE / "data" / "projects.json").read_text(encoding="utf-8"))
         self.assertEqual(built_html.count('<article class="project-card'), len(projects))
         self.assertEqual(built_html.count('<article class="project-card featured"'), 3)
+        self.assertLess(built_html.index('<h3>UPA — Portal Acadêmico</h3>'), built_html.index('<h3>Task Manager API</h3>'))
+        self.assertLess(built_html.index('<h3>Task Manager API</h3>'), built_html.index('<h3>Chamados API</h3>'))
+        self.assertLess(built_html.index('class="project-archive-grid"'), built_html.index('<h3>Air Quality Analysis</h3>'))
         self.assertNotIn('class="project-number"', built_html)
         self.assertLess(built_html.index('id="projetos"'), built_html.index('id="sobre"'))
         for repository in (
@@ -37,7 +40,13 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("Ver repositório", built_html)
         self.assertNotIn("tel:+55", built_html)
         self.assertIn("Django REST Framework", built_html)
+        self.assertIn("Os testes unittest cobrem o CRUD", built_html)
+        self.assertIn("não demonstram desempenho preditivo superior ao baseline da média", built_html)
         self.assertNotIn("rodzmaciel21@gmail.com", built_html)
+        self.assertIn('minlength="10"', built_html)
+        css = (build_site.SOURCE / "assets" / "css" / "site.css").read_text(encoding="utf-8")
+        self.assertNotIn("overflow-x: clip", css)
+        self.assertIn("@media (forced-colors: active)", css)
 
     def test_build_renders_complete_english_portfolio(self):
         build_site.build()
@@ -48,6 +57,8 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("intermediate, with B2 reading proficiency", english)
         self.assertIn("UPA — Academic Portal", english)
         self.assertIn("View repository", english)
+        self.assertIn("Technical notes", english)
+        self.assertIn('minlength="10"', english)
         self.assertIn('href="/" hreflang="pt-BR"', english)
         self.assertIn('data-netlify="true"', english)
         self.assertNotIn("tel:+55", english)
@@ -55,6 +66,9 @@ class StaticBuildTests(unittest.TestCase):
     def test_build_includes_404_and_privacy_pages(self):
         build_site.build()
         self.assertTrue((build_site.OUTPUT / "404.html").is_file())
+        not_found = (build_site.OUTPUT / "404.html").read_text(encoding="utf-8")
+        self.assertIn('lang="en" aria-label="English error message"', not_found)
+        self.assertIn("This file is not in this volume.", not_found)
         privacy = (build_site.OUTPUT / "privacidade.html").read_text(encoding="utf-8")
         self.assertIn("Política de privacidade", privacy)
         self.assertIn("rm20022101@gmail.com", privacy)

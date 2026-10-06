@@ -58,7 +58,7 @@ A API responde em http://127.0.0.1:5000. Sem variáveis SMTP, o endpoint de cont
 
 O netlify.toml configura o comando python3 scripts/build_site.py, publica dist e seleciona Python 3.13. Conecte o repositório ao Netlify usando a branch main.
 
-O formulário tem dois caminhos de produção. Se PORTFOLIO_API_BASE_URL estiver configurada no Netlify, ele envia para a API Flask e esta encaminha por SMTP. Sem essa variável, o formulário usa Netlify Forms. A detecção de formulários e a notificação para rm20022101@gmail.com estão configuradas no Netlify. A prévia local, onde nenhum desses serviços está ativo, abre um rascunho de e-mail para revisão.
+O formulário tem dois caminhos de produção. Se PORTFOLIO_API_BASE_URL estiver configurada no Netlify, ele envia para a API Flask e esta encaminha por SMTP. Sem essa variável, o formulário usa Netlify Forms. A detecção de formulários e as notificações por e-mail devem ser confirmadas no painel do Netlify e com um envio de teste; a aceitação de uma submissão não comprova a entrega na caixa de entrada. A prévia local, onde nenhum desses serviços está ativo, abre um rascunho de e-mail para revisão.
 
 As submissões do Netlify Forms também ficam disponíveis no painel da hospedagem. Na alternativa SMTP, defina CONTACT_TO=rm20022101@gmail.com junto com as credenciais SMTP no serviço da API; sem elas, a API recusa o envio.
 
@@ -79,12 +79,12 @@ O endpoint GET /api/health permite verificar se a API está respondendo. O formu
 
 ## Projetos apresentados
 
-O portfólio destaca três trabalhos que evidenciam integrações e decisões de implementação. Os demais ficam organizados em um arquivo de projetos complementar; os sete continuam acessíveis no site.
+O portfólio destaca três trabalhos alinhados ao foco em back-end Python, APIs REST e aplicações full-stack. Os demais ficam organizados em um arquivo complementar; os sete continuam acessíveis no site.
 
 ### Em destaque
 
 - [UPA — Portal Acadêmico](https://github.com/ZaraTakion/upa-portal-academico) — aplicação full-stack com React/Vite, Django REST, JWT e PostgreSQL.
-- [Air Quality Analysis](https://github.com/ZaraTakion/air-quality-analysis) — análise de qualidade do ar, comparação de modelos e dashboard.
+- [Task Manager API](https://github.com/ZaraTakion/task-manager-backend) — API FastAPI com persistência SQLite e teste de continuidade após reinício.
 - [Chamados API](https://github.com/ZaraTakion/chamados-api) — API Django REST com JWT, permissões de solicitante/equipe, filtros e comentários.
 
 ### Arquivo
@@ -92,6 +92,6 @@ O portfólio destaca três trabalhos que evidenciam integrações e decisões de
 - [Brazil Traffic Insight](https://github.com/ZaraTakion/brazil-traffic-insight) — análise de acidentes de trânsito no Brasil (2017–2023), classificação e dashboard.
 - [NBA Dashboard](https://github.com/ZaraTakion/nba-dashboard) — dashboard de estatísticas de equipes da NBA no período coberto pelo projeto.
 - [Steam Price Predictor](https://github.com/ZaraTakion/steam-price-predictor) — demonstração de estimativa de preços históricos de jogos.
-- [Task Manager API](https://github.com/ZaraTakion/task-manager-backend) — API FastAPI com persistência SQLite.
+- [Air Quality Analysis](https://github.com/ZaraTakion/air-quality-analysis) — dashboard e análise explicativa de um recorte estático; os resultados não demonstram desempenho preditivo acima do baseline da média.
 
 As imagens de Air Quality, Brazil Traffic Insight e NBA são gráficos próprios feitos a partir dos dados dos projetos. A capa do UPA é uma ilustração vetorial conceitual, não uma captura de tela. As descrições acompanham a documentação dos repositórios; métricas e qualificações não são inferidas.

@@ -38,11 +38,95 @@
     "featured": true,
     "case_study": {
       "problem": "Modernizar a experiência de consulta das informações acadêmicas.",
-      "approach": "Conectar uma interface React/Vite a uma API Django REST com autenticação JWT."
+      "approach": "Conectar uma interface React/Vite a uma API Django REST com autenticação JWT.",
+      "details": {
+        "architecture": "Interface React/Vite integrada a uma API Django REST; o repositório documenta JWT e PostgreSQL em produção.",
+        "verification": "O README documenta verificações do Django e testes do backend, além de lint e build do frontend."
+      }
     },
     "case_study_en": {
       "problem": "Modernize how students access their academic information.",
-      "approach": "Connect a React/Vite interface to a Django REST API with JWT authentication."
+      "approach": "Connect a React/Vite interface to a Django REST API with JWT authentication.",
+      "details": {
+        "architecture": "A React/Vite interface integrates with a Django REST API; the repository documents JWT and PostgreSQL for production.",
+        "verification": "The README documents Django checks and backend tests, plus frontend linting and build commands."
+      }
+    }
+  },
+  {
+    "title": "Task Manager API",
+    "title_en": "Task Manager API",
+    "category": "Backend · API REST",
+    "category_en": "Backend · REST API",
+    "description": "API REST em FastAPI para criar, consultar, atualizar e excluir tarefas. Usa SQLite para persistir os dados entre reinícios e oferece documentação interativa dos endpoints.",
+    "description_en": "A FastAPI REST API for creating, reading, updating, and deleting tasks. SQLite keeps data across restarts, and interactive endpoint documentation is available.",
+    "technologies": [
+      "Python",
+      "FastAPI",
+      "SQLite",
+      "Pydantic",
+      "unittest"
+    ],
+    "url": "https://github.com/ZaraTakion/task-manager-backend",
+    "image": "/assets/img/task-manager-cover.svg",
+    "alt": "Composição vetorial feita à mão com rotas reais de tarefas e armazenamento SQLite persistente da API",
+    "alt_en": "Handcrafted vector composition with the API's task routes and persistent SQLite storage",
+    "featured": true,
+    "case_study": {
+      "problem": "Manter tarefas disponíveis após o encerramento e reinício do processo da API.",
+      "approach": "Persistir os registros em um arquivo SQLite e expor operações CRUD por rotas FastAPI.",
+      "details": {
+        "architecture": "FastAPI e validação de dados com Pydantic sobre um banco SQLite configurável por caminho.",
+        "verification": "Os testes unittest cobrem o CRUD e recriam a aplicação com o mesmo arquivo SQLite para verificar a persistência após reinício.",
+        "boundary": "A persistência depende de o arquivo SQLite permanecer no disco; a documentação recomenda banco compartilhado, como PostgreSQL, para réplicas em vários servidores."
+      }
+    },
+    "case_study_en": {
+      "problem": "Keep tasks available after the API process stops and restarts.",
+      "approach": "Persist records in a SQLite file and expose CRUD operations through FastAPI routes.",
+      "details": {
+        "architecture": "FastAPI and Pydantic validation over a SQLite database whose path can be configured.",
+        "verification": "The unittest suite covers CRUD and recreates the application with the same SQLite file to check persistence after restart.",
+        "boundary": "Persistence depends on the SQLite file remaining on disk; the documentation recommends a shared database such as PostgreSQL for multi-server replicas."
+      }
+    }
+  },
+  {
+    "title": "Chamados API",
+    "title_en": "Support Tickets API",
+    "category": "Backend · Suporte",
+    "category_en": "Backend · Support",
+    "description": "API REST em Django REST Framework para chamados, com JWT, permissões por solicitante e equipe, busca e notas internas. Usa SQLite local e oferece Docker Compose com PostgreSQL e volume persistente.",
+    "description_en": "A Django REST Framework API for support tickets, with JWT, requester and staff permissions, search, and internal notes. It uses SQLite locally and provides Docker Compose with PostgreSQL and a persistent volume.",
+    "technologies": [
+      "Python",
+      "Django REST Framework",
+      "JWT",
+      "PostgreSQL",
+      "OpenAPI"
+    ],
+    "url": "https://github.com/ZaraTakion/chamados-api",
+    "image": "/assets/img/chamados-api-cover.svg",
+    "alt": "Composição vetorial feita à mão que resume o fluxo de chamados e os papéis de solicitante e equipe descritos na API",
+    "alt_en": "Handcrafted vector composition summarizing the support ticket flow and requester and staff roles described by the API",
+    "featured": true,
+    "case_study": {
+      "problem": "Organizar a abertura e o acompanhamento de solicitações de suporte.",
+      "approach": "Separar permissões de solicitantes e equipe, com JWT, filtros, comentários e documentação OpenAPI.",
+      "details": {
+        "architecture": "Django REST Framework com autenticação JWT; permissões distinguem o dono do chamado e a equipe de atendimento.",
+        "verification": "A documentação do repositório descreve testes automatizados, OpenAPI e exemplos executáveis das rotas.",
+        "boundary": "SQLite é a opção local; produção deve usar banco persistente. Notas internas dos chamados são restritas à equipe."
+      }
+    },
+    "case_study_en": {
+      "problem": "Organize the creation and tracking of support requests.",
+      "approach": "Separate requester and staff permissions, with JWT, filters, comments, and OpenAPI documentation.",
+      "details": {
+        "architecture": "Django REST Framework with JWT authentication; permissions distinguish ticket owners from support staff.",
+        "verification": "The repository documents automated tests, OpenAPI, and runnable route examples.",
+        "boundary": "SQLite is the local option; production should use persistent storage. Internal ticket notes are restricted to staff."
+      }
     }
   },
   {
@@ -50,8 +134,8 @@
     "title_en": "Air Quality Analysis",
     "category": "Dados · Meio ambiente",
     "category_en": "Data · Environment",
-    "description": "Analisa relações entre poluentes e variáveis meteorológicas, compara modelos preditivos e apresenta os dados em um painel interativo.",
-    "description_en": "Explores relationships between air pollutants and weather variables, compares predictive models, and presents the data in an interactive dashboard.",
+    "description": "Dashboard Dash para explorar um recorte estático de dados de qualidade do ar de 2023. A etapa de modelagem explicativa testa o índice composto com temperatura, umidade, velocidade do vento e mês; os resultados não demonstram desempenho preditivo superior ao baseline da média.",
+    "description_en": "A Dash dashboard for exploring a static 2023 air-quality dataset. The explanatory modeling step tests a composite index using temperature, humidity, wind speed, and month; the reported results do not demonstrate predictive performance beyond the mean baseline.",
     "technologies": [
       "Python",
       "Pandas",
@@ -62,14 +146,14 @@
     "image": "/assets/img/air-quality.png",
     "alt": "Gráfico original com a média de PM2.5 por cidade, calculado a partir dos dados do projeto",
     "alt_en": "Project chart showing the average PM2.5 concentration by city, computed from the project dataset",
-    "featured": true,
+    "featured": false,
     "case_study": {
-      "problem": "Explorar relações entre poluição do ar e condições meteorológicas no conjunto analisado.",
-      "approach": "Comparar modelos usando temperatura, umidade, vento e mês, e apresentar a análise em um painel."
+      "problem": "Examinar se variáveis meteorológicas e o mês ajudam a explicar o índice composto de poluição deste conjunto.",
+      "approach": "OLS e Random Forest usam temperatura, umidade, vento e mês. No teste registrado, a Random Forest obteve R² −0,082, abaixo do baseline da média."
     },
     "case_study_en": {
-      "problem": "Explore relationships between air pollution and weather conditions in the analyzed dataset.",
-      "approach": "Compare models using temperature, humidity, wind, and month, then present the analysis in a dashboard."
+      "problem": "Examine whether weather variables and month help explain the project dataset’s composite pollution index.",
+      "approach": "OLS and Random Forest use temperature, humidity, wind speed, and month. The recorded Random Forest test scored R² −0.082, below the mean baseline."
     }
   },
   {
@@ -129,53 +213,5 @@
     "alt": "Composição vetorial feita à mão que resume os campos e as etapas da demonstração de previsão do preço de jogos; não apresenta resultados fabricados",
     "alt_en": "Handcrafted vector composition summarizing the fields and steps in the game price prediction demo; it does not show fabricated results",
     "featured": false
-  },
-  {
-    "title": "Task Manager API",
-    "title_en": "Task Manager API",
-    "category": "Backend · API REST",
-    "category_en": "Backend · REST API",
-    "description": "API REST em FastAPI para criar, consultar, atualizar e excluir tarefas. Usa SQLite para persistir os dados entre reinícios e oferece documentação interativa dos endpoints.",
-    "description_en": "A FastAPI REST API for creating, reading, updating, and deleting tasks. SQLite keeps data across restarts, and interactive endpoint documentation is available.",
-    "technologies": [
-      "Python",
-      "FastAPI",
-      "SQLite",
-      "Pydantic",
-      "Pytest"
-    ],
-    "url": "https://github.com/ZaraTakion/task-manager-backend",
-    "image": "/assets/img/task-manager-cover.svg",
-    "alt": "Composição vetorial feita à mão com rotas reais de tarefas e armazenamento SQLite persistente da API",
-    "alt_en": "Handcrafted vector composition with the API's task routes and persistent SQLite storage",
-    "featured": false
-  },
-  {
-    "title": "Chamados API",
-    "title_en": "Support Tickets API",
-    "category": "Backend · Suporte",
-    "category_en": "Backend · Support",
-    "description": "API REST para abrir e acompanhar solicitações de suporte, com autenticação JWT, permissões por solicitante e equipe, filtros e comentários. Desenvolvida com Django REST Framework e banco relacional.",
-    "description_en": "A REST API for opening and tracking support requests, with JWT authentication, requester and staff permissions, filtering, and comments. Built with Django REST Framework and a relational database.",
-    "technologies": [
-      "Python",
-      "Django REST Framework",
-      "JWT",
-      "PostgreSQL",
-      "OpenAPI"
-    ],
-    "url": "https://github.com/ZaraTakion/chamados-api",
-    "image": "/assets/img/chamados-api-cover.svg",
-    "alt": "Composição vetorial feita à mão que resume o fluxo de chamados e os papéis de solicitante e equipe descritos na API",
-    "alt_en": "Handcrafted vector composition summarizing the support ticket flow and requester and staff roles described by the API",
-    "featured": true,
-    "case_study": {
-      "problem": "Organizar a abertura e o acompanhamento de solicitações de suporte.",
-      "approach": "Separar permissões de solicitantes e equipe, com JWT, filtros, comentários e documentação OpenAPI."
-    },
-    "case_study_en": {
-      "problem": "Organize the creation and tracking of support requests.",
-      "approach": "Separate requester and staff permissions, with JWT, filters, comments, and OpenAPI documentation."
-    }
   }
 ]

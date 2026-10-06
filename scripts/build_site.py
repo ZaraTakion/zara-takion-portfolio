@@ -58,6 +58,14 @@ def validate_projects() -> None:
                     for key in ("problem", "approach")
                 ):
                     raise ValueError(f"Projeto em destaque {index} precisa de problema e implementação em {locale}.")
+                extra_details = details.get("details", {})
+                if not isinstance(extra_details, dict) or any(
+                    key not in {"architecture", "verification", "boundary"}
+                    or not isinstance(value, str)
+                    or not value.strip()
+                    for key, value in extra_details.items()
+                ):
+                    raise ValueError(f"Projeto em destaque {index} contém notas técnicas inválidas em {locale}.")
         if not isinstance(project["technologies"], list) or not project["technologies"]:
             raise ValueError(f"Projeto {index} precisa listar tecnologias.")
         parsed_url = urlparse(project["url"])
@@ -106,11 +114,29 @@ def render_project_card(project: dict[str, object], language: str) -> str:
     if case_study:
         problem_label = "Problem" if is_english else "Problema"
         approach_label = "Implementation" if is_english else "Implementação"
+        details = case_study.get("details", {})
+        detail_labels = {
+            "architecture": "Architecture" if is_english else "Arquitetura",
+            "verification": "Verification" if is_english else "Verificação",
+            "boundary": "Operational note" if is_english else "Limite operacional",
+        }
+        extra_rows = "".join(
+            f'<div><dt>{detail_labels[key]}</dt><dd>{text(details[key])}</dd></div>'
+            for key in detail_labels
+            if isinstance(details, dict) and details.get(key)
+        )
+        more_label = "Technical notes" if is_english else "Notas técnicas"
+        more_html = (
+            f'<details class="project-case-more"><summary>{more_label}</summary>'
+            f'<dl class="project-case-study">{extra_rows}</dl></details>'
+            if extra_rows else ""
+        )
         case_html = (
             '<dl class="project-case-study">'
             f'<div><dt>{problem_label}</dt><dd>{text(case_study["problem"])}</dd></div>'
             f'<div><dt>{approach_label}</dt><dd>{text(case_study["approach"])}</dd></div>'
             '</dl>'
+            f'{more_html}'
         )
     actions = []
     if project.get("demo_url"):

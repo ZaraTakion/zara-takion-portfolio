@@ -1,0 +1,47 @@
+/* Brand header, links, and responsive menu. */
+/* Header */
+.site-header {
+  position: sticky;
+  z-index: var(--z-header);
+  top: 0;
+  border-bottom: 1px solid var(--line-dark);
+  background: rgb(39 27 27 / 98%);
+  color: var(--paper-bright);
+}
+.site-header :focus-visible { outline-color: var(--focus-dark); box-shadow: 0 0 0 2px var(--ink); }
+.header-inner { display: flex; min-height: 78px; align-items: center; justify-content: space-between; gap: 24px; }
+.wordmark { display: inline-flex; min-height: 44px; align-items: center; gap: 12px; color: var(--paper-bright); }
+.wordmark-mark {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--bronze-light);
+  color: #e6c8a4;
+  font-family: var(--font-display);
+  font-size: var(--type-caption);
+  letter-spacing: -.08em;
+}
+.wordmark-name { font-size: .78rem; font-weight: 800; letter-spacing: .18em; }
+.wordmark-name span { color: #d2b28c; font-weight: 500; }
+.main-nav { display: flex; align-items: center; gap: clamp(16px, 2.8vw, 34px); color: #e8ddd0; font-size: .82rem; }
+.main-nav a:not(.language-switch) { display: inline-flex; min-height: 44px; align-items: center; gap: 7px; }
+.main-nav a:not(.language-switch):hover,
+.main-nav a:not(.language-switch):focus-visible,
+.hero-socials a:hover { color: #e6c8a4; }
+.main-nav a[href="#contato"] span,
+.main-nav a[href="#contact"] span { color: #df9d84; }
+.language-switch {
+  display: inline-grid;
+  min-width: 44px;
+  min-height: 44px;
+  place-items: center;
+  border: 1px solid #8c6b60;
+  color: var(--paper-bright);
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+.language-switch:hover { border-color: #e6c8a4; color: #e6c8a4; }
+.menu-toggle { display: none; }

@@ -1,0 +1,73 @@
+/* Professional introduction and character signature. */
+/* Hero — paper, tailoring lines, and the OC as a signature rather than the headline */
+.hero {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(90deg, transparent 0 47px, rgb(93 61 53 / 3%) 47px 48px);
+}
+.hero::before {
+  position: absolute;
+  z-index: var(--z-behind);
+  top: 0;
+  right: max(0px, calc((100vw - var(--content-wide)) / 2 - 60px));
+  bottom: 0;
+  width: min(39vw, 540px);
+  background: var(--wine-deep);
+  content: "";
+}
+.hero-grid {
+  display: grid;
+  min-height: min(760px, calc(100svh - 78px));
+  grid-template-columns: minmax(0, 1.08fr) minmax(290px, .72fr);
+  align-items: center;
+  gap: clamp(44px, 8vw, 118px);
+  padding-block: clamp(68px, 8vw, 110px) clamp(92px, 10vw, 132px);
+}
+.hero-copy { min-width: 0; }
+.eyebrow,
+.hero-role,
+.section-kicker,
+.portrait-topline,
+.portrait-caption,
+.hero-index,
+.entry-label {
+  font-size: var(--type-label);
+  font-weight: 750;
+  letter-spacing: .13em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.eyebrow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 24px; color: var(--wine); }
+.eyebrow-rule { width: 32px; height: 1px; background: var(--bronze); }
+.hero-role { margin-bottom: 13px; color: #62534e; letter-spacing: .08em; }
+.hero h1 {
+  max-width: 12ch;
+  margin-bottom: 22px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--type-display);
+  font-weight: 500;
+  letter-spacing: -.055em;
+  line-height: .98;
+}
+.heading-period { color: var(--wine); }
+.hero-intro { max-width: 57ch; margin-bottom: 23px; color: #514640; font-size: clamp(1rem, 1.3vw, 1.12rem); line-height: 1.75; }
+.hero-stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 27px; padding: 0; list-style: none; }
+.hero-stack li { padding: 5px 10px; border: 1px solid #bca68d; color: #493833; font-size: var(--type-caption); font-weight: 650; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.hero-socials { display: flex; flex-wrap: wrap; gap: 23px; margin-top: 25px; color: #514640; font-size: .84rem; font-weight: 650; }
+.hero-socials a { display: inline-flex; min-height: 44px; align-items: center; gap: 7px; }
+.hero-socials span { color: var(--wine); }
+
+.hero-portrait { width: min(100%, 440px); justify-self: end; padding: 18px; color: var(--paper-bright); }
+.portrait-topline,
+.portrait-caption { display: flex; justify-content: space-between; gap: 15px; font-size: var(--type-caption); letter-spacing: .12em; }
+.portrait-topline { margin-bottom: 14px; color: #e5d5c1; }
+.portrait-frame { position: relative; aspect-ratio: 1.5; overflow: hidden; margin: 0; border: 1px solid #c2a47f; background: #211916; }
+.portrait-frame-inner { position: absolute; z-index: var(--z-frame); inset: 13px; border: 1px solid rgb(242 224 199 / 55%); pointer-events: none; }
+.portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 46%; }
+.portrait-stamp { position: absolute; z-index: var(--z-stamp); right: 27px; bottom: 24px; color: #fff1db; font-family: var(--font-display); font-size: 1.2rem; line-height: 1; text-align: center; }
+.portrait-stamp span { color: #d69c7c; font-size: .8rem; }
+.portrait-caption { margin-top: 13px; color: #e2d5c5; font-size: var(--type-caption); }
+.hero-index { position: absolute; right: max(var(--gutter), calc((100vw - var(--content-wide)) / 2)); bottom: 22px; left: max(var(--gutter), calc((100vw - var(--content-wide)) / 2)); display: flex; justify-content: space-between; color: #685851; font-size: var(--type-caption); }

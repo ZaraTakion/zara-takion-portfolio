@@ -1,0 +1,37 @@
+/* Browser normalization and document defaults. */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+body,
+button,
+input,
+textarea { font-family: var(--font-body); }
+
+img { display: block; max-width: 100%; }
+button,
+input,
+textarea { font: inherit; }
+button { color: inherit; }
+a { color: inherit; text-decoration: none; }
+::selection { background: var(--wine); color: #fff; }
+
+:focus-visible {
+  outline: 3px solid var(--focus-light);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 2px var(--paper-bright);
+}

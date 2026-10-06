@@ -15,6 +15,21 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "site"
 OUTPUT = ROOT / "dist"
+STYLESHEETS = (
+    "tokens.css",
+    "reset.css",
+    "typography.css",
+    "layout.css",
+    "navigation.css",
+    "components.css",
+    "hero.css",
+    "projects.css",
+    "profile.css",
+    "contact.css",
+    "footer.css",
+    "responsive.css",
+    "motion.css",
+)
 REQUIRED_PROJECT_FIELDS = {
     "title",
     "title_en",
@@ -209,6 +224,17 @@ def api_config_script() -> str:
     ) + ");\n"
 
 
+def build_stylesheet() -> str:
+    """Combine source CSS modules in a stable order for one production request."""
+    chunks = []
+    for filename in STYLESHEETS:
+        path = SOURCE / "styles" / filename
+        if not path.is_file():
+            raise FileNotFoundError(f"Folha de estilo obrigatória ausente: {path.relative_to(ROOT)}")
+        chunks.append(f"/* --- {filename} --- */\n" + path.read_text(encoding="utf-8").strip())
+    return "\n\n".join(chunks) + "\n"
+
+
 def build() -> None:
     for required_path in (
         SOURCE / "index.html",
@@ -218,8 +244,9 @@ def build() -> None:
         SOURCE / "en" / "privacy.html",
         SOURCE / "robots.txt",
         SOURCE / "sitemap.xml",
-        SOURCE / "assets" / "css" / "site.css",
-        SOURCE / "assets" / "js" / "main.js",
+        SOURCE / "scripts" / "main.js",
+        SOURCE / "scripts" / "navigation.js",
+        SOURCE / "scripts" / "contact.js",
     ):
         if not required_path.is_file():
             raise FileNotFoundError(f"Arquivo obrigatório ausente: {required_path.relative_to(ROOT)}")
@@ -227,9 +254,12 @@ def build() -> None:
     validate_projects()
     if OUTPUT.exists():
         shutil.rmtree(OUTPUT)
-    shutil.copytree(SOURCE, OUTPUT)
+    shutil.copytree(SOURCE, OUTPUT, ignore=shutil.ignore_patterns("styles"))
     render_page(SOURCE / "index.html", OUTPUT / "index.html", "pt")
     render_page(SOURCE / "en" / "index.html", OUTPUT / "en" / "index.html", "en")
+    css_output = OUTPUT / "assets" / "css" / "site.css"
+    css_output.parent.mkdir(parents=True, exist_ok=True)
+    css_output.write_text(build_stylesheet(), encoding="utf-8")
     (OUTPUT / "config.js").write_text(api_config_script(), encoding="utf-8")
     print(f"Site preparado em {OUTPUT.relative_to(ROOT)}.")
 

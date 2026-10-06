@@ -1,10 +1,12 @@
 # Zara Takion — Portfólio
 
-Portfólio profissional de Rodrigo Araújo Maciel Pinheiro (Zara Takion), desenvolvedor web júnior. O site estático em HTML, CSS e JavaScript oferece páginas em português e inglês, com API de contato independente em Python/Flask.
+Portfólio de Rodrigo Araújo Maciel Pinheiro (Zara Takion), desenvolvedor web júnior com foco em back-end Python, Django, APIs REST e aplicações full-stack. A experiência é estática, rápida e disponível em português e inglês; uma API independente em Python/Flask pode processar o formulário de contato.
 
 ## Estrutura
 
 - site/: páginas localizadas (`/` em português e `/en/` em inglês), políticas de privacidade nos dois idiomas, estilos, scripts, dados e imagens do portfólio.
+- site/styles/: tokens e folhas CSS organizadas por fundação, navegação, seções, movimento e responsividade. O build as reúne em um único arquivo para publicação.
+- site/scripts/: módulos JavaScript nativos separados para navegação, contato e inicialização.
 - scripts/build_site.py: valida os dados e monta a pasta dist para Netlify.
 - api/: API Flask independente para validar e encaminhar mensagens de contato.
 - api/tests/: testes da API.
@@ -19,6 +21,12 @@ python -m http.server 8000 --directory dist
 ~~~
 
 Abra http://localhost:8000.
+
+Para validar a geração estática e o conteúdo PT/EN:
+
+~~~bash
+python -m unittest tests.test_build_site -v
+~~~
 
 ### Prévia no Windows (PowerShell)
 

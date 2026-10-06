@@ -50,8 +50,8 @@
     "title_en": "Air Quality Analysis",
     "category": "Dados · Meio ambiente",
     "category_en": "Data · Environment",
-    "description": "Analisa relações entre poluentes e variáveis meteorológicas, compara modelos preditivos e apresenta os dados em um painel interativo.",
-    "description_en": "Explores relationships between air pollutants and weather variables, compares predictive models, and presents the data in an interactive dashboard.",
+    "description": "Dashboard Dash para explorar um recorte estático de dados de qualidade do ar de 2023. A etapa de modelagem explicativa testa o índice composto com temperatura, umidade, velocidade do vento e mês; os resultados não demonstram desempenho preditivo superior ao baseline da média.",
+    "description_en": "A Dash dashboard for exploring a static 2023 air-quality dataset. The explanatory modeling step tests a composite index using temperature, humidity, wind speed, and month; the reported results do not demonstrate predictive performance beyond the mean baseline.",
     "technologies": [
       "Python",
       "Pandas",
@@ -64,12 +64,12 @@
     "alt_en": "Project chart showing the average PM2.5 concentration by city, computed from the project dataset",
     "featured": true,
     "case_study": {
-      "problem": "Explorar relações entre poluição do ar e condições meteorológicas no conjunto analisado.",
-      "approach": "Comparar modelos usando temperatura, umidade, vento e mês, e apresentar a análise em um painel."
+      "problem": "Examinar se variáveis meteorológicas e o mês ajudam a explicar o índice composto de poluição deste conjunto.",
+      "approach": "OLS e Random Forest usam temperatura, umidade, vento e mês. No teste registrado, a Random Forest obteve R² −0,082, abaixo do baseline da média."
     },
     "case_study_en": {
-      "problem": "Explore relationships between air pollution and weather conditions in the analyzed dataset.",
-      "approach": "Compare models using temperature, humidity, wind, and month, then present the analysis in a dashboard."
+      "problem": "Examine whether weather variables and month help explain the project dataset’s composite pollution index.",
+      "approach": "OLS and Random Forest use temperature, humidity, wind speed, and month. The recorded Random Forest test scored R² −0.082, below the mean baseline."
     }
   },
   {

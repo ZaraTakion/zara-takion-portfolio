@@ -35,7 +35,11 @@ jobs:
           python -m unittest discover -s api/tests -v
           python -m unittest discover -s tests -v
       - name: Check JavaScript syntax
-        run: node --check site/assets/js/main.js && node --check site/config.js
+        run: |
+          node --check site/scripts/main.js
+          node --check site/scripts/navigation.js
+          node --check site/scripts/contact.js
+          node --check site/config.js
       - name: Build static site
         run: python scripts/build_site.py
       - name: Check generated output

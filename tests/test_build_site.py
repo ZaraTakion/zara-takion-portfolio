@@ -47,7 +47,7 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("não demonstram desempenho preditivo superior ao baseline da média", built_html)
         self.assertNotIn("rodzmaciel21@gmail.com", built_html)
         self.assertIn('minlength="10"', built_html)
-        css = (build_site.SOURCE / "assets" / "css" / "site.css").read_text(encoding="utf-8")
+        css = (build_site.OUTPUT / "assets" / "css" / "site.css").read_text(encoding="utf-8")
         self.assertNotIn("overflow-x: clip", css)
         self.assertIn("@media (forced-colors: active)", css)
 
@@ -57,7 +57,7 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn('<html lang="en">', english)
         self.assertIn("Junior Web Developer", english)
         self.assertIn("Technology degree in Internet Systems", english)
-        self.assertIn("intermediate, with B2 reading proficiency", english)
+        self.assertIn("Intermediate · B2 reading proficiency", english)
         self.assertIn("UPA — Academic Portal", english)
         self.assertIn("View repository", english)
         self.assertIn("Technical notes", english)
@@ -87,12 +87,60 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("https://zara-takion-atelier.netlify.app/en/", sitemap)
         self.assertIn("hreflang=\"pt-BR\"", sitemap)
 
+    def test_rebuilt_story_orders_work_before_profile_and_contact(self):
+        build_site.build()
+        html = (build_site.OUTPUT / "index.html").read_text(encoding="utf-8")
+        sections = [
+            'id="inicio"',
+            'id="projetos"',
+            'id="sobre"',
+            'id="arquivo"',
+            'id="formacao"',
+            'id="contato"',
+        ]
+        positions = [html.index(section) for section in sections]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("Desenvolvedor Web Júnior", html)
+        self.assertIn("Back-end Python", html)
+        self.assertIn("Django", html)
+
     def test_every_project_cover_exists_locally(self):
         build_site.validate_projects()
         projects = json.loads((build_site.SOURCE / "data" / "projects.json").read_text(encoding="utf-8"))
         for project in projects:
             with self.subTest(project=project["title"]):
                 self.assertTrue((build_site.SOURCE / project["image"].lstrip("/")).is_file())
+
+    def test_redesigned_interface_keeps_navigation_and_responsive_breakpoint_aligned(self):
+        build_site.build()
+        portuguese = (build_site.SOURCE / "index.html").read_text(encoding="utf-8")
+        english = (build_site.SOURCE / "en" / "index.html").read_text(encoding="utf-8")
+        css = (build_site.OUTPUT / "assets" / "css" / "site.css").read_text(encoding="utf-8")
+        javascript = (build_site.SOURCE / "scripts" / "main.js").read_text(encoding="utf-8")
+        navigation = (build_site.SOURCE / "scripts" / "navigation.js").read_text(encoding="utf-8")
+        contact = (build_site.SOURCE / "scripts" / "contact.js").read_text(encoding="utf-8")
+        for html in (portuguese, english):
+            is_portuguese = '<html lang="pt-BR">' in html
+            with self.subTest(language="pt-BR" if is_portuguese else "en"):
+                self.assertIn('class="hero-portrait"', html)
+                self.assertIn('id="projetos"' if is_portuguese else 'id="projects"', html)
+                self.assertIn('id="contato"' if is_portuguese else 'id="contact"', html)
+                self.assertIn('data-netlify="true"', html)
+                self.assertIn('aria-controls="main-nav"', html)
+                self.assertIn('type="module" src="/scripts/main.js"', html)
+        self.assertIn("@media (max-width: 800px)", css)
+        self.assertIn('matchMedia("(min-width: 801px)")', navigation)
+        self.assertIn('fetch(`${apiBaseUrl}/api/contact`', contact)
+        self.assertIn("prefers-reduced-motion: reduce", css)
+        self.assertNotIn("overflow-x: hidden", css)
+        self.assertNotIn("overflow-x: clip", css)
+
+    def test_build_bundles_modular_styles_without_serving_source_modules(self):
+        build_site.build()
+        bundled_css = (build_site.OUTPUT / "assets" / "css" / "site.css").read_text(encoding="utf-8")
+        self.assertIn("/* --- tokens.css --- */", bundled_css)
+        self.assertIn("/* --- responsive.css --- */", bundled_css)
+        self.assertFalse((build_site.OUTPUT / "styles").exists())
 
     def test_build_writes_empty_api_config_by_default(self):
         with patch.dict(os.environ, {}, clear=True):

@@ -70,9 +70,9 @@ A API responde em http://127.0.0.1:5000. Sem variáveis SMTP, o endpoint de cont
 
 ## Publicação automática no Cloudflare Workers
 
-O site está preparado para o endereço `https://takiondesktop.zaratakion.workers.dev/`. O `wrangler.jsonc` aponta os arquivos estáticos para `dist`; o build é `python scripts/build_site.py` e o comando de deploy é `npx wrangler deploy`.
+O site está preparado para o endereço `https://portfolio.zaratakion.workers.dev/`. O `wrangler.jsonc` aponta os arquivos estáticos para `dist`; o build é `python scripts/build_site.py` e o comando de deploy é `npx wrangler deploy`.
 
-**Nome público:** Zara Takion.exe. O identificador técnico do Worker é `takiondesktop` e o endereço de produção usa a assinatura `zaratakion.workers.dev`.
+**Nome público:** Zara Takion.exe. O identificador técnico do Worker é `portfolio` e o endereço de produção usa a assinatura `zaratakion.workers.dev`.
 
 Para ativar publicação automática a cada atualização da branch `main`:
 

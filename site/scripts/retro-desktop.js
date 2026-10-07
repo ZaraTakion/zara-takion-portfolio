@@ -1,4 +1,4 @@
-const MOBILE_QUERY = "(max-width: 800px)";
+const DESKTOP_QUERY = "(min-width: 1200px)";
 
 export function initRetroDesktop() {
   const main = document.querySelector(".retro-desktop-stage");
@@ -6,6 +6,7 @@ export function initRetroDesktop() {
   const bootScreen = main?.querySelector(".boot-screen");
   if (!main || !startScreen || !bootScreen) return;
 
+  const desktopQuery = window.matchMedia(DESKTOP_QUERY);
   const isEnglish = document.documentElement.lang.toLowerCase().startsWith("en");
   const labels = isEnglish ? {
     home: "welcome.exe",
@@ -16,7 +17,6 @@ export function initRetroDesktop() {
     contact: "connect.exe",
     minimize: "Minimize window",
     close: "Close window",
-    closeApp: "Close app",
   } : {
     home: "bem-vindo.exe",
     projects: "projetos/",
@@ -26,7 +26,6 @@ export function initRetroDesktop() {
     contact: "connect.exe",
     minimize: "Minimizar janela",
     close: "Fechar janela",
-    closeApp: "Fechar aplicativo",
   };
 
   const windows = new Map([
@@ -50,30 +49,32 @@ export function initRetroDesktop() {
       .filter(([, section]) => section)
       .map(([key, section]) => [section.id, key]),
   );
-  const canonicalKey = (key) => windows.has(key) ? key : aliases[key];
-  const appKeyForHref = (href = "") => sectionToKey.get(href.replace(/^#/, ""));
-  const mobileQuery = window.matchMedia(MOBILE_QUERY);
 
-  let zIndex = 4;
+  let zIndex = 10;
   let bootTimer = null;
   let desktopStarted = false;
 
+  const canonicalKey = (key) => windows.has(key) ? key : aliases[key];
+  const appKeyForHref = (href = "") => sectionToKey.get(href.replace(/^#/, ""));
+  const desktopActive = () => desktopQuery.matches && main.classList.contains("retro-enhanced");
+
   function launcherFor(key) {
-    const aliasesForKey = {
+    const values = {
       inicio: ["inicio", "home"],
       projetos: ["projetos", "projects"],
       sobre: ["sobre", "about"],
       arquivo: ["arquivo", "archive"],
       formacao: ["formacao", "education"],
       contato: ["contato", "contact"],
-    };
-    return aliasesForKey[key]
-      ?.map((value) => main.querySelector(`[data-app-open="${value}"]`))
-      .find(Boolean) || main.querySelector("[data-app-open]");
+    }[key] || [];
+
+    return values
+      .map((value) => main.querySelector(`[data-app-open="${value}"]`))
+      .find(Boolean) || null;
   }
 
   function focusWindow(section) {
-    if (!section) return;
+    if (!section || !desktopActive()) return;
     window.requestAnimationFrame(() => {
       section.querySelector("h1, h2")?.focus({ preventScroll: true });
     });
@@ -85,24 +86,19 @@ export function initRetroDesktop() {
     }
   }
 
-  function setMobileModalOpen(isOpen) {
-    main.classList.toggle("mobile-app-open", isOpen);
-    document.body.classList.toggle("mobile-app-modal-open", isOpen);
+  function clearSectionHash(section) {
+    if (!section || location.hash !== `#${section.id}`) return;
+    history.replaceState(null, "", `${location.pathname}${location.search}`);
   }
 
   function closeWindow(key, section, { restoreFocus = true, updateUrl = true } = {}) {
-    section.classList.remove("is-open", "is-mobile-active", "has-focus");
-    if (mobileQuery.matches) setMobileModalOpen(false);
-
-    if (updateUrl && location.hash === `#${section.id}`) {
-      history.replaceState(null, "", `${location.pathname}${location.search}`);
-    }
-
-    if (restoreFocus) launcherFor(key)?.focus({ preventScroll: true });
+    section.classList.remove("is-open", "has-focus");
+    if (updateUrl) clearSectionHash(section);
+    if (restoreFocus && desktopActive()) launcherFor(key)?.focus({ preventScroll: true });
   }
 
-  for (const [key, section] of windows) {
-    if (!section) continue;
+  function createWindowChrome(key, section) {
+    if (section.querySelector(":scope > .retro-window-titlebar")) return;
 
     section.classList.add("retro-app-window");
     section.dataset.appWindow = key;
@@ -110,8 +106,6 @@ export function initRetroDesktop() {
 
     const heading = section.querySelector("h1, h2");
     if (heading) heading.tabIndex = -1;
-
-    if (section.querySelector(":scope > .retro-window-titlebar")) continue;
 
     const titlebar = document.createElement("div");
     titlebar.className = "retro-window-titlebar";
@@ -132,7 +126,7 @@ export function initRetroDesktop() {
     const close = document.createElement("button");
     close.type = "button";
     close.className = "retro-window-close";
-    close.setAttribute("aria-label", mobileQuery.matches ? labels.closeApp : labels.close);
+    close.setAttribute("aria-label", labels.close);
     close.textContent = "×";
 
     controls.append(minimize, close);
@@ -143,14 +137,36 @@ export function initRetroDesktop() {
     close.addEventListener("click", () => closeWindow(key, section));
 
     section.addEventListener("pointerdown", () => {
-      if (mobileQuery.matches) return;
+      if (!desktopActive()) return;
       section.style.zIndex = String(++zIndex);
       section.classList.add("has-focus");
       removeWindowFocus(section);
     });
   }
 
+  for (const [key, section] of windows) {
+    if (section) createWindowChrome(key, section);
+  }
+
+  function openApp(rawKey, { focus = true } = {}) {
+    if (!desktopActive()) return false;
+
+    const key = canonicalKey(rawKey);
+    const section = windows.get(key);
+    if (!section) return false;
+
+    if (!desktopStarted) startDesktop(null, { focus: false });
+
+    section.classList.add("is-open", "has-focus");
+    section.style.zIndex = String(++zIndex);
+    removeWindowFocus(section);
+    if (focus) focusWindow(section);
+    return true;
+  }
+
   function startDesktop(openKey = null, { focus = true } = {}) {
+    if (!desktopActive()) return;
+
     if (bootTimer !== null) {
       window.clearTimeout(bootTimer);
       bootTimer = null;
@@ -162,63 +178,64 @@ export function initRetroDesktop() {
     document.body.classList.add("retro-session-active");
     desktopStarted = true;
 
-    const initialKeys = mobileQuery.matches ? ["inicio"] : ["inicio", "projetos"];
-    for (const key of initialKeys) windows.get(key)?.classList.add("is-open");
+    windows.get("inicio")?.classList.add("is-open");
+    windows.get("projetos")?.classList.add("is-open");
 
-    if (openKey) {
-      openApp(openKey, { focus });
-      return;
-    }
-
+    if (openKey && openApp(openKey, { focus })) return;
     if (focus) focusWindow(windows.get("inicio"));
   }
 
-  function openApp(rawKey, { focus = true } = {}) {
-    const key = canonicalKey(rawKey);
-    const section = windows.get(key);
-    if (!section) return;
-
-    if (!desktopStarted) startDesktop(null, { focus: false });
-
-    section.classList.add("is-open", "has-focus");
-    section.style.zIndex = String(++zIndex);
-    removeWindowFocus(section);
-
-    if (mobileQuery.matches) {
-      setMobileModalOpen(true);
-      for (const other of windows.values()) {
-        if (other !== section) other?.classList.remove("is-mobile-active");
-      }
-      section.classList.add("is-mobile-active");
-    } else {
-      setMobileModalOpen(false);
-      for (const other of windows.values()) other?.classList.remove("is-mobile-active");
-    }
-
-    if (focus) focusWindow(section);
-  }
-
   function navigateToApp(link) {
+    if (!desktopActive()) return false;
+
     const href = link.getAttribute("href") || "";
     const key = canonicalKey(link.dataset.appOpen || appKeyForHref(href));
     if (!key || !windows.has(key)) return false;
 
     openApp(key);
-    if (href.startsWith("#") && location.hash !== href) {
-      history.pushState(null, "", href);
-    }
+    if (href.startsWith("#") && location.hash !== href) history.pushState(null, "", href);
     return true;
   }
 
   function startBoot() {
+    if (!desktopActive()) return;
     startScreen.hidden = true;
     bootScreen.hidden = false;
     bootScreen.querySelector("[data-boot-skip]")?.focus();
-    const wait = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 350 : 1800;
+
+    const wait = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 150 : 900;
     bootTimer = window.setTimeout(() => startDesktop(), wait);
   }
 
-  main.classList.add("retro-enhanced");
+  function syncLocationToDesktop() {
+    if (!desktopActive()) return;
+    const key = appKeyForHref(location.hash);
+    if (key) openApp(key, { focus: false });
+  }
+
+  function applyViewportMode() {
+    if (desktopQuery.matches) {
+      main.classList.add("retro-enhanced");
+      if (desktopStarted) document.body.classList.add("retro-session-active");
+      if (location.hash) {
+        const key = appKeyForHref(location.hash);
+        if (key) {
+          if (!desktopStarted) startDesktop(key, { focus: false });
+          else openApp(key, { focus: false });
+        }
+      }
+      return;
+    }
+
+    if (bootTimer !== null) {
+      window.clearTimeout(bootTimer);
+      bootTimer = null;
+    }
+
+    main.classList.remove("retro-enhanced");
+    document.body.classList.remove("retro-session-active");
+  }
+
   main.querySelector("[data-desktop-start]")?.addEventListener("click", () => startDesktop());
   main.querySelector("[data-desktop-boot]")?.addEventListener("click", startBoot);
   main.querySelector("[data-boot-skip]")?.addEventListener("click", () => startDesktop());
@@ -238,61 +255,19 @@ export function initRetroDesktop() {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape" || !mobileQuery.matches || !main.classList.contains("mobile-app-open")) return;
-    const active = [...windows.entries()].find(([, section]) => section?.classList.contains("is-mobile-active"));
-    if (active) closeWindow(active[0], active[1]);
+    if (event.key !== "Escape" || !desktopActive()) return;
+    const focused = [...windows.entries()].find(([, section]) => section?.classList.contains("has-focus"));
+    if (focused) closeWindow(focused[0], focused[1]);
   });
 
-  const updateViewportMode = () => {
-    for (const section of windows.values()) {
-      const close = section?.querySelector(".retro-window-close");
-      close?.setAttribute("aria-label", mobileQuery.matches ? labels.closeApp : labels.close);
-    }
+  window.addEventListener("hashchange", syncLocationToDesktop);
+  window.addEventListener("popstate", syncLocationToDesktop);
 
-    if (mobileQuery.matches) {
-      if (!desktopStarted) return;
-
-      const activeEntry = [...windows.entries()].find(([, section]) =>
-        section?.classList.contains("is-open") && section.classList.contains("has-focus")
-      ) || [...windows.entries()].find(([, section]) =>
-        section?.classList.contains("is-open") && section.dataset.appWindow !== "inicio"
-      );
-
-      for (const section of windows.values()) section?.classList.remove("is-mobile-active");
-
-      if (activeEntry && activeEntry[0] !== "inicio") {
-        activeEntry[1].classList.add("is-mobile-active");
-        setMobileModalOpen(true);
-      } else {
-        setMobileModalOpen(false);
-      }
-      return;
-    }
-
-    setMobileModalOpen(false);
-    for (const section of windows.values()) section?.classList.remove("is-mobile-active");
-  };
-
-  if (typeof mobileQuery.addEventListener === "function") {
-    mobileQuery.addEventListener("change", updateViewportMode);
-  } else if (typeof mobileQuery.addListener === "function") {
-    mobileQuery.addListener(updateViewportMode);
+  if (typeof desktopQuery.addEventListener === "function") {
+    desktopQuery.addEventListener("change", applyViewportMode);
+  } else if (typeof desktopQuery.addListener === "function") {
+    desktopQuery.addListener(applyViewportMode);
   }
-
-  const syncWindowWithLocation = () => {
-    const key = appKeyForHref(location.hash);
-    if (key) {
-      openApp(key, { focus: false });
-      return;
-    }
-
-    if (!desktopStarted || !mobileQuery.matches) return;
-    const active = [...windows.entries()].find(([, section]) => section?.classList.contains("is-mobile-active"));
-    if (active) closeWindow(active[0], active[1], { restoreFocus: false, updateUrl: false });
-  };
-
-  window.addEventListener("hashchange", syncWindowWithLocation);
-  window.addEventListener("popstate", syncWindowWithLocation);
 
   const clock = main.querySelector("[data-system-clock]");
   const updateClock = () => {
@@ -306,8 +281,5 @@ export function initRetroDesktop() {
   updateClock();
   window.setInterval(updateClock, 60_000);
 
-  if (location.hash) {
-    const key = appKeyForHref(location.hash);
-    if (key) startDesktop(key, { focus: false });
-  }
+  applyViewportMode();
 }

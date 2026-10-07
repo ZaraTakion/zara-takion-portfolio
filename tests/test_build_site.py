@@ -133,9 +133,11 @@ class StaticBuildTests(unittest.TestCase):
         portuguese = (build_site.SOURCE / "index.html").read_text(encoding="utf-8")
         english = (build_site.SOURCE / "en" / "index.html").read_text(encoding="utf-8")
         css = (build_site.OUTPUT / "assets" / "css" / "site.css").read_text(encoding="utf-8")
-        javascript = (build_site.SOURCE / "scripts" / "main.js").read_text(encoding="utf-8")
+        desktop = (build_site.SOURCE / "scripts" / "retro-desktop.js").read_text(encoding="utf-8")
+        explorer = (build_site.SOURCE / "scripts" / "project-explorer.js").read_text(encoding="utf-8")
         navigation = (build_site.SOURCE / "scripts" / "navigation.js").read_text(encoding="utf-8")
         filters = (build_site.SOURCE / "scripts" / "project-filters.js").read_text(encoding="utf-8")
+
         for html in (portuguese, english):
             is_portuguese = '<html lang="pt-BR">' in html
             with self.subTest(language="pt-BR" if is_portuguese else "en"):
@@ -147,23 +149,25 @@ class StaticBuildTests(unittest.TestCase):
                 self.assertIn('data-desktop-boot', html)
                 self.assertIn('aria-controls="main-nav"', html)
                 self.assertIn('type="module" src="/scripts/main.js"', html)
+
         self.assertIn("@media (max-width: 800px)", css)
+        self.assertIn("@media (min-width: 1200px)", css)
         self.assertIn('matchMedia("(min-width: 801px)")', navigation)
+        self.assertIn('const DESKTOP_QUERY = "(min-width: 1200px)"', desktop)
+        self.assertIn('const DESKTOP_QUERY = "(min-width: 1200px)"', explorer)
         self.assertIn('data-project-filters', portuguese)
         self.assertIn('data-project-filters', english)
         self.assertIn('aria-pressed', filters)
         self.assertIn('project-filters.css', css)
         self.assertIn('retro-desktop.css', css)
-        self.assertIn('.retro-desktop-stage.retro-enhanced > .boot-screen:not([hidden])', css)
-        self.assertIn('mobile-app-open > #projects.retro-app-window.is-mobile-active', css)
+        self.assertIn('.retro-desktop-stage.retro-enhanced > .startup-screen:not([hidden])', css)
+        self.assertIn('.startup-screen,', css)
+        self.assertIn('.project-explorer {', css)
         self.assertIn('@media (max-width: 390px)', css)
-        narrow_phone_rules = css.split('@media (max-width: 390px)', 1)[1].split('@media', 1)[0]
-        self.assertIn('.project-archive-grid .project-card { grid-template-columns: minmax(0, 1fr); }', narrow_phone_rules)
         self.assertIn('@media (min-width: 1800px) and (min-height: 1000px)', css)
-        self.assertIn('width: min(48vw, 1400px)', css)
         self.assertIn("prefers-reduced-motion: reduce", css)
-        self.assertNotIn("overflow-x: hidden", css)
-        self.assertNotIn("overflow-x: clip", css)
+        self.assertNotIn("mobile-app-open", css)
+        self.assertNotIn("is-mobile-active", css)
 
     def test_build_bundles_modular_styles_without_serving_source_modules(self):
         build_site.build()
@@ -209,14 +213,21 @@ class StaticBuildTests(unittest.TestCase):
 
     def test_final_responsive_contract_covers_desktop_and_mobile_web(self):
         css = (build_site.SOURCE / "styles" / "retro-desktop.css").read_text(encoding="utf-8")
-        self.assertIn("@media (min-width: 801px) and (max-width: 1199px)", css)
+        desktop = (build_site.SOURCE / "scripts" / "retro-desktop.js").read_text(encoding="utf-8")
+        explorer = (build_site.SOURCE / "scripts" / "project-explorer.js").read_text(encoding="utf-8")
+        smoke = (build_site.ROOT / "scripts" / "ui-smoke.mjs").read_text(encoding="utf-8")
+
+        self.assertIn("@media (min-width: 1200px)", css)
         self.assertIn("@media (max-width: 800px)", css)
-        self.assertIn("@media (max-width: 560px)", css)
-        self.assertIn("scroll-snap-type: x proximity", css)
-        self.assertIn("min-height: 44px", css)
+        self.assertIn("@media (max-width: 390px)", css)
+        self.assertIn('const DESKTOP_QUERY = "(min-width: 1200px)"', desktop)
+        self.assertIn('const DESKTOP_QUERY = "(min-width: 1200px)"', explorer)
+        self.assertIn("desktop-1366", smoke)
+        self.assertIn("laptop-1024", smoke)
+        self.assertIn("mobile-360", smoke)
+        self.assertIn("assertNormalDocument", smoke)
         self.assertNotIn("width: 100vw;", css)
-        self.assertIn("body.mobile-app-modal-open", css)
-        self.assertIn("height: 100dvh", css)
+        self.assertNotIn("mobile-app-modal-open", css)
 
     def test_project_tracks_are_validated(self):
         projects_path = build_site.SOURCE / "data" / "projects.json"

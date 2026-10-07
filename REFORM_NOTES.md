@@ -48,3 +48,15 @@ O objetivo não é forçar uma resolução fixa: o layout deve se adaptar ao vie
 - **Telefones estreitos (560 px ou menos):** hero, widgets, arquivo e perfil refluem para uma coluna quando necessário.
 - Alvos interativos principais no mobile têm no mínimo 44 px, e a tipografia dos projetos deixa de usar tamanhos excessivamente pequenos.
 - O explorador de projetos usa navegação horizontal no mobile, alinhada à orientação ARIA definida pelo JavaScript.
+
+
+## V2 estrutural — progressive enhancement
+
+A V2 abandona a ideia de transformar o desktop simulado em uma interface mobile.
+
+- Abaixo de **1200 px**, o portfólio é um documento responsivo normal: Hero, projetos, perfil, formação e contato seguem o fluxo da página.
+- A partir de **1200 px**, JavaScript ativa a experiência **Zara Takion.exe** com startup opcional, janelas, widgets e atalhos.
+- O explorador de projetos também só é montado no modo desktop e é desmontado quando o viewport volta para tablet/mobile.
+- Navegação por âncora e menu continuam funcionando sem depender do desktop simulado.
+- O breakpoint pode ser atravessado em tempo real: a página volta ao fluxo normal abaixo de 1200 px e reativa a experiência desktop acima dele.
+- Os testes em Chromium cobrem 360×800, 390×844, 768×1024, 1024×768, 1366×768 e 1920×1080.

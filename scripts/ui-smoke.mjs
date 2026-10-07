@@ -6,36 +6,70 @@ const outputDir = "artifacts/ui";
 await mkdir(outputDir, { recursive: true });
 
 const viewports = [
-  { name: "desktop-1366", width: 1366, height: 768, mobile: false },
-  { name: "desktop-1024", width: 1024, height: 768, mobile: false },
-  { name: "mobile-390", width: 390, height: 844, mobile: true },
-  { name: "mobile-360", width: 360, height: 800, mobile: true },
+  { name: "mobile-360", width: 360, height: 800, desktopShell: false },
+  { name: "mobile-390", width: 390, height: 844, desktopShell: false },
+  { name: "tablet-768", width: 768, height: 1024, desktopShell: false },
+  { name: "laptop-1024", width: 1024, height: 768, desktopShell: false },
+  { name: "desktop-1366", width: 1366, height: 768, desktopShell: true },
+  { name: "desktop-1920", width: 1920, height: 1080, desktopShell: true },
 ];
 
 const browser = await chromium.launch({ headless: true });
 
-async function assertNoHorizontalOverflow(page, label) {
-  const metrics = await page.evaluate(() => ({
-    viewport: window.innerWidth,
+async function metrics(page) {
+  return page.evaluate(() => ({
+    viewport: innerWidth,
     html: document.documentElement.scrollWidth,
     body: document.body.scrollWidth,
   }));
-  if (metrics.html > metrics.viewport + 1 || metrics.body > metrics.viewport + 1) {
-    throw new Error(`${label}: horizontal overflow detected: ${JSON.stringify(metrics)}`);
+}
+
+async function assertNoHorizontalOverflow(page, label) {
+  const value = await metrics(page);
+  if (value.html > value.viewport + 1 || value.body > value.viewport + 1) {
+    throw new Error(`${label}: horizontal overflow: ${JSON.stringify(value)}`);
   }
 }
 
-async function assertVisibleWindowsStayInsideViewport(page, label) {
-  const boxes = await page.locator(".retro-app-window.is-open:visible").evaluateAll((nodes) =>
-    nodes.map((node) => {
-      const rect = node.getBoundingClientRect();
-      return { id: node.id, x: rect.x, y: rect.y, right: rect.right, bottom: rect.bottom };
-    })
-  );
-  const viewport = await page.evaluate(() => ({ width: innerWidth, height: innerHeight }));
-  for (const box of boxes) {
-    if (box.x < -1 || box.right > viewport.width + 1 || box.y < -1 || box.bottom > viewport.height + 1) {
-      throw new Error(`${label}: window outside viewport: ${JSON.stringify({ box, viewport })}`);
+async function assertNormalDocument(page, label) {
+  const state = await page.evaluate(() => ({
+    enhanced: document.querySelector(".retro-desktop-stage")?.classList.contains("retro-enhanced"),
+    startupVisible: getComputedStyle(document.querySelector(".startup-screen")).display !== "none",
+    heroVisible: Boolean(document.querySelector("#inicio, #home")?.getClientRects().length),
+    gridVisible: Boolean(document.querySelector(".featured-project-grid")?.getClientRects().length),
+    explorerPresent: Boolean(document.querySelector(".project-explorer")),
+    navLinks: [...document.querySelectorAll("#main-nav > a:not(.language-switch)")].every((node) => getComputedStyle(node).display !== "none"),
+  }));
+
+  if (state.enhanced || state.startupVisible || !state.heroVisible || !state.gridVisible || state.explorerPresent || !state.navLinks) {
+    throw new Error(`${label}: base responsive document is not intact: ${JSON.stringify(state)}`);
+  }
+}
+
+async function assertDesktopWindowsInsideStage(page, label) {
+  const result = await page.evaluate(() => {
+    const stage = document.querySelector(".retro-desktop-stage");
+    const stageRect = stage.getBoundingClientRect();
+    const windows = [...stage.querySelectorAll(".retro-app-window.is-open")]
+      .filter((node) => getComputedStyle(node).display !== "none")
+      .map((node) => {
+        const rect = node.getBoundingClientRect();
+        return { id: node.id, left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
+      });
+    return {
+      stage: { left: stageRect.left, top: stageRect.top, right: stageRect.right, bottom: stageRect.bottom },
+      windows,
+    };
+  });
+
+  for (const box of result.windows) {
+    if (
+      box.left < result.stage.left - 1 ||
+      box.right > result.stage.right + 1 ||
+      box.top < result.stage.top - 1 ||
+      box.bottom > result.stage.bottom + 1
+    ) {
+      throw new Error(`${label}: desktop window escaped stage: ${JSON.stringify({ box, stage: result.stage })}`);
     }
   }
 }
@@ -43,62 +77,41 @@ async function assertVisibleWindowsStayInsideViewport(page, label) {
 for (const viewport of viewports) {
   const page = await browser.newPage({ viewport: { width: viewport.width, height: viewport.height } });
   await page.goto(baseURL, { waitUntil: "networkidle" });
-  await assertNoHorizontalOverflow(page, `${viewport.name}/startup`);
+  await assertNoHorizontalOverflow(page, `${viewport.name}/initial`);
+
+  if (!viewport.desktopShell) {
+    await assertNormalDocument(page, viewport.name);
+    await page.screenshot({ path: `${outputDir}/${viewport.name}.png`, fullPage: true });
+    await page.close();
+    continue;
+  }
+
+  await page.waitForFunction(() => document.querySelector(".retro-desktop-stage")?.classList.contains("retro-enhanced"));
+  const startupDisplay = await page.locator(".startup-screen").evaluate((node) => getComputedStyle(node).display);
+  if (startupDisplay === "none") throw new Error(`${viewport.name}: desktop startup screen is missing`);
 
   await page.locator("[data-desktop-start]").click();
   await page.locator(".retro-desktop-stage.desktop-running").waitFor();
+  await page.locator(".project-explorer").waitFor();
   await assertNoHorizontalOverflow(page, `${viewport.name}/desktop`);
+  await assertDesktopWindowsInsideStage(page, viewport.name);
+  await page.screenshot({ path: `${outputDir}/${viewport.name}.png`, fullPage: true });
 
-  if (viewport.mobile) {
-    const projectsLauncher = page.locator('[data-app-open="projetos"]');
-    await projectsLauncher.click();
-    await page.locator("#projetos.is-mobile-active").waitFor();
-
-    const state = await page.evaluate(() => ({
-      mainOpen: document.querySelector(".retro-desktop-stage")?.classList.contains("mobile-app-open"),
-      bodyLocked: document.body.classList.contains("mobile-app-modal-open"),
-      hash: location.hash,
-    }));
-    if (!state.mainOpen || !state.bodyLocked || state.hash !== "#projetos") {
-      throw new Error(`${viewport.name}: mobile app state is inconsistent: ${JSON.stringify(state)}`);
-    }
-
-    const box = await page.locator("#projetos.is-mobile-active").boundingBox();
-    if (!box || Math.abs(box.x) > 1 || Math.abs(box.y) > 1 || Math.abs(box.width - viewport.width) > 1 || Math.abs(box.height - viewport.height) > 1) {
-      throw new Error(`${viewport.name}: mobile app does not fill the viewport: ${JSON.stringify(box)}`);
-    }
-
-    await assertNoHorizontalOverflow(page, `${viewport.name}/projects`);
-    await page.screenshot({ path: `${outputDir}/${viewport.name}-projects.png`, fullPage: true });
-
-    await page.goBack();
-    await page.waitForFunction(() => !document.querySelector(".retro-desktop-stage")?.classList.contains("mobile-app-open"));
-    const afterBack = await page.evaluate(() => ({
-      bodyLocked: document.body.classList.contains("mobile-app-modal-open"),
-      active: Boolean(document.querySelector(".retro-app-window.is-mobile-active")),
-      hash: location.hash,
-    }));
-    if (afterBack.bodyLocked || afterBack.active || afterBack.hash) {
-      throw new Error(`${viewport.name}: browser Back did not close the mobile app: ${JSON.stringify(afterBack)}`);
-    }
-
-    await projectsLauncher.click();
-    await page.locator("#projetos.is-mobile-active").waitFor();
+  if (viewport.width === 1366) {
     await page.setViewportSize({ width: 1024, height: 768 });
-    await page.waitForFunction(() => !document.body.classList.contains("mobile-app-modal-open"));
-    await assertNoHorizontalOverflow(page, `${viewport.name}/resized-desktop`);
+    await page.waitForFunction(() => !document.querySelector(".retro-desktop-stage")?.classList.contains("retro-enhanced"));
+    await page.waitForFunction(() => Boolean(document.querySelector(".featured-project-grid")));
+    await assertNormalDocument(page, "desktop-to-tablet");
+    await assertNoHorizontalOverflow(page, "desktop-to-tablet");
 
-    await page.setViewportSize({ width: viewport.width, height: viewport.height });
-    await page.waitForFunction(() => document.querySelector("#projetos")?.classList.contains("is-mobile-active"));
-    await page.waitForFunction(() => document.body.classList.contains("mobile-app-modal-open"));
-    await assertNoHorizontalOverflow(page, `${viewport.name}/resized-mobile`);
-  } else {
-    await assertVisibleWindowsStayInsideViewport(page, viewport.name);
-    await page.screenshot({ path: `${outputDir}/${viewport.name}.png`, fullPage: true });
+    await page.setViewportSize({ width: 1366, height: 768 });
+    await page.waitForFunction(() => document.querySelector(".retro-desktop-stage")?.classList.contains("retro-enhanced"));
+    await page.waitForFunction(() => Boolean(document.querySelector(".project-explorer")));
+    await assertDesktopWindowsInsideStage(page, "tablet-to-desktop");
   }
 
   await page.close();
 }
 
 await browser.close();
-console.log("Responsive browser smoke tests passed.");
+console.log("Responsive V2 browser smoke tests passed.");

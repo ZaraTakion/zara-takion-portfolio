@@ -646,11 +646,11 @@ body.retro-session-active .main-nav { gap: 0; }
 /* Scale the simulated desktop for large 16:9 displays such as 4K. */
 @media (min-width: 1800px) and (min-height: 1000px) {
   html { font-size: clamp(16px, 1vw, 22px); }
-  .retro-desktop-stage.retro-enhanced.desktop-running { min-height: min(88svh, 1500px); }
+  .retro-desktop-stage.retro-enhanced.desktop-running { min-height: min(88svh, 1900px); }
 
   #inicio.retro-app-window {
     top: clamp(34px, 4svh, 100px);
-    left: clamp(280px, 15vw, 560px);
+    left: clamp(310px, 16vw, 620px);
     width: min(43vw, 1200px);
     max-height: min(60svh, 780px);
   }
@@ -679,6 +679,7 @@ body.retro-session-active .main-nav { gap: 0; }
     width: min(48vw, 1360px);
     max-height: min(78svh, 1150px);
   }
+  .project-archive-grid .project-card { grid-template-columns: clamp(220px, 16vw, 380px) minmax(0, 1fr); }
   #formacao.retro-app-window,#education.retro-app-window {
     top: clamp(88px, 6.5svh, 160px);
     left: clamp(350px, 24vw, 820px);
@@ -707,4 +708,42 @@ body.retro-session-active .main-nav { gap: 0; }
   }
   .music-widget-body { grid-template-columns: clamp(45px, 3vw, 90px) minmax(0, 1fr); }
   .music-cover { width: clamp(45px, 3vw, 90px); height: clamp(45px, 3vw, 90px); }
+}
+
+/* Keep the simulated desktop comfortable to read and operate on touch screens. */
+@media (max-width: 800px) {
+  .startup-titlebar,.retro-window-titlebar,.widget-title { font-size: .75rem; }
+  .boot-skip { min-height: 44px; }
+  .desktop-apps a { font-size: .72rem; }
+  .music-track,.music-artist,.music-widget-body a,.system-widget-body p { font-size: .72rem; }
+  #inicio .eyebrow,#inicio .hero-role { font-size: .75rem; }
+  #inicio .hero-intro { font-size: .9rem; }
+  #inicio .hero-stack li { padding: 5px 7px; font-size: .7rem; }
+  #inicio .hero-actions .button { min-height: 44px; font-size: .72rem; }
+  #inicio .hero-socials { font-size: .72rem; }
+  .digital-profile-name { font-size: .75rem; }
+  .digital-profile-status,.digital-profile-location { font-size: .65rem; }
+  .project-explorer-item { min-height: 44px; }
+  .project-explorer-item-copy strong { font-size: .75rem; }
+  .project-explorer-item-copy small { font-size: .68rem; }
+  .project-explorer-item-copy em { font-size: .62rem; }
+  .project-windowbar,.project-category,.project-period,.project-case-study dt,.project-tags li,.project-visual figcaption { font-size: .68rem; }
+  .project-description,.project-highlights,.project-case-study dd { font-size: .85rem; }
+  .about-heading > p:not(.section-kicker),.skill-groups p,.skills-note,.education-entry p,.language-levels { font-size: .82rem; }
+  .project-link,.project-case-more summary,.project-explorer-case .project-actions a { min-height: 44px; }
+  .project-case-more summary { display: flex; align-items: center; }
+  .project-filter-options button { min-height: 44px; padding-inline: 12px; font-size: .72rem; }
+  .retro-window-controls button { width: 44px; height: 44px; }
+}
+
+/* On narrow phones, give the introduction the full line width and keep the profile beside its details. */
+@media (max-width: 390px) {
+  .project-archive-grid .project-card { grid-template-columns: minmax(0, 1fr); }
+  .project-archive-grid .project-visual { min-height: 0; aspect-ratio: 16 / 9; }
+  .project-archive-grid .project-visual img { object-fit: cover; }
+  .project-archive-grid .project-copy { padding: 18px; }
+  #inicio .hero-grid { grid-template-columns: minmax(0, 1fr); }
+  .digital-profile { display: grid; grid-template-columns: 54px minmax(0, 1fr); align-items: center; column-gap: 10px; padding: 9px; text-align: left; }
+  .digital-monogram { grid-row: span 3; width: 50px; height: 50px; margin: 0; font-size: 1.1rem; }
+  .digital-profile-name,.digital-profile-status,.digital-profile-location { margin: 0; }
 }

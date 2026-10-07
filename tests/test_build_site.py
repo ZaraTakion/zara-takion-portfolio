@@ -207,6 +207,15 @@ class StaticBuildTests(unittest.TestCase):
         finally:
             temporary_path.unlink(missing_ok=True)
 
+    def test_final_responsive_contract_covers_desktop_and_mobile_web(self):
+        css = (build_site.SOURCE / "styles" / "retro-desktop.css").read_text(encoding="utf-8")
+        self.assertIn("@media (min-width: 801px) and (max-width: 1199px)", css)
+        self.assertIn("@media (max-width: 800px)", css)
+        self.assertIn("@media (max-width: 560px)", css)
+        self.assertIn("scroll-snap-type: x proximity", css)
+        self.assertIn("min-height: 44px", css)
+        self.assertNotIn("width: 100vw;", css)
+
     def test_project_tracks_are_validated(self):
         projects_path = build_site.SOURCE / "data" / "projects.json"
         original = projects_path.read_text(encoding="utf-8")

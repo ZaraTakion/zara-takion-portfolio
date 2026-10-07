@@ -39,3 +39,12 @@ python -m unittest discover -s api/tests -v
 A composição mantém o modo desktop a partir de 801px e troca para uma experiência de aplicativos em tela cheia abaixo desse limite. O CSS também contém direção específica para telas grandes, incluindo 4K, e regras de reflow para telefones estreitos.
 
 O objetivo não é forçar uma resolução fixa: o layout deve se adaptar ao viewport disponível, inclusive em 320 CSS px de largura, sem exigir rolagem horizontal para o conteúdo principal.
+
+
+## Contrato responsivo final
+
+- **Desktop web (801 px ou mais):** mantém o desktop simulado com janelas, atalhos e widgets; entre 801 e 1199 px, posições e larguras são compactadas para evitar colisões.
+- **Mobile web (800 px ou menos):** o desktop vira uma interface touch-first; aplicativos abrem em tela cheia, respeitam safe areas e não usam `100vw`.
+- **Telefones estreitos (560 px ou menos):** hero, widgets, arquivo e perfil refluem para uma coluna quando necessário.
+- Alvos interativos principais no mobile têm no mínimo 44 px, e a tipografia dos projetos deixa de usar tamanhos excessivamente pequenos.
+- O explorador de projetos usa navegação horizontal no mobile, alinhada à orientação ARIA definida pelo JavaScript.

@@ -618,7 +618,7 @@ body.retro-session-active .main-nav { gap: 0; }
     inset: 0;
     z-index: var(--z-menu);
     display: block;
-    width: 100vw;
+    width: auto;
     max-width: none;
     max-height: 100dvh;
     margin: 0;
@@ -723,4 +723,400 @@ body.retro-session-active .main-nav { gap: 0; }
   }
   .music-widget-body { grid-template-columns: clamp(45px, 3vw, 90px) minmax(0, 1fr); }
   .music-cover { width: clamp(45px, 3vw, 90px); height: clamp(45px, 3vw, 90px); }
+}
+
+
+/* Final responsive contract: desktop web keeps the windowed workspace; mobile web becomes a touch-first app shell. */
+@media (min-width: 801px) and (max-width: 1199px) {
+  .retro-desktop-stage.retro-enhanced.desktop-running {
+    min-height: max(720px, calc(100svh - 82px));
+  }
+
+  .desktop-widgets {
+    left: 12px;
+    width: clamp(150px, 18vw, 184px);
+  }
+
+  .desktop-apps {
+    right: 10px;
+    width: 74px;
+  }
+
+  #inicio.retro-app-window {
+    left: clamp(170px, 21vw, 245px);
+    width: min(610px, 62%);
+  }
+
+  #projetos.retro-app-window,
+  #projects.retro-app-window {
+    left: clamp(225px, 29vw, 350px);
+    width: min(680px, 66%);
+  }
+
+  #sobre.retro-app-window,
+  #about.retro-app-window,
+  #arquivo.retro-app-window,
+  #archive.retro-app-window {
+    left: clamp(165px, 20vw, 235px);
+    width: min(730px, 72%);
+  }
+
+  #formacao.retro-app-window,
+  #education.retro-app-window,
+  #contato.retro-app-window,
+  #contact.retro-app-window {
+    left: clamp(190px, 23vw, 270px);
+    width: min(690px, 68%);
+  }
+}
+
+@media (max-width: 800px) {
+  html,
+  body {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .site-header,
+  .header-inner,
+  .retro-desktop-stage.retro-enhanced,
+  .retro-app-window,
+  .retro-app-window .wrap {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .retro-desktop-stage.retro-enhanced {
+    width: 100%;
+    margin-inline: auto;
+    padding: 8px;
+    border-width: 2px;
+    border-radius: 9px;
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .retro-desktop-stage.retro-enhanced.desktop-running {
+    gap: 8px;
+  }
+
+  .retro-desktop-stage.retro-enhanced.desktop-running .desktop-apps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .desktop-apps a {
+    min-height: 56px;
+    padding: 7px 4px;
+    font-size: .68rem;
+  }
+
+  .desktop-apps a > span {
+    font-size: 1.35rem;
+  }
+
+  .retro-desktop-stage.retro-enhanced.desktop-running .desktop-widgets {
+    gap: 6px;
+  }
+
+  .widget-title,
+  .music-track,
+  .music-artist,
+  .music-widget-body a,
+  .system-widget-body p {
+    font-size: .66rem;
+  }
+
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > .retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #inicio.retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #projetos.retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #projects.retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #sobre.retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #about.retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #arquivo.retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #archive.retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #formacao.retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #education.retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #contato.retro-app-window.is-mobile-active,
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #contact.retro-app-window.is-mobile-active {
+    position: fixed;
+    inset: 0;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    max-height: 100dvh;
+    padding:
+      0
+      max(12px, env(safe-area-inset-right))
+      max(18px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+    overscroll-behavior-y: contain;
+  }
+
+  .retro-app-window.is-mobile-active .retro-window-titlebar {
+    min-height: 48px;
+    margin-inline:
+      calc(-1 * max(12px, env(safe-area-inset-left)))
+      calc(-1 * max(12px, env(safe-area-inset-right)));
+    padding-inline:
+      max(12px, env(safe-area-inset-left))
+      max(12px, env(safe-area-inset-right));
+  }
+
+  .retro-window-controls button {
+    width: 40px;
+    height: 40px;
+  }
+
+  #inicio .hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(86px, 110px);
+    gap: 14px;
+    padding: 16px;
+  }
+
+  #inicio .eyebrow,
+  #inicio .hero-role {
+    font-size: .72rem;
+  }
+
+  #inicio .hero h1 {
+    font-size: clamp(1.45rem, 6vw, 2rem);
+  }
+
+  #inicio .hero-intro {
+    font-size: .9rem;
+    line-height: 1.6;
+  }
+
+  #inicio .hero-stack {
+    gap: 5px;
+  }
+
+  #inicio .hero-stack li {
+    padding: 5px 7px;
+    font-size: .68rem;
+  }
+
+  #inicio .hero-actions .button,
+  .project-filter-options button,
+  .project-link,
+  .project-case-more summary,
+  .project-explorer-case .project-actions a,
+  .contact-direct-links a {
+    min-height: 44px;
+  }
+
+  #inicio .hero-actions .button,
+  #inicio .hero-socials {
+    font-size: .72rem;
+  }
+
+  .digital-profile {
+    min-width: 0;
+    padding: 10px 6px;
+  }
+
+  .digital-monogram {
+    width: clamp(62px, 16vw, 82px);
+    height: clamp(62px, 16vw, 82px);
+  }
+
+  .digital-profile-name {
+    font-size: .7rem;
+  }
+
+  .digital-profile-status,
+  .digital-profile-location {
+    font-size: .58rem;
+  }
+
+  #projetos .section-heading h2,
+  #projects .section-heading h2,
+  #arquivo .archive-heading h2,
+  #archive .archive-heading h2,
+  #formacao .section-heading h2,
+  #education .section-heading h2,
+  .about-heading h2,
+  .contact-copy h2 {
+    font-size: clamp(1.35rem, 5.5vw, 1.85rem);
+  }
+
+  #projetos .section-intro,
+  #projects .section-intro,
+  #arquivo .archive-heading > p,
+  #archive .archive-heading > p,
+  #formacao .section-intro,
+  #education .section-intro,
+  .about-heading > p:not(.section-kicker),
+  .skill-groups p,
+  .skills-note,
+  .education-entry p,
+  .language-levels,
+  .contact-copy > p:not(.section-kicker),
+  .project-description,
+  .project-highlights,
+  .project-case-study dd {
+    font-size: .86rem;
+    line-height: 1.55;
+  }
+
+  .project-explorer {
+    gap: 12px;
+  }
+
+  .project-explorer-list {
+    display: flex;
+    max-height: none;
+    gap: 8px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+
+  .project-explorer-item {
+    flex: 0 0 min(72vw, 230px);
+    min-height: 52px;
+    padding: 8px;
+    scroll-snap-align: start;
+  }
+
+  .project-explorer-item-copy strong {
+    font-size: .72rem;
+  }
+
+  .project-explorer-item-copy small {
+    font-size: .66rem;
+  }
+
+  .project-explorer-item-copy em {
+    font-size: .6rem;
+  }
+
+  .project-windowbar,
+  .project-category,
+  .project-period,
+  .project-case-study dt,
+  .project-tags li,
+  .project-visual figcaption {
+    font-size: .66rem;
+  }
+
+  .project-copy h3 {
+    font-size: 1.05rem;
+  }
+
+  .project-link,
+  .project-case-more summary {
+    font-size: .72rem;
+  }
+
+  .contact-email {
+    max-width: 100%;
+    font-size: .82rem;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-direct-links strong {
+    font-size: .76rem;
+  }
+
+  .contact-direct-links small {
+    font-size: .68rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .header-inner {
+    padding-inline: 10px;
+  }
+
+  .wordmark-name {
+    font-size: clamp(.72rem, 3.4vw, .9rem);
+  }
+
+  .retro-desktop-stage.retro-enhanced.desktop-running .desktop-apps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .retro-desktop-stage.retro-enhanced.desktop-running .desktop-widgets {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #inicio .hero-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .digital-profile {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    align-items: center;
+    column-gap: 12px;
+    text-align: left;
+  }
+
+  .digital-monogram {
+    grid-row: span 3;
+    width: 60px;
+    height: 60px;
+    margin: 0;
+    font-size: 1.3rem;
+  }
+
+  .digital-profile-name,
+  .digital-profile-status,
+  .digital-profile-location {
+    margin: 0;
+  }
+
+  .project-archive-grid .project-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-archive-grid .project-visual {
+    aspect-ratio: 16 / 9;
+  }
+
+  .project-archive-grid .project-copy {
+    padding: 16px;
+  }
+
+  .education-entry,
+  .education-entry + .education-entry {
+    padding: 18px;
+  }
+
+  .startup-titlebar {
+    font-size: .68rem;
+  }
+
+  .startup-content {
+    padding: 20px 16px;
+  }
+}
+
+@media (max-width: 360px) {
+  .retro-desktop-stage.retro-enhanced {
+    padding: 6px;
+  }
+
+  .desktop-apps a {
+    min-height: 52px;
+    font-size: .62rem;
+  }
+
+  #inicio .hero-grid {
+    padding: 13px;
+  }
+
+  #inicio .hero h1 {
+    font-size: 1.38rem;
+  }
+
+  .project-explorer-item {
+    flex-basis: 82vw;
+  }
+
+  .contact-direct-links a {
+    padding-inline: 8px;
+  }
 }

@@ -642,3 +642,69 @@ body.retro-session-active .main-nav { gap: 0; }
   .project-archive-grid .project-visual img { object-fit: cover; }
   .project-archive-grid .project-copy { padding: 18px; }
 }
+
+/* Scale the simulated desktop for large 16:9 displays such as 4K. */
+@media (min-width: 1800px) and (min-height: 1000px) {
+  html { font-size: clamp(16px, 1vw, 22px); }
+  .retro-desktop-stage.retro-enhanced.desktop-running { min-height: min(88svh, 1500px); }
+
+  #inicio.retro-app-window {
+    top: clamp(34px, 4svh, 100px);
+    left: clamp(280px, 15vw, 560px);
+    width: min(43vw, 1200px);
+    max-height: min(60svh, 780px);
+  }
+  #inicio .hero-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(190px, .36fr);
+    gap: clamp(20px, 2vw, 48px);
+    padding: clamp(24px, 2vw, 48px);
+  }
+  #inicio .hero h1 { font-size: clamp(1.6rem, 2vw, 2.8rem); }
+
+  #projetos.retro-app-window {
+    top: clamp(212px, 14svh, 360px);
+    left: clamp(400px, 33vw, 1000px);
+    width: min(48vw, 1400px);
+    max-height: min(68svh, 900px);
+  }
+  #sobre.retro-app-window,#about.retro-app-window {
+    top: clamp(80px, 6svh, 160px);
+    left: clamp(300px, 19vw, 700px);
+    width: min(46vw, 1280px);
+    max-height: min(76svh, 1100px);
+  }
+  #arquivo.retro-app-window,#archive.retro-app-window {
+    top: clamp(63px, 5svh, 130px);
+    left: clamp(270px, 17vw, 680px);
+    width: min(48vw, 1360px);
+    max-height: min(78svh, 1150px);
+  }
+  #formacao.retro-app-window,#education.retro-app-window {
+    top: clamp(88px, 6.5svh, 160px);
+    left: clamp(350px, 24vw, 820px);
+    width: min(44vw, 1180px);
+    max-height: min(75svh, 1000px);
+  }
+  #contato.retro-app-window,#contact.retro-app-window {
+    top: clamp(90px, 7svh, 170px);
+    left: clamp(320px, 22vw, 760px);
+    width: min(46vw, 1200px);
+    max-height: min(76svh, 1050px);
+  }
+
+  .desktop-apps {
+    top: clamp(30px, 3svh, 72px);
+    right: clamp(17px, 2vw, 64px);
+    width: clamp(84px, 5vw, 150px);
+    gap: clamp(9px, .8vw, 20px);
+  }
+  .desktop-apps a { min-height: clamp(66px, 5svh, 96px); }
+  .desktop-widgets {
+    top: clamp(27px, 3svh, 72px);
+    left: clamp(18px, 2vw, 64px);
+    width: clamp(194px, 14vw, 320px);
+    gap: clamp(12px, 1vw, 24px);
+  }
+  .music-widget-body { grid-template-columns: clamp(45px, 3vw, 90px) minmax(0, 1fr); }
+  .music-cover { width: clamp(45px, 3vw, 90px); height: clamp(45px, 3vw, 90px); }
+}

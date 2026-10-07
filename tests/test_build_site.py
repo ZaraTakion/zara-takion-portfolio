@@ -157,6 +157,8 @@ class StaticBuildTests(unittest.TestCase):
         self.assertGreater(css.rfind('@media (max-width: 390px)'), css.rfind('@media (max-width: 800px)'))
         narrow_phone_rules = css.rsplit('@media (max-width: 390px)', 1)[-1]
         self.assertIn('.project-archive-grid .project-card { grid-template-columns: minmax(0, 1fr); }', narrow_phone_rules)
+        self.assertIn('@media (min-width: 1800px) and (min-height: 1000px)', css)
+        self.assertIn('width: min(48vw, 1400px)', css)
         self.assertIn("prefers-reduced-motion: reduce", css)
         self.assertNotIn("overflow-x: hidden", css)
         self.assertNotIn("overflow-x: clip", css)

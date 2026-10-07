@@ -10,7 +10,6 @@
   --retro-shadow: 5px 5px 0 var(--ink);
 }
 
-html { overflow-x: clip; }
 body { overflow-wrap: anywhere; }
 
 .startup-screen,
@@ -100,8 +99,6 @@ body { overflow-wrap: anywhere; }
 .contact-direct-links small { margin-top: 2px; font-size: .72rem; color: var(--muted); }
 
 @media (max-width: 800px) {
-  html { overflow-x: hidden; }
-
   .contact-direct-links { grid-template-columns: 1fr; }
   .contact-direct-links a { min-height: 52px; }
 
@@ -345,6 +342,7 @@ body { overflow-wrap: anywhere; }
     position: absolute;
     min-width: 0;
     margin: 0;
+    padding-block: 0;
     overflow: auto;
     overscroll-behavior: contain;
     border: 3px solid var(--ink);

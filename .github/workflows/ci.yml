@@ -34,12 +34,10 @@ jobs:
           python -m compileall -q api scripts
           python -m unittest discover -s api/tests -v
           python -m unittest discover -s tests -v
-      - name: Check JavaScript syntax
+      - name: Check JavaScript syntax and tests
         run: |
-          node --check site/scripts/main.js
-          node --check site/scripts/navigation.js
-          node --check site/scripts/project-filters.js
-          node --test tests/project-filters.test.mjs
+          for file in site/scripts/*.js; do node --check "$file"; done
+          node --test tests/*.test.mjs
       - name: Build static site
         run: python scripts/build_site.py
       - name: Check generated output

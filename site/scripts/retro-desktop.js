@@ -17,7 +17,6 @@ export function initRetroDesktop() {
     minimize: "Minimize window",
     close: "Close window",
     closeApp: "Close app",
-    returnHome: "Return to desktop",
   } : {
     home: "bem-vindo.exe",
     projects: "projetos/",
@@ -28,7 +27,6 @@ export function initRetroDesktop() {
     minimize: "Minimizar janela",
     close: "Fechar janela",
     closeApp: "Fechar aplicativo",
-    returnHome: "Voltar ao desktop",
   };
 
   const windows = new Map([
@@ -39,95 +37,167 @@ export function initRetroDesktop() {
     ["formacao", main.querySelector("#formacao") || main.querySelector("#education")],
     ["contato", main.querySelector("#contato") || main.querySelector("#contact")],
   ]);
-  const sectionToKey = new Map([...windows.entries()].filter(([, section]) => section).map(([key, section]) => [section.id, key]));
-  const appKeyForHref = (href) => sectionToKey.get(href.replace(/^#/, ""));
-  const aliases = { home: "inicio", projects: "projetos", about: "sobre", archive: "arquivo", education: "formacao", contact: "contato" };
+  const aliases = {
+    home: "inicio",
+    projects: "projetos",
+    about: "sobre",
+    archive: "arquivo",
+    education: "formacao",
+    contact: "contato",
+  };
+  const sectionToKey = new Map(
+    [...windows.entries()]
+      .filter(([, section]) => section)
+      .map(([key, section]) => [section.id, key]),
+  );
   const canonicalKey = (key) => windows.has(key) ? key : aliases[key];
+  const appKeyForHref = (href = "") => sectionToKey.get(href.replace(/^#/, ""));
   const mobileQuery = window.matchMedia(MOBILE_QUERY);
+
   let zIndex = 4;
-  let bootTimer;
+  let bootTimer = null;
   let desktopStarted = false;
+
+  function launcherFor(key) {
+    const aliasesForKey = {
+      inicio: ["inicio", "home"],
+      projetos: ["projetos", "projects"],
+      sobre: ["sobre", "about"],
+      arquivo: ["arquivo", "archive"],
+      formacao: ["formacao", "education"],
+      contato: ["contato", "contact"],
+    };
+    return aliasesForKey[key]
+      ?.map((value) => main.querySelector(`[data-app-open="${value}"]`))
+      .find(Boolean) || main.querySelector("[data-app-open]");
+  }
+
+  function focusWindow(section) {
+    if (!section) return;
+    window.requestAnimationFrame(() => {
+      section.querySelector("h1, h2")?.focus({ preventScroll: true });
+    });
+  }
+
+  function removeWindowFocus(except = null) {
+    for (const section of windows.values()) {
+      if (section && section !== except) section.classList.remove("has-focus");
+    }
+  }
+
+  function closeWindow(key, section) {
+    section.classList.remove("is-open", "is-mobile-active", "has-focus");
+    if (mobileQuery.matches) main.classList.remove("mobile-app-open");
+    launcherFor(key)?.focus({ preventScroll: true });
+  }
 
   for (const [key, section] of windows) {
     if (!section) continue;
+
     section.classList.add("retro-app-window");
     section.dataset.appWindow = key;
+    section.tabIndex = -1;
+
     const heading = section.querySelector("h1, h2");
+    if (heading) heading.tabIndex = -1;
+
+    if (section.querySelector(":scope > .retro-window-titlebar")) continue;
+
     const titlebar = document.createElement("div");
     titlebar.className = "retro-window-titlebar";
+
     const title = document.createElement("span");
     title.className = "retro-window-title";
     title.textContent = labels[key] || key;
+
     const controls = document.createElement("span");
     controls.className = "retro-window-controls";
+
     const minimize = document.createElement("button");
     minimize.type = "button";
     minimize.className = "retro-window-minimize";
     minimize.setAttribute("aria-label", labels.minimize);
     minimize.textContent = "−";
+
     const close = document.createElement("button");
     close.type = "button";
     close.className = "retro-window-close";
     close.setAttribute("aria-label", mobileQuery.matches ? labels.closeApp : labels.close);
     close.textContent = "×";
+
     controls.append(minimize, close);
     titlebar.append(title, controls);
     section.insertBefore(titlebar, section.firstChild);
-    section.tabIndex = -1;
 
-    const minimizeWindow = () => {
-      section.classList.remove("is-open", "is-mobile-active");
-      main.classList.remove("mobile-app-open");
-      if (section.classList.contains("has-focus")) {
-        section.classList.remove("has-focus");
-        main.querySelector('[data-app-open="projetos"], [data-app-open="projects"]')?.focus();
-      }
-    };
-    minimize.addEventListener("click", minimizeWindow);
-    close.addEventListener("click", minimizeWindow);
+    minimize.addEventListener("click", () => closeWindow(key, section));
+    close.addEventListener("click", () => closeWindow(key, section));
+
     section.addEventListener("pointerdown", () => {
       if (mobileQuery.matches) return;
       section.style.zIndex = String(++zIndex);
       section.classList.add("has-focus");
-      for (const other of windows.values()) {
-        if (other !== section) other?.classList.remove("has-focus");
-      }
+      removeWindowFocus(section);
     });
-    if (heading) heading.setAttribute("tabindex", "-1");
   }
 
-  function startDesktop(openKey) {
-    if (bootTimer) window.clearTimeout(bootTimer);
+  function startDesktop(openKey = null, { focus = true } = {}) {
+    if (bootTimer !== null) {
+      window.clearTimeout(bootTimer);
+      bootTimer = null;
+    }
+
     bootScreen.hidden = true;
     startScreen.hidden = true;
     main.classList.add("desktop-running");
     document.body.classList.add("retro-session-active");
     desktopStarted = true;
-    const initial = mobileQuery.matches ? ["inicio"] : ["inicio", "projetos"];
-    for (const key of initial) windows.get(key)?.classList.add("is-open");
-    if (openKey && windows.has(openKey)) openApp(openKey, { focus: true });
-    else windows.get("inicio")?.querySelector("h1")?.focus({ preventScroll: true });
+
+    const initialKeys = mobileQuery.matches ? ["inicio"] : ["inicio", "projetos"];
+    for (const key of initialKeys) windows.get(key)?.classList.add("is-open");
+
+    if (openKey) {
+      openApp(openKey, { focus });
+      return;
+    }
+
+    if (focus) focusWindow(windows.get("inicio"));
   }
 
-  function openApp(key, options = {}) {
-    key = canonicalKey(key);
+  function openApp(rawKey, { focus = true } = {}) {
+    const key = canonicalKey(rawKey);
     const section = windows.get(key);
     if (!section) return;
-    if (!desktopStarted) startDesktop();
+
+    if (!desktopStarted) startDesktop(null, { focus: false });
+
     section.classList.add("is-open", "has-focus");
     section.style.zIndex = String(++zIndex);
-    for (const other of windows.values()) {
-      if (other !== section) other?.classList.remove("has-focus", "is-mobile-active");
-    }
+    removeWindowFocus(section);
+
     if (mobileQuery.matches) {
       main.classList.add("mobile-app-open");
+      for (const other of windows.values()) {
+        if (other !== section) other?.classList.remove("is-mobile-active");
+      }
       section.classList.add("is-mobile-active");
     } else {
       main.classList.remove("mobile-app-open");
+      for (const other of windows.values()) other?.classList.remove("is-mobile-active");
     }
-    if (options.focus !== false) {
-      requestAnimationFrame(() => section.querySelector("h1, h2")?.focus({ preventScroll: true }));
+
+    if (focus) focusWindow(section);
+  }
+
+  function navigateToApp(link) {
+    const href = link.getAttribute("href") || "";
+    const key = canonicalKey(link.dataset.appOpen || appKeyForHref(href));
+    if (!key || !windows.has(key)) return false;
+
+    openApp(key);
+    if (href.startsWith("#") && location.hash !== href) {
+      history.pushState(null, "", href);
     }
+    return true;
   }
 
   function startBoot() {
@@ -144,44 +214,55 @@ export function initRetroDesktop() {
   main.querySelector("[data-boot-skip]")?.addEventListener("click", () => startDesktop());
 
   main.addEventListener("click", (event) => {
-    const launcher = event.target instanceof Element ? event.target.closest("[data-app-open]") : null;
-    if (!launcher) return;
-    const key = canonicalKey(launcher.dataset.appOpen);
-    if (!windows.has(key)) return;
-    event.preventDefault();
-    openApp(key);
-    if (location.hash !== launcher.getAttribute("href")) history.replaceState(null, "", launcher.getAttribute("href"));
+    const link = event.target instanceof Element
+      ? event.target.closest("a[data-app-open], a[href^='#']")
+      : null;
+    if (!link || !main.contains(link)) return;
+    if (navigateToApp(link)) event.preventDefault();
   });
 
   document.querySelector("#main-nav")?.addEventListener("click", (event) => {
     const link = event.target instanceof Element ? event.target.closest("a[href^='#']") : null;
-    const key = link ? appKeyForHref(link.getAttribute("href")) : null;
-    if (!key || !windows.has(key)) return;
-    event.preventDefault();
-    openApp(key);
-    if (location.hash !== link.getAttribute("href")) history.replaceState(null, "", link.getAttribute("href"));
+    if (!link) return;
+    if (navigateToApp(link)) event.preventDefault();
   });
 
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || !mobileQuery.matches || !main.classList.contains("mobile-app-open")) return;
-    main.classList.remove("mobile-app-open");
-    for (const section of windows.values()) section?.classList.remove("is-mobile-active", "has-focus");
-    main.querySelector("[data-app-open]")?.focus();
+    const active = [...windows.entries()].find(([, section]) => section?.classList.contains("is-mobile-active"));
+    if (active) closeWindow(active[0], active[1]);
   });
 
-  const updateCloseLabels = () => {
+  const updateViewportMode = () => {
     for (const section of windows.values()) {
       const close = section?.querySelector(".retro-window-close");
       close?.setAttribute("aria-label", mobileQuery.matches ? labels.closeApp : labels.close);
     }
-    if (!mobileQuery.matches) main.classList.remove("mobile-app-open");
+
+    if (!mobileQuery.matches) {
+      main.classList.remove("mobile-app-open");
+      for (const section of windows.values()) section?.classList.remove("is-mobile-active");
+    }
   };
-  mobileQuery.addEventListener?.("change", updateCloseLabels);
+
+  if (typeof mobileQuery.addEventListener === "function") {
+    mobileQuery.addEventListener("change", updateViewportMode);
+  } else if (typeof mobileQuery.addListener === "function") {
+    mobileQuery.addListener(updateViewportMode);
+  }
+
+  window.addEventListener("hashchange", () => {
+    const key = appKeyForHref(location.hash);
+    if (key) openApp(key, { focus: false });
+  });
 
   const clock = main.querySelector("[data-system-clock]");
   const updateClock = () => {
-    if (clock) clock.textContent = new Intl.DateTimeFormat(isEnglish ? "en-US" : "pt-BR", {
-      hour: "2-digit", minute: "2-digit", hour12: isEnglish,
+    if (!clock) return;
+    clock.textContent = new Intl.DateTimeFormat(isEnglish ? "en-US" : "pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: isEnglish,
     }).format(new Date());
   };
   updateClock();
@@ -189,6 +270,6 @@ export function initRetroDesktop() {
 
   if (location.hash) {
     const key = appKeyForHref(location.hash);
-    if (key) startDesktop(key);
+    if (key) startDesktop(key, { focus: false });
   }
 }

@@ -32,7 +32,7 @@ Para validar a geração estática e o conteúdo PT/EN:
 python -m unittest tests.test_build_site -v
 ~~~
 
-A suíte também verifica as categorias de projeto, os filtros nas duas línguas e a geração das páginas estáticas.
+A suíte também verifica as categorias de projeto, os filtros nas duas línguas e a geração das páginas estáticas. O próprio build audita IDs, referências ARIA, atributos `alt`, links que abrem nova aba, âncoras internas e referências a arquivos locais antes de considerar a saída pronta.
 
 ### Prévia no Windows (PowerShell)
 
@@ -116,3 +116,7 @@ O portfólio destaca três trabalhos alinhados ao foco em back-end Python, APIs 
 - [Air Quality Analysis](https://github.com/ZaraTakion/air-quality-analysis) — dashboard e análise explicativa de um recorte estático; os resultados não demonstram desempenho preditivo acima do baseline da média.
 
 As imagens de Air Quality, Brazil Traffic Insight e NBA são gráficos próprios feitos a partir dos dados dos projetos. A capa do UPA é uma ilustração vetorial conceitual, não uma captura de tela. As descrições acompanham a documentação dos repositórios; métricas e qualificações não são inferidas.
+
+## Notas da reforma técnica
+
+As correções estruturais e de responsividade desta revisão estão resumidas em [`REFORM_NOTES.md`](REFORM_NOTES.md).

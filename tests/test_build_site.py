@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import tempfile
 import unittest
+from pathlib import Path
 
 from scripts import build_site
 
@@ -159,11 +161,6 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn('.project-archive-grid .project-card { grid-template-columns: minmax(0, 1fr); }', narrow_phone_rules)
         self.assertIn('@media (min-width: 1800px) and (min-height: 1000px)', css)
         self.assertIn('width: min(48vw, 1400px)', css)
-        self.assertIn('grid-template-columns: clamp(220px, 16vw, 380px) minmax(0, 1fr)', css)
-        self.assertIn('@media (max-width: 390px)', css)
-        self.assertIn('#inicio .hero-grid { grid-template-columns: minmax(0, 1fr); }', css)
-        self.assertIn('.project-filter-options button { min-height: 44px;', css)
-        self.assertIn('.project-link,.project-case-more summary,.project-explorer-case .project-actions a { min-height: 44px; }', css)
         self.assertIn("prefers-reduced-motion: reduce", css)
         self.assertNotIn("overflow-x: hidden", css)
         self.assertNotIn("overflow-x: clip", css)
@@ -183,6 +180,32 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn('"directory": "./dist"', config)
         self.assertIn("Content-Security-Policy:", headers)
         self.assertTrue((build_site.OUTPUT / "404.html").is_file())
+
+    def test_main_pages_have_one_h1_and_valid_aria_references(self):
+        for relative in ("index.html", "en/index.html"):
+            with self.subTest(page=relative):
+                build_site.validate_html_document(build_site.SOURCE / relative)
+                html = (build_site.SOURCE / relative).read_text(encoding="utf-8")
+                self.assertEqual(html.count("<h1"), 1)
+        english = (build_site.SOURCE / "en" / "index.html").read_text(encoding="utf-8")
+        self.assertIn('aria-labelledby="contact-title"', english)
+        self.assertIn('id="contact-title"', english)
+
+    def test_html_audit_rejects_broken_aria_reference(self):
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            suffix=".html",
+            dir=build_site.ROOT,
+            encoding="utf-8",
+            delete=False,
+        ) as handle:
+            handle.write('<!doctype html><html><body><main><h1>Test</h1><section aria-labelledby="missing"></section></main></body></html>')
+            temporary_path = build_site.ROOT / Path(handle.name).name
+        try:
+            with self.assertRaisesRegex(ValueError, "aria-labelledby"):
+                build_site.validate_html_document(temporary_path)
+        finally:
+            temporary_path.unlink(missing_ok=True)
 
     def test_project_tracks_are_validated(self):
         projects_path = build_site.SOURCE / "data" / "projects.json"

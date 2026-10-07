@@ -333,12 +333,12 @@ body.retro-session-active .main-nav { gap: 0; }
 .retro-window-titlebar { min-height: 36px; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 6px 10px; border-bottom: 2px solid var(--ink); background: var(--retro-chrome); color: var(--ink); font: 700 .69rem/1.3 var(--font-technical); }
 .startup-content { padding: clamp(21px, 4vw, 36px); }
 .startup-kicker { margin: 0 0 10px; color: var(--wine); font: 700 .68rem/1.4 var(--font-technical); letter-spacing: .08em; }
-.startup-content h1 { margin: 0 0 10px; font-size: clamp(1.65rem, 4vw, 2.5rem); line-height: 1.12; letter-spacing: -.075em; }
+.startup-content h2 { margin: 0 0 10px; font-size: clamp(1.65rem, 4vw, 2.5rem); line-height: 1.12; letter-spacing: -.075em; }
 .startup-content > p:not(.startup-kicker) { max-width: 48ch; color: #354846; }
 .startup-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
 .startup-actions .button { min-height: 44px; cursor: pointer; font: 700 .72rem var(--font-technical); }
 .boot-terminal { width: min(590px, 100%); padding: clamp(20px, 4vw, 34px); border: 3px solid var(--ink); border-radius: 9px; background: #172b2b; color: #e3f4ef; box-shadow: 8px 8px 0 var(--ink); font: .78rem/1.8 var(--font-technical); }
-.boot-terminal h1 { margin: 0 0 20px; color: #fff9e9; font-size: clamp(1rem, 3vw, 1.4rem); letter-spacing: -.045em; }
+.boot-terminal h2 { margin: 0 0 20px; color: #fff9e9; font-size: clamp(1rem, 3vw, 1.4rem); letter-spacing: -.045em; }
 .boot-terminal p span { color: #a7dfd5; }
 .boot-progress { height: 10px; margin: 18px 0; padding: 1px; border: 1px solid #a7dfd5; border-radius: 6px; }
 .boot-progress span { display: block; width: 0; height: 100%; border-radius: 4px; background: #a7dfd5; animation: boot-load 1.7s var(--ease-editorial) forwards; }
@@ -536,7 +536,7 @@ body.retro-session-active .main-nav { gap: 0; }
   .system-widget-body p { font-size: .5rem; }
   .retro-desktop-stage.retro-enhanced.desktop-running > .retro-app-window { display: none; }
   .retro-desktop-stage.retro-enhanced.desktop-running > #inicio.retro-app-window.is-open:not(.is-mobile-active) { position: relative; inset: auto; order: 3; display: block; width: 100%; max-height: none; overflow: visible; }
-  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > .retro-app-window.is-mobile-active { position: fixed; inset: 0; z-index: var(--z-menu); display: block; width: 100vw; max-width: none; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; padding: 0 12px 18px; background: var(--paper-bright); box-shadow: none; overflow: auto; }
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > .retro-app-window.is-mobile-active { position: fixed; inset: 0; z-index: var(--z-menu); display: block; width: auto; max-width: none; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; padding: 0 12px 18px; background: var(--paper-bright); box-shadow: none; overflow: auto; }
   .retro-app-window.is-mobile-active .retro-window-titlebar { position: sticky; top: 0; margin-inline: -12px; padding-inline: 13px; }
   #inicio.retro-app-window { position: relative; inset: auto; width: 100%; max-height: none; padding: 0; }
   #inicio .hero-grid { grid-template-columns: minmax(0,1fr) 92px; gap: 9px; padding: 11px; }
@@ -562,7 +562,7 @@ body.retro-session-active .main-nav { gap: 0; }
   #arquivo > .wrap,#archive > .wrap,#formacao > .wrap,#education > .wrap,
   #contato > .wrap,#contact > .wrap { width: 100%; }
   .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > .retro-app-window.is-mobile-active { order: 4; }
-  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #inicio.retro-app-window.is-mobile-active { position: fixed; inset: 0; z-index: var(--z-menu); width: 100vw; max-width: none; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; padding: 0 12px 18px; overflow: auto; }
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > #inicio.retro-app-window.is-mobile-active { position: fixed; inset: 0; z-index: var(--z-menu); width: auto; max-width: none; max-height: 100dvh; margin: 0; border: 0; border-radius: 0; padding: 0 12px 18px; overflow: auto; }
   #projetos .section-heading,#projects .section-heading { align-items: flex-start; }
   #projetos .section-intro,#projects .section-intro { max-width: 54ch; }
   .project-explorer { grid-template-columns: 1fr; }
@@ -577,6 +577,22 @@ body.retro-session-active .main-nav { gap: 0; }
   .retro-window-controls button { width: 24px; height: 24px; }
   .site-footer { margin-top: 18px; }
 }
+
+
+/* Defensive reflow rules: keep long labels, URLs, and generated project copy inside every window. */
+.retro-app-window,
+.retro-app-window .wrap,
+.hero-copy,
+.project-copy,
+.project-explorer-panels,
+.contact-copy,
+.contact-direct-links a > span { min-width: 0; }
+.project-description,
+.project-highlights,
+.project-case-study dd,
+.contact-email,
+.contact-direct-links small,
+.skills-panel p { overflow-wrap: anywhere; }
 
 @media (prefers-reduced-motion: reduce) {
   .boot-progress span { animation: none; width: 100%; }
@@ -646,11 +662,11 @@ body.retro-session-active .main-nav { gap: 0; }
 /* Scale the simulated desktop for large 16:9 displays such as 4K. */
 @media (min-width: 1800px) and (min-height: 1000px) {
   html { font-size: clamp(16px, 1vw, 22px); }
-  .retro-desktop-stage.retro-enhanced.desktop-running { min-height: min(88svh, 1900px); }
+  .retro-desktop-stage.retro-enhanced.desktop-running { min-height: min(88svh, 1500px); }
 
   #inicio.retro-app-window {
     top: clamp(34px, 4svh, 100px);
-    left: clamp(310px, 16vw, 620px);
+    left: clamp(280px, 15vw, 560px);
     width: min(43vw, 1200px);
     max-height: min(60svh, 780px);
   }
@@ -679,7 +695,6 @@ body.retro-session-active .main-nav { gap: 0; }
     width: min(48vw, 1360px);
     max-height: min(78svh, 1150px);
   }
-  .project-archive-grid .project-card { grid-template-columns: clamp(220px, 16vw, 380px) minmax(0, 1fr); }
   #formacao.retro-app-window,#education.retro-app-window {
     top: clamp(88px, 6.5svh, 160px);
     left: clamp(350px, 24vw, 820px);
@@ -708,42 +723,4 @@ body.retro-session-active .main-nav { gap: 0; }
   }
   .music-widget-body { grid-template-columns: clamp(45px, 3vw, 90px) minmax(0, 1fr); }
   .music-cover { width: clamp(45px, 3vw, 90px); height: clamp(45px, 3vw, 90px); }
-}
-
-/* Keep the simulated desktop comfortable to read and operate on touch screens. */
-@media (max-width: 800px) {
-  .startup-titlebar,.retro-window-titlebar,.widget-title { font-size: .75rem; }
-  .boot-skip { min-height: 44px; }
-  .desktop-apps a { font-size: .72rem; }
-  .music-track,.music-artist,.music-widget-body a,.system-widget-body p { font-size: .72rem; }
-  #inicio .eyebrow,#inicio .hero-role { font-size: .75rem; }
-  #inicio .hero-intro { font-size: .9rem; }
-  #inicio .hero-stack li { padding: 5px 7px; font-size: .7rem; }
-  #inicio .hero-actions .button { min-height: 44px; font-size: .72rem; }
-  #inicio .hero-socials { font-size: .72rem; }
-  .digital-profile-name { font-size: .75rem; }
-  .digital-profile-status,.digital-profile-location { font-size: .65rem; }
-  .project-explorer-item { min-height: 44px; }
-  .project-explorer-item-copy strong { font-size: .75rem; }
-  .project-explorer-item-copy small { font-size: .68rem; }
-  .project-explorer-item-copy em { font-size: .62rem; }
-  .project-windowbar,.project-category,.project-period,.project-case-study dt,.project-tags li,.project-visual figcaption { font-size: .68rem; }
-  .project-description,.project-highlights,.project-case-study dd { font-size: .85rem; }
-  .about-heading > p:not(.section-kicker),.skill-groups p,.skills-note,.education-entry p,.language-levels { font-size: .82rem; }
-  .project-link,.project-case-more summary,.project-explorer-case .project-actions a { min-height: 44px; }
-  .project-case-more summary { display: flex; align-items: center; }
-  .project-filter-options button { min-height: 44px; padding-inline: 12px; font-size: .72rem; }
-  .retro-window-controls button { width: 44px; height: 44px; }
-}
-
-/* On narrow phones, give the introduction the full line width and keep the profile beside its details. */
-@media (max-width: 390px) {
-  .project-archive-grid .project-card { grid-template-columns: minmax(0, 1fr); }
-  .project-archive-grid .project-visual { min-height: 0; aspect-ratio: 16 / 9; }
-  .project-archive-grid .project-visual img { object-fit: cover; }
-  .project-archive-grid .project-copy { padding: 18px; }
-  #inicio .hero-grid { grid-template-columns: minmax(0, 1fr); }
-  .digital-profile { display: grid; grid-template-columns: 54px minmax(0, 1fr); align-items: center; column-gap: 10px; padding: 9px; text-align: left; }
-  .digital-monogram { grid-row: span 3; width: 50px; height: 50px; margin: 0; font-size: 1.1rem; }
-  .digital-profile-name,.digital-profile-status,.digital-profile-location { margin: 0; }
 }

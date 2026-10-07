@@ -8,6 +8,7 @@ import html
 import re
 import shutil
 from pathlib import Path
+from html.parser import HTMLParser
 from urllib.parse import urlparse
 
 
@@ -48,6 +49,112 @@ REQUIRED_PROJECT_FIELDS = {
     "featured",
     "track",
 }
+
+
+class _DocumentAuditParser(HTMLParser):
+    """Collect structural facts used by the build-time HTML audit."""
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.ids: list[str] = []
+        self.references: list[tuple[str, str]] = []
+        self.local_urls: list[tuple[str, str]] = []
+        self.h1_count = 0
+        self.errors: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        values = {name: value for name, value in attrs if value is not None}
+        element_id = values.get("id")
+        if element_id:
+            self.ids.append(element_id)
+
+        if tag == "h1":
+            self.h1_count += 1
+
+        for attribute in ("aria-labelledby", "aria-describedby", "aria-controls"):
+            value = values.get(attribute)
+            if value:
+                for target in value.split():
+                    self.references.append((attribute, target))
+
+        if tag == "img" and "alt" not in values:
+            self.errors.append("imagem sem atributo alt")
+
+        if values.get("target") == "_blank":
+            rel = set((values.get("rel") or "").split())
+            if not {"noopener", "noreferrer"}.issubset(rel):
+                self.errors.append(f'link target="_blank" sem rel="noopener noreferrer": {values.get("href", "") or tag}')
+
+        for attribute in ("href", "src"):
+            value = values.get(attribute)
+            if value:
+                self.local_urls.append((attribute, value))
+
+
+def _parse_document(path: Path) -> _DocumentAuditParser:
+    parser = _DocumentAuditParser()
+    parser.feed(path.read_text(encoding="utf-8"))
+    parser.close()
+    return parser
+
+
+def validate_html_document(path: Path, *, check_local_files: bool = False) -> None:
+    """Fail the build on broken IDs, ARIA references, local links, or unsafe new-tab links."""
+    parser = _parse_document(path)
+    errors = list(parser.errors)
+
+    duplicates = sorted({item for item in parser.ids if parser.ids.count(item) > 1})
+    if duplicates:
+        errors.append(f"IDs duplicados: {', '.join(duplicates)}")
+
+    known_ids = set(parser.ids)
+    for attribute, target in parser.references:
+        if target not in known_ids:
+            errors.append(f'{attribute} aponta para ID inexistente: {target}')
+
+    if parser.h1_count != 1:
+        errors.append(f"a página precisa conter exatamente um h1; encontrado(s): {parser.h1_count}")
+
+    if check_local_files:
+        document_root = OUTPUT
+        for attribute, raw_url in parser.local_urls:
+            parsed = urlparse(raw_url)
+            if parsed.scheme or parsed.netloc or raw_url.startswith(("mailto:", "tel:", "data:")):
+                continue
+
+            if raw_url.startswith("#"):
+                target = raw_url[1:]
+                if target and target not in known_ids:
+                    errors.append(f"âncora interna aponta para ID inexistente: {raw_url}")
+                continue
+
+            local_path = parsed.path
+            if not local_path:
+                continue
+
+            if local_path.startswith("/"):
+                candidate = document_root / local_path.lstrip("/")
+            else:
+                candidate = path.parent / local_path
+
+            if local_path.endswith("/"):
+                candidate = candidate / "index.html"
+            elif candidate.is_dir():
+                candidate = candidate / "index.html"
+
+            if not candidate.exists():
+                errors.append(f"{attribute} local inexistente: {raw_url}")
+
+    if errors:
+        relative = path.relative_to(ROOT)
+        formatted = "\n - ".join(errors)
+        raise ValueError(f"Falha na auditoria HTML de {relative}:\n - {formatted}")
+
+
+def validate_generated_site() -> None:
+    for path in sorted(OUTPUT.rglob("*.html")):
+        validate_html_document(path, check_local_files=True)
+
 
 
 def validate_projects() -> None:
@@ -237,10 +344,14 @@ def build() -> None:
         SOURCE / "scripts" / "main.js",
         SOURCE / "scripts" / "project-filters.js",
         SOURCE / "scripts" / "navigation.js",
+        SOURCE / "scripts" / "project-explorer.js",
+        SOURCE / "scripts" / "retro-desktop.js",
     ):
         if not required_path.is_file():
             raise FileNotFoundError(f"Arquivo obrigatório ausente: {required_path.relative_to(ROOT)}")
 
+    validate_html_document(SOURCE / "index.html")
+    validate_html_document(SOURCE / "en" / "index.html")
     validate_projects()
     if OUTPUT.exists():
         shutil.rmtree(OUTPUT)
@@ -250,6 +361,7 @@ def build() -> None:
     css_output = OUTPUT / "assets" / "css" / "site.css"
     css_output.parent.mkdir(parents=True, exist_ok=True)
     css_output.write_text(build_stylesheet(), encoding="utf-8")
+    validate_generated_site()
     print(f"Site preparado em {OUTPUT.relative_to(ROOT)}.")
 
 

@@ -1096,12 +1096,12 @@ ol { margin-top: 0; }
 
 /* ---------- desktop AQUA WORKSTATION ---------- */
 @media (min-width: 1200px) {
-  body {
+  body.aqua-portfolio {
     overflow: hidden;
     background: #dff3ef;
   }
 
-  .site-header {
+  body.aqua-portfolio .site-header {
     position: fixed;
     z-index: 500;
     top: 10px;
@@ -1112,7 +1112,7 @@ ol { margin-top: 0; }
     backdrop-filter: none;
   }
 
-  .header-inner {
+  body.aqua-portfolio .header-inner {
     width: 100%;
     min-height: 52px;
     padding-inline: 12px;
@@ -1123,21 +1123,21 @@ ol { margin-top: 0; }
     color: var(--text);
   }
 
-  .wordmark { color: var(--text); }
-  .wordmark-mark {
+  body.aqua-portfolio .wordmark { color: var(--text); }
+  body.aqua-portfolio .wordmark-mark {
     border-color: var(--border);
     background: var(--wine-700);
     color: #fff;
   }
-  .wordmark-name span { color: var(--wine-700); }
-  .main-nav { color: var(--text); }
-  .main-nav a:not(.language-switch):hover,
-  .main-nav a:not(.language-switch):focus-visible { color: var(--wine-700); border-bottom-color: var(--wine-700); }
-  .language-switch {
+  body.aqua-portfolio .wordmark-name span { color: var(--wine-700); }
+  body.aqua-portfolio .main-nav { color: var(--text); }
+  body.aqua-portfolio .main-nav a:not(.language-switch):hover,
+  body.aqua-portfolio .main-nav a:not(.language-switch):focus-visible { color: var(--wine-700); border-bottom-color: var(--wine-700); }
+  body.aqua-portfolio .language-switch {
     border-color: var(--border);
     color: var(--text);
   }
-  .language-switch:hover { background: var(--aqua-300); color: var(--text); }
+  body.aqua-portfolio .language-switch:hover { background: var(--aqua-300); color: var(--text); }
 
   body.retro-session-active .main-nav > a:not(.language-switch) { display: none; }
 
@@ -1663,7 +1663,7 @@ ol { margin-top: 0; }
   .project-explorer-case .project-case-study dd,
   .project-explorer-case .project-highlights { font-size: .78rem; }
 
-  .site-footer { display: none; }
+  body.aqua-portfolio .site-footer { display: none; }
 }
 
 @media (min-width: 1800px) and (min-height: 1000px) {

@@ -6,6 +6,8 @@ export function initRetroDesktop() {
   const bootScreen = main?.querySelector(".boot-screen");
   if (!main || !startScreen || !bootScreen) return;
 
+  document.body.classList.add("aqua-portfolio");
+
   const desktopQuery = window.matchMedia(DESKTOP_QUERY);
   const isEnglish = document.documentElement.lang.toLowerCase().startsWith("en");
   const labels = isEnglish ? {

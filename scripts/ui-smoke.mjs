@@ -98,7 +98,7 @@ for (const viewport of viewports) {
 
   await page.locator("[data-desktop-start]").click();
   await page.locator(".retro-desktop-stage.desktop-running").waitFor();
-  await page.locator(".project-explorer").waitFor();
+  await page.locator(".project-explorer").waitFor({ state: "attached" });
   await page.locator(".desktop-statusbar").waitFor();
 
   const homeId = await page.locator("#inicio, #home").first().getAttribute("id");
@@ -113,6 +113,7 @@ for (const viewport of viewports) {
     (id) => document.getElementById(id)?.classList.contains("is-open"),
     projectsId
   );
+  await page.locator(".project-explorer").waitFor({ state: "visible" });
 
   const projectState = await assertSingleActiveWindow(page, projectsId, `${viewport.name}/projects`);
   if (!/project|projeto/i.test(projectState.current || "")) {

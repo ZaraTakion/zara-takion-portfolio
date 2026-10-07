@@ -14,19 +14,36 @@ export function initProjectExplorer() {
   let explorer = null;
   let entries = [];
   let abortController = null;
+  let activeLabel = null;
+  let countLabel = null;
 
   function visibleEntries() {
     return entries.filter((entry) => !entry.project.hidden && !entry.tab.hidden);
   }
 
+  function updateToolbar(entry = null) {
+    const visible = visibleEntries();
+    if (countLabel) {
+      countLabel.textContent = isEnglish
+        ? `${visible.length} folder${visible.length === 1 ? "" : "s"}`
+        : `${visible.length} pasta${visible.length === 1 ? "" : "s"}`;
+    }
+    if (activeLabel) {
+      activeLabel.textContent = entry?.title || (isEnglish ? "Select a project" : "Selecione um projeto");
+    }
+  }
+
   function selectEntry(entry, { focus = false } = {}) {
     if (!entry) return;
+
     for (const current of entries) {
       const selected = current === entry;
       current.tab.setAttribute("aria-selected", String(selected));
       current.tab.tabIndex = selected ? 0 : -1;
       current.panel.hidden = !selected;
     }
+
+    updateToolbar(entry);
     if (focus) entry.tab.focus();
   }
 
@@ -34,7 +51,9 @@ export function initProjectExplorer() {
     for (const entry of entries) entry.tab.hidden = entry.project.hidden;
     const visible = visibleEntries();
     const active = entries.find((entry) => !entry.panel.hidden);
+
     if (visible.length && !visible.includes(active)) selectEntry(visible[0]);
+    else updateToolbar(active || null);
   }
 
   function mountExplorer() {
@@ -42,6 +61,19 @@ export function initProjectExplorer() {
 
     abortController = new AbortController();
     const { signal } = abortController;
+
+    const toolbar = document.createElement("div");
+    toolbar.className = "project-explorer-toolbar";
+    toolbar.innerHTML = `
+      <span class="project-explorer-path"><span aria-hidden="true">▣</span> ZARA_DISK / PROJECTS /</span>
+      <span class="project-explorer-active" data-explorer-active></span>
+      <span class="project-explorer-count" data-explorer-count></span>
+    `;
+    activeLabel = toolbar.querySelector("[data-explorer-active]");
+    countLabel = toolbar.querySelector("[data-explorer-count]");
+
+    const body = document.createElement("div");
+    body.className = "project-explorer-body";
 
     const list = document.createElement("div");
     list.className = "project-explorer-list";
@@ -86,16 +118,18 @@ export function initProjectExplorer() {
       panel.append(project);
       list.append(tab);
       panels.append(panel);
-      return { tab, panel, project };
+      return { title, tab, panel, project };
     });
 
+    body.append(list, panels);
     explorer = document.createElement("div");
     explorer.className = "project-explorer";
-    explorer.append(list, panels);
+    explorer.append(toolbar, body);
     grid.replaceWith(explorer);
 
     const initial = visibleEntries()[0];
     if (initial) selectEntry(initial);
+    else updateToolbar();
 
     list.addEventListener("click", (event) => {
       const tab = event.target instanceof Element ? event.target.closest('[role="tab"]') : null;
@@ -132,13 +166,14 @@ export function initProjectExplorer() {
 
     for (const project of projects) {
       project.classList.remove("project-explorer-case");
-      project.removeAttribute("data-explorer-index");
       grid.append(project);
     }
 
     if (explorer.isConnected) explorer.replaceWith(grid);
     explorer = null;
     entries = [];
+    activeLabel = null;
+    countLabel = null;
   }
 
   function applyViewportMode() {

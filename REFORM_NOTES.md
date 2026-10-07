@@ -60,3 +60,16 @@ A V2 abandona a ideia de transformar o desktop simulado em uma interface mobile.
 - Navegação por âncora e menu continuam funcionando sem depender do desktop simulado.
 - O breakpoint pode ser atravessado em tempo real: a página volta ao fluxo normal abaixo de 1200 px e reativa a experiência desktop acima dele.
 - Os testes em Chromium cobrem 360×800, 390×844, 768×1024, 1024×768, 1366×768 e 1920×1080.
+
+
+## ZARA // AQUA WORKSTATION
+
+A direção visual principal do portfólio passa a ser **Aqua Workstation**.
+
+- Aqua e mint formam o ambiente; creme é a superfície de leitura; vinho é usado como assinatura e estado ativo.
+- No desktop (>=1200 px), existe **uma única janela protagonista por vez**. Abrir um app substitui o app anterior no workspace em vez de empilhar janelas.
+- A lateral esquerda mantém apenas dois widgets compactos; a direita concentra os atalhos.
+- A barra inferior informa o workspace, o app ativo e o status online.
+- Projetos em destaque são apresentados como pastas em um explorador com breadcrumb e painel de conteúdo.
+- O botão Voltar do navegador retorna ao welcome/bem-vindo no desktop.
+- Mobile e tablet continuam sendo um documento responsivo convencional, agora com a mesma identidade Aqua aplicada a cards, perfil e seções.

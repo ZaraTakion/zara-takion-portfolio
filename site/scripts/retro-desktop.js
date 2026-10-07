@@ -17,6 +17,7 @@ export function initRetroDesktop() {
     contact: "connect.exe",
     minimize: "Minimize window",
     close: "Close window",
+    desktop: "desktop",
   } : {
     home: "bem-vindo.exe",
     projects: "projetos/",
@@ -26,6 +27,7 @@ export function initRetroDesktop() {
     contact: "connect.exe",
     minimize: "Minimizar janela",
     close: "Fechar janela",
+    desktop: "desktop",
   };
 
   const windows = new Map([
@@ -36,6 +38,7 @@ export function initRetroDesktop() {
     ["formacao", main.querySelector("#formacao") || main.querySelector("#education")],
     ["contato", main.querySelector("#contato") || main.querySelector("#contact")],
   ]);
+
   const aliases = {
     home: "inicio",
     projects: "projetos",
@@ -44,15 +47,16 @@ export function initRetroDesktop() {
     education: "formacao",
     contact: "contato",
   };
+
   const sectionToKey = new Map(
     [...windows.entries()]
       .filter(([, section]) => section)
       .map(([key, section]) => [section.id, key]),
   );
 
-  let zIndex = 10;
   let bootTimer = null;
   let desktopStarted = false;
+  let activeKey = "inicio";
 
   const canonicalKey = (key) => windows.has(key) ? key : aliases[key];
   const appKeyForHref = (href = "") => sectionToKey.get(href.replace(/^#/, ""));
@@ -73,6 +77,29 @@ export function initRetroDesktop() {
       .find(Boolean) || null;
   }
 
+  function statusLabelFor(key) {
+    const map = {
+      inicio: labels.home,
+      projetos: labels.projects,
+      sobre: labels.about,
+      arquivo: labels.archive,
+      formacao: labels.education,
+      contato: labels.contact,
+    };
+    return map[key] || labels.desktop;
+  }
+
+  function updateWorkspaceStatus(key = null) {
+    const status = main.querySelector("[data-active-app]");
+    if (status) status.textContent = key ? statusLabelFor(key) : labels.desktop;
+
+    for (const launcher of main.querySelectorAll("[data-app-open]")) {
+      const launcherKey = canonicalKey(launcher.dataset.appOpen);
+      if (key && launcherKey === key) launcher.setAttribute("aria-current", "page");
+      else launcher.removeAttribute("aria-current");
+    }
+  }
+
   function focusWindow(section) {
     if (!section || !desktopActive()) return;
     window.requestAnimationFrame(() => {
@@ -80,10 +107,21 @@ export function initRetroDesktop() {
     });
   }
 
-  function removeWindowFocus(except = null) {
-    for (const section of windows.values()) {
-      if (section && section !== except) section.classList.remove("has-focus");
+  function setActiveWindow(key, { focus = true } = {}) {
+    const section = windows.get(key);
+    if (!section) return false;
+
+    for (const [currentKey, current] of windows) {
+      if (!current) continue;
+      const selected = currentKey === key;
+      current.classList.toggle("is-open", selected);
+      current.classList.toggle("has-focus", selected);
     }
+
+    activeKey = key;
+    updateWorkspaceStatus(key);
+    if (focus) focusWindow(section);
+    return true;
   }
 
   function clearSectionHash(section) {
@@ -91,10 +129,21 @@ export function initRetroDesktop() {
     history.replaceState(null, "", `${location.pathname}${location.search}`);
   }
 
-  function closeWindow(key, section, { restoreFocus = true, updateUrl = true } = {}) {
+  function minimizeWindow(key, section) {
     section.classList.remove("is-open", "has-focus");
-    if (updateUrl) clearSectionHash(section);
-    if (restoreFocus && desktopActive()) launcherFor(key)?.focus({ preventScroll: true });
+    updateWorkspaceStatus(null);
+    launcherFor(key)?.focus({ preventScroll: true });
+  }
+
+  function closeWindow(key, section) {
+    clearSectionHash(section);
+
+    if (key !== "inicio" && windows.get("inicio")) {
+      setActiveWindow("inicio");
+      return;
+    }
+
+    minimizeWindow(key, section);
   }
 
   function createWindowChrome(key, section) {
@@ -110,9 +159,14 @@ export function initRetroDesktop() {
     const titlebar = document.createElement("div");
     titlebar.className = "retro-window-titlebar";
 
+    const identity = document.createElement("span");
+    identity.className = "retro-window-identity";
+    identity.setAttribute("aria-hidden", "true");
+    identity.textContent = "ZT";
+
     const title = document.createElement("span");
     title.className = "retro-window-title";
-    title.textContent = labels[key] || key;
+    title.textContent = statusLabelFor(key);
 
     const controls = document.createElement("span");
     controls.className = "retro-window-controls";
@@ -130,18 +184,11 @@ export function initRetroDesktop() {
     close.textContent = "×";
 
     controls.append(minimize, close);
-    titlebar.append(title, controls);
+    titlebar.append(identity, title, controls);
     section.insertBefore(titlebar, section.firstChild);
 
-    minimize.addEventListener("click", () => closeWindow(key, section));
+    minimize.addEventListener("click", () => minimizeWindow(key, section));
     close.addEventListener("click", () => closeWindow(key, section));
-
-    section.addEventListener("pointerdown", () => {
-      if (!desktopActive()) return;
-      section.style.zIndex = String(++zIndex);
-      section.classList.add("has-focus");
-      removeWindowFocus(section);
-    });
   }
 
   for (const [key, section] of windows) {
@@ -152,19 +199,15 @@ export function initRetroDesktop() {
     if (!desktopActive()) return false;
 
     const key = canonicalKey(rawKey);
-    const section = windows.get(key);
-    if (!section) return false;
+    if (!key || !windows.get(key)) return false;
 
-    if (!desktopStarted) startDesktop(null, { focus: false });
+    if (!desktopStarted) startDesktop(key, { focus });
+    else setActiveWindow(key, { focus });
 
-    section.classList.add("is-open", "has-focus");
-    section.style.zIndex = String(++zIndex);
-    removeWindowFocus(section);
-    if (focus) focusWindow(section);
     return true;
   }
 
-  function startDesktop(openKey = null, { focus = true } = {}) {
+  function startDesktop(openKey = "inicio", { focus = true } = {}) {
     if (!desktopActive()) return;
 
     if (bootTimer !== null) {
@@ -178,11 +221,7 @@ export function initRetroDesktop() {
     document.body.classList.add("retro-session-active");
     desktopStarted = true;
 
-    windows.get("inicio")?.classList.add("is-open");
-    windows.get("projetos")?.classList.add("is-open");
-
-    if (openKey && openApp(openKey, { focus })) return;
-    if (focus) focusWindow(windows.get("inicio"));
+    setActiveWindow(canonicalKey(openKey) || "inicio", { focus });
   }
 
   function navigateToApp(link) {
@@ -199,30 +238,37 @@ export function initRetroDesktop() {
 
   function startBoot() {
     if (!desktopActive()) return;
+
     startScreen.hidden = true;
     bootScreen.hidden = false;
     bootScreen.querySelector("[data-boot-skip]")?.focus();
 
-    const wait = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 150 : 900;
+    const wait = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 120 : 820;
     bootTimer = window.setTimeout(() => startDesktop(), wait);
   }
 
   function syncLocationToDesktop() {
     if (!desktopActive()) return;
     const key = appKeyForHref(location.hash);
-    if (key) openApp(key, { focus: false });
+    if (key) {
+      openApp(key, { focus: false });
+      return;
+    }
+    if (desktopStarted) setActiveWindow("inicio", { focus: false });
   }
 
   function applyViewportMode() {
     if (desktopQuery.matches) {
       main.classList.add("retro-enhanced");
-      if (desktopStarted) document.body.classList.add("retro-session-active");
-      if (location.hash) {
-        const key = appKeyForHref(location.hash);
-        if (key) {
-          if (!desktopStarted) startDesktop(key, { focus: false });
-          else openApp(key, { focus: false });
-        }
+      if (desktopStarted) {
+        document.body.classList.add("retro-session-active");
+        setActiveWindow(activeKey, { focus: false });
+      }
+
+      const key = appKeyForHref(location.hash);
+      if (key) {
+        if (!desktopStarted) startDesktop(key, { focus: false });
+        else setActiveWindow(key, { focus: false });
       }
       return;
     }
@@ -255,9 +301,9 @@ export function initRetroDesktop() {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape" || !desktopActive()) return;
-    const focused = [...windows.entries()].find(([, section]) => section?.classList.contains("has-focus"));
-    if (focused) closeWindow(focused[0], focused[1]);
+    if (event.key !== "Escape" || !desktopActive() || !desktopStarted) return;
+    const section = windows.get(activeKey);
+    if (section) closeWindow(activeKey, section);
   });
 
   window.addEventListener("hashchange", syncLocationToDesktop);
@@ -281,5 +327,6 @@ export function initRetroDesktop() {
   updateClock();
   window.setInterval(updateClock, 60_000);
 
+  updateWorkspaceStatus("inicio");
   applyViewportMode();
 }

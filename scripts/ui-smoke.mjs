@@ -147,5 +147,21 @@ for (const viewport of viewports) {
   await page.close();
 }
 
+{
+  const page = await browser.newPage({ viewport: { width: 1366, height: 768 } });
+  await page.goto(`${baseURL}/privacidade.html`, { waitUntil: "networkidle" });
+  const privacy = await page.evaluate(() => ({
+    aquaPortfolio: document.body.classList.contains("aqua-portfolio"),
+    overflow: getComputedStyle(document.body).overflow,
+    headingVisible: Boolean(document.querySelector("h1")?.getClientRects().length),
+  }));
+  if (privacy.aquaPortfolio || privacy.overflow === "hidden" || !privacy.headingVisible) {
+    throw new Error(`privacy-desktop: secondary page inherited workstation shell: ${JSON.stringify(privacy)}`);
+  }
+  await assertNoHorizontalOverflow(page, "privacy-desktop");
+  await page.screenshot({ path: `${outputDir}/privacy-desktop.png`, fullPage: true });
+  await page.close();
+}
+
 await browser.close();
 console.log("Aqua Workstation responsive browser tests passed.");

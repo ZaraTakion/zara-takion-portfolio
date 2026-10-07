@@ -1,4 +1,4 @@
-# Zara Takion — Portfólio
+# Zara Takion.exe — Portfólio
 
 Portfólio de Rodrigo Araújo Maciel Pinheiro (Zara Takion), desenvolvedor web júnior com foco em back-end Python, Django, APIs REST e aplicações full-stack. A experiência é estática, bilíngue e apresenta os projetos em um desktop retrô Aqua, com inicialização opcional, janelas organizadas, explorador de projetos, status do sistema e links diretos.
 
@@ -71,6 +71,8 @@ A API responde em http://127.0.0.1:5000. Sem variáveis SMTP, o endpoint de cont
 ## Publicação automática no Cloudflare Workers
 
 O site está preparado para o endereço `https://zara-takion-portfolio.rodzmaciel21.workers.dev/`. O `wrangler.jsonc` aponta os arquivos estáticos para `dist`; o build é `python scripts/build_site.py` e o comando de deploy é `npx wrangler deploy`.
+
+**Nome público:** Zara Takion.exe. O identificador técnico do Worker (`zara-takion-portfolio`) e o endereço `workers.dev` permanecem iguais, então renomear o site não altera a URL publicada.
 
 Para ativar publicação automática a cada atualização da branch `main`:
 

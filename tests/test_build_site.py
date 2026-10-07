@@ -154,6 +154,9 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn('retro-desktop.css', css)
         self.assertIn('.retro-desktop-stage.retro-enhanced > .boot-screen:not([hidden])', css)
         self.assertIn('mobile-app-open > #projects.retro-app-window.is-mobile-active', css)
+        self.assertGreater(css.rfind('@media (max-width: 390px)'), css.rfind('@media (max-width: 800px)'))
+        narrow_phone_rules = css.rsplit('@media (max-width: 390px)', 1)[-1]
+        self.assertIn('.project-archive-grid .project-card { grid-template-columns: minmax(0, 1fr); }', narrow_phone_rules)
         self.assertIn("prefers-reduced-motion: reduce", css)
         self.assertNotIn("overflow-x: hidden", css)
         self.assertNotIn("overflow-x: clip", css)

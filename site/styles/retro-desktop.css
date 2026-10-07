@@ -634,3 +634,11 @@ body.retro-session-active .main-nav { gap: 0; }
   .project-card,
   .button { transition: none; }
 }
+
+/* Keep archive cards readable on narrow phones after the tablet window rules. */
+@media (max-width: 390px) {
+  .project-archive-grid .project-card { grid-template-columns: minmax(0, 1fr); }
+  .project-archive-grid .project-visual { min-height: 0; aspect-ratio: 16 / 9; }
+  .project-archive-grid .project-visual img { object-fit: cover; }
+  .project-archive-grid .project-copy { padding: 18px; }
+}

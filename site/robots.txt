@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://takiondesktop.zaratakion.workers.dev/sitemap.xml
+Sitemap: https://portfolio.zaratakion.workers.dev/sitemap.xml

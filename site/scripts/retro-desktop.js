@@ -85,10 +85,20 @@ export function initRetroDesktop() {
     }
   }
 
-  function closeWindow(key, section) {
+  function setMobileModalOpen(isOpen) {
+    main.classList.toggle("mobile-app-open", isOpen);
+    document.body.classList.toggle("mobile-app-modal-open", isOpen);
+  }
+
+  function closeWindow(key, section, { restoreFocus = true, updateUrl = true } = {}) {
     section.classList.remove("is-open", "is-mobile-active", "has-focus");
-    if (mobileQuery.matches) main.classList.remove("mobile-app-open");
-    launcherFor(key)?.focus({ preventScroll: true });
+    if (mobileQuery.matches) setMobileModalOpen(false);
+
+    if (updateUrl && location.hash === `#${section.id}`) {
+      history.replaceState(null, "", `${location.pathname}${location.search}`);
+    }
+
+    if (restoreFocus) launcherFor(key)?.focus({ preventScroll: true });
   }
 
   for (const [key, section] of windows) {
@@ -175,13 +185,13 @@ export function initRetroDesktop() {
     removeWindowFocus(section);
 
     if (mobileQuery.matches) {
-      main.classList.add("mobile-app-open");
+      setMobileModalOpen(true);
       for (const other of windows.values()) {
         if (other !== section) other?.classList.remove("is-mobile-active");
       }
       section.classList.add("is-mobile-active");
     } else {
-      main.classList.remove("mobile-app-open");
+      setMobileModalOpen(false);
       for (const other of windows.values()) other?.classList.remove("is-mobile-active");
     }
 
@@ -239,10 +249,28 @@ export function initRetroDesktop() {
       close?.setAttribute("aria-label", mobileQuery.matches ? labels.closeApp : labels.close);
     }
 
-    if (!mobileQuery.matches) {
-      main.classList.remove("mobile-app-open");
+    if (mobileQuery.matches) {
+      if (!desktopStarted) return;
+
+      const activeEntry = [...windows.entries()].find(([, section]) =>
+        section?.classList.contains("is-open") && section.classList.contains("has-focus")
+      ) || [...windows.entries()].find(([, section]) =>
+        section?.classList.contains("is-open") && section.dataset.appWindow !== "inicio"
+      );
+
       for (const section of windows.values()) section?.classList.remove("is-mobile-active");
+
+      if (activeEntry && activeEntry[0] !== "inicio") {
+        activeEntry[1].classList.add("is-mobile-active");
+        setMobileModalOpen(true);
+      } else {
+        setMobileModalOpen(false);
+      }
+      return;
     }
+
+    setMobileModalOpen(false);
+    for (const section of windows.values()) section?.classList.remove("is-mobile-active");
   };
 
   if (typeof mobileQuery.addEventListener === "function") {
@@ -251,10 +279,20 @@ export function initRetroDesktop() {
     mobileQuery.addListener(updateViewportMode);
   }
 
-  window.addEventListener("hashchange", () => {
+  const syncWindowWithLocation = () => {
     const key = appKeyForHref(location.hash);
-    if (key) openApp(key, { focus: false });
-  });
+    if (key) {
+      openApp(key, { focus: false });
+      return;
+    }
+
+    if (!desktopStarted || !mobileQuery.matches) return;
+    const active = [...windows.entries()].find(([, section]) => section?.classList.contains("is-mobile-active"));
+    if (active) closeWindow(active[0], active[1], { restoreFocus: false, updateUrl: false });
+  };
+
+  window.addEventListener("hashchange", syncWindowWithLocation);
+  window.addEventListener("popstate", syncWindowWithLocation);
 
   const clock = main.querySelector("[data-system-clock]");
   const updateClock = () => {

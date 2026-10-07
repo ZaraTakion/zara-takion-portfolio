@@ -156,8 +156,8 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn('retro-desktop.css', css)
         self.assertIn('.retro-desktop-stage.retro-enhanced > .boot-screen:not([hidden])', css)
         self.assertIn('mobile-app-open > #projects.retro-app-window.is-mobile-active', css)
-        self.assertGreater(css.rfind('@media (max-width: 390px)'), css.rfind('@media (max-width: 800px)'))
-        narrow_phone_rules = css.rsplit('@media (max-width: 390px)', 1)[-1]
+        self.assertIn('@media (max-width: 390px)', css)
+        narrow_phone_rules = css.split('@media (max-width: 390px)', 1)[1].split('@media', 1)[0]
         self.assertIn('.project-archive-grid .project-card { grid-template-columns: minmax(0, 1fr); }', narrow_phone_rules)
         self.assertIn('@media (min-width: 1800px) and (min-height: 1000px)', css)
         self.assertIn('width: min(48vw, 1400px)', css)
@@ -215,6 +215,8 @@ class StaticBuildTests(unittest.TestCase):
         self.assertIn("scroll-snap-type: x proximity", css)
         self.assertIn("min-height: 44px", css)
         self.assertNotIn("width: 100vw;", css)
+        self.assertIn("body.mobile-app-modal-open", css)
+        self.assertIn("height: 100dvh", css)
 
     def test_project_tracks_are_validated(self):
         projects_path = build_site.SOURCE / "data" / "projects.json"

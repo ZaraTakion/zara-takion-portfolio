@@ -855,8 +855,8 @@ body.retro-session-active .main-nav { gap: 0; }
   .retro-app-window.is-mobile-active .retro-window-titlebar {
     min-height: 48px;
     margin-inline:
-      calc(-1 * max(12px, env(safe-area-inset-left)))
-      calc(-1 * max(12px, env(safe-area-inset-right)));
+      calc(0px - max(12px, env(safe-area-inset-left)))
+      calc(0px - max(12px, env(safe-area-inset-right)));
     padding-inline:
       max(12px, env(safe-area-inset-left))
       max(12px, env(safe-area-inset-right));
@@ -1118,5 +1118,17 @@ body.retro-session-active .main-nav { gap: 0; }
 
   .contact-direct-links a {
     padding-inline: 8px;
+  }
+}
+
+@media (max-width: 800px) {
+  body.mobile-app-modal-open {
+    overflow: hidden;
+    overscroll-behavior: none;
+  }
+
+  .retro-desktop-stage.retro-enhanced.desktop-running.mobile-app-open > .retro-app-window.is-mobile-active {
+    height: 100dvh;
+    touch-action: pan-y;
   }
 }

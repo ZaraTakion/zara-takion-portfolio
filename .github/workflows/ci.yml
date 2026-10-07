@@ -40,5 +40,35 @@ jobs:
           node --test tests/*.test.mjs
       - name: Build static site
         run: python scripts/build_site.py
+      - name: Install browser smoke-test dependency
+        run: |
+          npm install --no-save --no-package-lock playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run responsive browser smoke tests
+        run: |
+          python -m http.server 4173 --directory dist >/tmp/portfolio-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill $SERVER_PID' EXIT
+          python - <<'PY'
+          import socket
+          import time
+
+          for _ in range(50):
+              try:
+                  with socket.create_connection(("127.0.0.1", 4173), timeout=0.2):
+                      break
+              except OSError:
+                  time.sleep(0.1)
+          else:
+              raise SystemExit("Local preview server did not start.")
+          PY
+          UI_BASE_URL=http://127.0.0.1:4173 node scripts/ui-smoke.mjs
+      - name: Upload responsive screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: responsive-ui-screenshots
+          path: artifacts/ui
+          if-no-files-found: ignore
       - name: Check generated output
         run: test -s dist/index.html && test -s dist/_headers && test -s dist/data/projects.json

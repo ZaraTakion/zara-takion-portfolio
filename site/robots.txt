@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://zara-takion-portfolio.rodzmaciel21.workers.dev/sitemap.xml
+Sitemap: https://takiondesktop.zaratakion.workers.dev/sitemap.xml

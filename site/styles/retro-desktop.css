@@ -594,6 +594,7 @@ body { overflow-wrap: anywhere; }
     top: 230px;
     left: clamp(520px, 31vw, 720px);
     width: min(980px, 58%);
+    max-height: calc(100% - 254px);
   }
   #sobre.retro-app-window,
   #about.retro-app-window,

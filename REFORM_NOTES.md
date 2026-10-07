@@ -73,3 +73,15 @@ A direção visual principal do portfólio passa a ser **Aqua Workstation**.
 - Projetos em destaque são apresentados como pastas em um explorador com breadcrumb e painel de conteúdo.
 - O botão Voltar do navegador retorna ao welcome/bem-vindo no desktop.
 - Mobile e tablet continuam sendo um documento responsivo convencional, agora com a mesma identidade Aqua aplicada a cards, perfil e seções.
+
+
+## Reescrita total de design — AQUA WORKSTATION
+
+A interface anterior foi substituída por um único design system chamado `aqua-workstation.css`.
+
+- Os módulos CSS antigos deixam de participar do build e são removidos da árvore do projeto.
+- Mobile/tablet são um portfólio web normal com a linguagem Aqua.
+- Desktop (>= 1200 px) vira a workstation: top bar, widgets, dock lateral, status bar e uma janela ativa por vez.
+- A arte `oc-portrait.jpg` passa a fazer parte da identidade visual do hero.
+- Projetos continuam vindo de `projects.json`, mas recebem apresentação visual consistente com arquivos/pastas do sistema.
+- O build continua produzindo somente `/assets/css/site.css`, agora compilado exclusivamente a partir de `aqua-workstation.css`.

@@ -16,21 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "site"
 OUTPUT = ROOT / "dist"
 STYLESHEETS = (
-    "tokens.css",
-    "reset.css",
-    "typography.css",
-    "layout.css",
-    "navigation.css",
-    "components.css",
-    "hero.css",
-    "projects.css",
-    "profile.css",
-    "contact.css",
-    "footer.css",
-    "responsive.css",
-    "motion.css",
-    "project-filters.css",
-    "retro-desktop.css",
+    "aqua-workstation.css",
 )
 REQUIRED_PROJECT_FIELDS = {
     "title",

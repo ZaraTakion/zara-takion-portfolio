@@ -1,122 +1,86 @@
-# Zara Takion.exe — Portfólio
+# ZARA // AQUA WORKSTATION V3
 
-Portfólio de Rodrigo Araújo Maciel Pinheiro (Zara Takion), desenvolvedor web júnior com foco em back-end Python, Django, APIs REST e aplicações full-stack. A experiência é estática, bilíngue e apresenta os projetos em um desktop retrô Aqua, com inicialização opcional, janelas organizadas, explorador de projetos, status do sistema e links diretos.
+Portfólio profissional bilíngue de **Zara Takion**, desenvolvido com **React, TypeScript e Vite**. O produto apresenta estudos de caso reais de web development e back-end Python por meio de um pequeno ambiente desktop interativo, com estética Aqua, céu pixelado e detalhes em vinho.
 
-## Estrutura
+**Site:** https://portfolio.zaratakion.workers.dev/  
+**Código:** https://github.com/ZaraTakion/zara-takion-portfolio
 
-- site/: páginas localizadas (`/` em português e `/en/` em inglês), políticas de privacidade nos dois idiomas, estilos, scripts, dados e imagens do portfólio.
-- site/styles/: tokens e folhas CSS organizadas por fundação, navegação, seções, movimento e responsividade. O build as reúne em um único arquivo para publicação.
-- site/styles/retro-desktop.css: interface de desktop retrô em Aqua e creme, com detalhes vinho.
-- site/scripts/: módulos JavaScript nativos separados para navegação, filtros, desktop e explorador de projetos.
-- site/scripts/project-filters.js: filtros acessíveis para localizar projetos por aplicações web, APIs ou dados; os projetos continuam visíveis sem JavaScript.
-- scripts/build_site.py: valida os dados e monta a pasta dist para publicação estática.
-- wrangler.jsonc: configuração do Cloudflare Workers Static Assets para publicar os arquivos de dist.
-- site/_headers: cabeçalhos de segurança aplicados pelo Cloudflare Workers.
-- api/: API Flask independente mantida no repositório, mas não conectada aos links de contato do site.
-- api/tests/: testes da API.
+## Arquitetura
 
-## Gerar e visualizar o site
+- **`src/`**: aplicação React em TypeScript; componentes de home, estudos de caso, explorador, perfil, arquivo, educação, contato, terminal e paleta rápida, estado e internacionalização.
+- **`src/copy.ts`**: textos independentes em português e inglês.
+- **`src/model.ts`**: definição dos nomes de rotas, aliases e seleção dos projetos.
+- **`src/styles/upgrade.css`**: identidade visual V3, animações, layouts e estados acessíveis.
+- **`site/styles/aqua-workstation.css`**: direção de arte Aqua anterior preservada e importada como base pela aplicação React.
+- **`site/assets/img/`**: retrato original da Zara, capas e gráficos já existentes, **sem geração ou alteração por IA**.
+- **`site/data/projects.json`**: única fonte do acervo de sete projetos. Descrições em PT/EN e estudos de caso preservados. Não fabricamos métricas.
+- **`site/_headers`**: política CSP e cabeçalhos de segurança aplicáveis ao site publicado.
+- **`api/`**: API Flask independente. O contato na interface continua usando links diretos, sem fingir que há um serviço de e-mail conectado.
+- **`scripts/copy-public.mjs`**: copia apenas os assets, dados, páginas legais, sitemap, robots e 404 para `dist/` após o build.
+- **`scripts/build_site.py`**: comando de build histórico mantido para compatibilidade com o Cloudflare. Valida dados e executa o build Vite.
+- **`scripts/ui-smoke.mjs`**: testes Chromium reais em 320, 360, 390, 768, 1024, 1200, 1366, 1920 e 3840px, com navegação e ações.
 
-Requer Python 3.10 ou superior.
+## Execução local
 
-~~~bash
+Requisitos: Node.js 22+ e npm. Python 3.13+ é necessário para as validações/rotina histórica de build e para a API.
+
+```bash
+npm install
+npm run dev
+```
+
+Para preparar produção:
+
+```bash
+npm run typecheck
+npm run test:unit
+npm run build
+npm run preview
+```
+
+O comando Cloudflare legado segue funcionando:
+
+```bash
 python scripts/build_site.py
-python -m http.server 8000 --directory dist
-~~~
+```
 
-Abra http://localhost:8000.
+Ele faz a verificação do JSON e, se faltar `node_modules/vite`, instala as dependências JavaScript antes de executar o build Vite. A saída continua sendo `dist/`, usada por `wrangler.jsonc`.
 
-Para validar a geração estática e o conteúdo PT/EN:
+Para testes completos de interface em navegador, rode o build, inicie o servidor local na porta 4173 e execute `npm run test:ui`. A GitHub Actions automatiza o fluxo.
 
-~~~bash
-python -m unittest tests.test_build_site -v
-~~~
+## Como usar
 
-A suíte também verifica as categorias de projeto, os filtros nas duas línguas e a geração das páginas estáticas. O próprio build audita IDs, referências ARIA, atributos `alt`, links que abrem nova aba, âncoras internas e referências a arquivos locais antes de considerar a saída pronta.
+**Desktop ≥1200px:** após carregar a página, escolha entrar direto ou observar a inicialização curta opcional. Os aplicativos incluem Home, Projetos, Sobre, Arquivo, Formação, Contato e Terminal. Só um aplicativo fica ativo de cada vez; janelas têm controles de minimizar, expandir/restaurar e fechar. Use a barra lateral para trocar de aplicativo. A paleta **Ctrl+K** fornece acesso rápido; **Alt+1–7** abre aplicativos, e **Esc** volta para Home.
 
-### Prévia no Windows (PowerShell)
+**Celular e tablet:** as mesmas seções são apresentadas como documento navegável e responsivo, sem obrigar a usar a metáfora de janelas. Botão de menu, âncoras e links funcionam com toque e teclado.
 
-Com Python instalado, abra o PowerShell na pasta do projeto e execute:
+**Explorador:** no desktop, os projetos são apresentados como pastas com abas de teclado (setas, Home e End). Em telas pequenas, voltam à grade de cards, preservando as informações. Filtros Web, APIs e Dados usam os projetos reais do JSON. A opção Todos mostra os três estudos de caso principais; filtros específicos procuram em todo o acervo.
 
-~~~powershell
-py scripts/build_site.py
-py -m http.server 8000 --directory dist
-~~~
+**Terminal:** interpreta exclusivamente comandos conhecidos de **navegação**, como `help`, `projects`, `about`, `archive`, `skills`, `education`, `contact`, `home`, `clear`. Não executa código arbitrário nem comandos de sistema.
 
-Depois, acesse http://localhost:8000. Para encerrar o servidor, pressione Ctrl+C no PowerShell. O contato abre o aplicativo de e-mail escolhido pela pessoa visitante; GitHub e LinkedIn abrem seus respectivos perfis.
+## Acessibilidade e desempenho
 
-## Testar a API de contato
+- Contraste, estados `:focus-visible`, labels, feedback `aria-live`, imagens com alt significativo, projeto com `details/summary` e navegação PT/EN.
+- A paleta de comandos gerencia foco e fecha com Esc; o menu mobile oferece estados acessíveis.
+- Animações de janelas, céu e microinterações são leves, sem vídeo em autoplay, bibliotecas de partículas, rastreamento ou dependências externas de fontes.
+- `prefers-reduced-motion: reduce` desativa as animações não essenciais; o conteúdo permanece visível. `forced-colors` também tem fallback.
+- O build carrega React/CSS empacotados localmente e mantém CSP `script-src 'self'`.
+- Os arquivos de arte originais são copiados sem alteração. A integridade do retrato é verificada por testes.
 
-Requer Python 3.10+.
+## Testes e publicação
 
-~~~bash
-python -m venv .venv
-~~~
+O workflow [React Aqua Workstation quality gate](.github/workflows/ci.yml) valida:
 
-Ative o ambiente virtual, instale as dependências e rode os testes:
+1. TypeScript e testes de unidade React.
+2. Testes legados Node e suíte Python Flask.
+3. Auditoria de dependências Python.
+4. Build de produção Vite, conteúdo PT/EN, integridade de assets, páginas legais e cabeçalhos.
+5. Navegação Playwright Chromium real de 320 a 3840px, incluindo mobile, terminal, paleta, alternância de páginas e viewport desktop/tablet.
 
-~~~bash
-python -m pip install -r api/requirements.txt
-python -m unittest discover -s api/tests -v
-~~~
+**Publicação:** a branch `main` mantém a produção. Mudanças grandes passam por PR e CI primeiro. Cloudflare Workers publica a partir da branch configurada com `python scripts/build_site.py` e `npx wrangler deploy`; o Worker usa `./dist`.
 
-Para iniciar a API localmente:
+## Ética do portfólio
 
-~~~bash
-python -m api.app
-~~~
+Os projetos expõem o que suas documentações efetivamente comprovam, inclusive limites e condições de produção. Ilustrações conceituais são identificadas como tais e gráficos derivados de dados próprios permanecem intactos. Não acrescentamos imagens fabricadas, métricas fictícias ou testemunhos inexistentes.
 
-A API responde em http://127.0.0.1:5000. Sem variáveis SMTP, o endpoint de contato retorna uma mensagem clara e não envia nem armazena dados.
-
-## Publicação automática no Cloudflare Workers
-
-O site está preparado para o endereço `https://portfolio.zaratakion.workers.dev/`. O `wrangler.jsonc` aponta os arquivos estáticos para `dist`; o build é `python scripts/build_site.py` e o comando de deploy é `npx wrangler deploy`.
-
-**Nome público:** Zara Takion.exe. O identificador técnico do Worker é `portfolio` e o endereço de produção usa a assinatura `zaratakion.workers.dev`.
-
-Para ativar publicação automática a cada atualização da branch `main`:
-
-1. No painel Cloudflare, abra **Workers & Pages** e conecte o repositório `ZaraTakion/zara-takion-portfolio` em **Builds**.
-2. Escolha a branch `main`.
-3. Configure o comando de build como `python scripts/build_site.py` e o comando de deploy como `npx wrangler deploy`.
-4. Salve e acompanhe o primeiro build. Depois, cada push para `main` inicia uma nova publicação.
-
-Também é possível publicar pela CLI com `npx wrangler deploy`, depois de autenticar o Wrangler na conta Cloudflare. O build produz `dist/404.html`, mantém páginas em português e inglês e aplica `site/_headers` à saída estática.
-
-As páginas em `/privacidade.html` e `/en/privacy.html` explicam que o portfólio não coleta mensagens por formulário e que os links externos seguem as políticas dos respectivos serviços.
-
-## Hospedar a API Flask
-
-A API Flask permanece independente e precisa de um serviço Python separado. Ela não faz parte do Worker estático nem está ligada ao contato do portfólio. Se for usada separadamente, um exemplo de hospedagem é o Render:
-
-1. Crie um Web Service ligado a este repositório.
-2. Use pip install -r api/requirements.txt como comando de build.
-3. Use gunicorn --chdir api app:app como comando de inicialização.
-4. Configure as variáveis secretas descritas em .env.example no painel do serviço.
-5. Defina ALLOWED_ORIGINS com o domínio autorizado e configure as credenciais SMTP no painel, nunca no Git.
-6. Defina CONTACT_API_ENV=production e RATELIMIT_STORAGE_URI com a URL privada `rediss://` de um Redis gerenciado. A API aplica até cinco envios por endereço IP por hora e não inicia em produção sem armazenamento compartilhado protegido por TLS para esse limite.
-
-O endpoint GET /api/health permite verificar se a API está respondendo. Seu endpoint POST /api/contact valida os dados, aplica um campo honeypot e limita tentativas antes de encaminhar o e-mail sem manter uma cópia própria na API. Defina TRUSTED_PROXY_HOPS apenas com a quantidade de proxies confiáveis documentada pelo host; não confie em cabeçalhos de proxy enviados diretamente pelo visitante.
-
-## Projetos apresentados
-
-O portfólio destaca três trabalhos alinhados ao foco em back-end Python, APIs REST e aplicações full-stack. Os demais ficam organizados em um arquivo complementar; os sete continuam acessíveis no site.
-
-### Em destaque
-
-- [UPA — Portal Acadêmico](https://github.com/ZaraTakion/upa-portal-academico) — aplicação full-stack com React/Vite, Django REST, JWT e PostgreSQL.
-- [Task Manager API](https://github.com/ZaraTakion/task-manager-backend) — API FastAPI com persistência SQLite e teste de continuidade após reinício.
-- [Chamados API](https://github.com/ZaraTakion/chamados-api) — API Django REST com JWT, permissões de solicitante/equipe, filtros e comentários.
-
-### Arquivo
-
-- [Brazil Traffic Insight](https://github.com/ZaraTakion/brazil-traffic-insight) — análise de acidentes de trânsito no Brasil (2017–2023), classificação e dashboard.
-- [NBA Dashboard](https://github.com/ZaraTakion/nba-dashboard) — dashboard de estatísticas de equipes da NBA no período coberto pelo projeto.
-- [Steam Price Predictor](https://github.com/ZaraTakion/steam-price-predictor) — demonstração de estimativa de preços históricos de jogos.
-- [Air Quality Analysis](https://github.com/ZaraTakion/air-quality-analysis) — dashboard e análise explicativa de um recorte estático; os resultados não demonstram desempenho preditivo acima do baseline da média.
-
-As imagens de Air Quality, Brazil Traffic Insight e NBA são gráficos próprios feitos a partir dos dados dos projetos. A capa do UPA é uma ilustração vetorial conceitual, não uma captura de tela. As descrições acompanham a documentação dos repositórios; métricas e qualificações não são inferidas.
-
-## Notas da reforma técnica
-
-As correções estruturais e de responsividade desta revisão estão resumidas em [`REFORM_NOTES.md`](REFORM_NOTES.md).
+A identidade Aqua é o enquadramento. O conteúdo e a experiência de navegação são o produto.

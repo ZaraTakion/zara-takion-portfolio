@@ -319,36 +319,34 @@ def build_stylesheet() -> str:
 
 
 def build() -> None:
-    for required_path in (
-        SOURCE / "index.html",
-        SOURCE / "en" / "index.html",
-        SOURCE / "404.html",
-        SOURCE / "privacidade.html",
-        SOURCE / "en" / "privacy.html",
-        SOURCE / "robots.txt",
-        SOURCE / "sitemap.xml",
-        SOURCE / "scripts" / "main.js",
-        SOURCE / "scripts" / "project-filters.js",
-        SOURCE / "scripts" / "navigation.js",
-        SOURCE / "scripts" / "project-explorer.js",
-        SOURCE / "scripts" / "retro-desktop.js",
-    ):
-        if not required_path.is_file():
-            raise FileNotFoundError(f"Arquivo obrigatório ausente: {required_path.relative_to(ROOT)}")
+    """Validate existing project metadata and build the complete React/Vite site.
 
-    validate_html_document(SOURCE / "index.html")
-    validate_html_document(SOURCE / "en" / "index.html")
+    Cloudflare's established build command remains `python scripts/build_site.py`.
+    It can install missing JS dependencies for a clean worker build environment.
+    No legacy HTML or legacy JS is copied over the React entrypoints.
+    """
+    import subprocess
+
     validate_projects()
-    if OUTPUT.exists():
-        shutil.rmtree(OUTPUT)
-    shutil.copytree(SOURCE, OUTPUT, ignore=shutil.ignore_patterns("styles"))
-    render_page(SOURCE / "index.html", OUTPUT / "index.html", "pt")
-    render_page(SOURCE / "en" / "index.html", OUTPUT / "en" / "index.html", "en")
-    css_output = OUTPUT / "assets" / "css" / "site.css"
-    css_output.parent.mkdir(parents=True, exist_ok=True)
-    css_output.write_text(build_stylesheet(), encoding="utf-8")
-    validate_generated_site()
-    print(f"Site preparado em {OUTPUT.relative_to(ROOT)}.")
+    if not (ROOT / "node_modules" / "vite").exists():
+        subprocess.run(
+            ["npm", "install", "--no-audit", "--no-fund"],
+            cwd=ROOT,
+            check=True,
+        )
+    subprocess.run(["npm", "run", "build"], cwd=ROOT, check=True)
+    for required in (
+        OUTPUT / "index.html",
+        OUTPUT / "en" / "index.html",
+        OUTPUT / "404.html",
+        OUTPUT / "privacidade.html",
+        OUTPUT / "en" / "privacy.html",
+        OUTPUT / "_headers",
+        OUTPUT / "data" / "projects.json",
+    ):
+        if not required.is_file():
+            raise FileNotFoundError(f"React build missing {required.relative_to(ROOT)}")
+    print("React + Vite + TypeScript production site prepared in dist/.")
 
 
 if __name__ == "__main__":

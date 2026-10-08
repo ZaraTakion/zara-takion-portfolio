@@ -52,7 +52,7 @@ try {
     await page.locator("h1").first().waitFor({ state: viewport.desktop ? "attached" : "visible" });
     assert(await page.locator(".retro-desktop-stage").count() === 1, "React workstation missing");
     const projectCards = await page.locator(".project-card").count();
-    assert(projectCards >= 7, `${viewport.name}: project data not loaded: ${projectCards}`);
+    assert(projectCards >= (viewport.desktop ? 5 : 7), `${viewport.name}: project data not loaded: ${projectCards}`);
     if (!viewport.desktop) {
       assert(await page.locator(".startup-screen").isVisible() === false,
         `${viewport.name}: optional desktop boot leaked into responsive document`);

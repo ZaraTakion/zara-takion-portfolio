@@ -1,4 +1,4 @@
-import { copyFile, cp, mkdir, writeFile } from "node:fs/promises";
+import { copyFile, cp, mkdir, writeFile, readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
 
@@ -13,6 +13,19 @@ for (const name of ["404.html", "robots.txt", "sitemap.xml", "privacidade.html"]
 }
 await mkdir("dist/en", { recursive: true });
 await copyFile("site/en/privacy.html", "dist/en/privacy.html");
+
+// Privacy and 404 remain readable without React; ship their existing
+// stylesheet, but remove the obsolete static-site JavaScript entrypoint.
+await mkdir("dist/assets/css", { recursive: true });
+await copyFile("site/styles/aqua-workstation.css", "dist/assets/css/site.css");
+for (const file of ["dist/privacidade.html", "dist/en/privacy.html"]) {
+  const original = await readFile(file, "utf8");
+  await writeFile(
+    file,
+    original.replace(/<script\s+type="module"\s+src="\/scripts\/main\.js"><\/script>/g, ""),
+    "utf8",
+  );
+}
 const revision = process.env.GITHUB_SHA
   || process.env.CF_PAGES_COMMIT_SHA
   || execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();

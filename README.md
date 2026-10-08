@@ -15,6 +15,7 @@ Portfólio profissional bilíngue de **Zara Takion**, desenvolvido com **React, 
 - **`site/assets/img/`**: retrato original da Zara, capas e gráficos já existentes, **sem geração ou alteração por IA**.
 - **`site/data/projects.json`**: única fonte do acervo de sete projetos. Descrições em PT/EN e estudos de caso preservados. Não fabricamos métricas.
 - **`site/_headers`**: política CSP e cabeçalhos de segurança aplicáveis ao site publicado.
+- **`site/privacidade.html`, `site/en/privacy.html` e `site/404.html`**: páginas legais e de erro intencionalmente estáticas e acessíveis sem React, com CSS próprio preservado; scripts antigos não são publicados.
 - **`api/`**: API Flask independente. O contato na interface continua usando links diretos, sem fingir que há um serviço de e-mail conectado.
 - **`scripts/copy-public.mjs`**: copia apenas os assets, dados, páginas legais, sitemap, robots e 404 para `dist/` após o build.
 - **`scripts/build_site.py`**: comando de build histórico mantido para compatibilidade com o Cloudflare. Valida dados e executa o build Vite.

@@ -130,7 +130,7 @@ class StaticBuildTests(unittest.TestCase):
         self.assertTrue((build_site.OUTPUT / "robots.txt").is_file())
 
         sitemap = (build_site.OUTPUT / "sitemap.xml").read_text(encoding="utf-8")
-        self.assertIn("https://zara-takion-portfolio.rodzmaciel21.workers.dev/en/", sitemap)
+        self.assertIn("https://portfolio.zaratakion.workers.dev/en/", sitemap)
         self.assertIn('hreflang="pt-BR"', sitemap)
 
     def test_cloudflare_configuration_and_headers_remain_valid(self):
@@ -138,7 +138,7 @@ class StaticBuildTests(unittest.TestCase):
         config = (build_site.ROOT / "wrangler.jsonc").read_text(encoding="utf-8")
         headers = (build_site.OUTPUT / "_headers").read_text(encoding="utf-8")
 
-        self.assertIn('"name": "zara-takion-portfolio"', config)
+        self.assertIn('"name": "portfolio"', config)
         self.assertIn('"directory": "./dist"', config)
         self.assertIn("Content-Security-Policy:", headers)
 

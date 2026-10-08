@@ -80,6 +80,13 @@ class ReactPortfolioTests(unittest.TestCase):
         self.assertIn("validate_projects()", source)
         self.assertIn('["npm", "run", "build"]', source)
 
+    def test_release_revision_manifest_is_valid_and_traceable(self):
+        manifest = json.loads((OUTPUT / "version.json").read_text(encoding="utf-8"))
+        self.assertEqual(manifest["site"], "zara-aqua-workstation")
+        self.assertEqual(manifest["framework"], "React / TypeScript / Vite")
+        self.assertRegex(manifest["revision"], r"^[a-f0-9]{40}$")
+        self.assertEqual(manifest["shortRevision"], manifest["revision"][:7])
+
     def test_current_project_schema_validation_still_runs(self):
         build_site.validate_projects()
 

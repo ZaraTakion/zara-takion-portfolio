@@ -47,7 +47,7 @@ try {
     const runtimeErrors = [];
     page.on("pageerror", error => runtimeErrors.push(error.message));
     await page.goto(base, { waitUntil: "networkidle" });
-    await page.locator(".aqua-v3").waitFor();
+    await page.locator(".aqua-v3").waitFor({ state: "attached" });
     await noOverflow(page, `${viewport.name}/initial`);
     await page.locator("h1").first().waitFor({ state: viewport.desktop ? "attached" : "visible" });
     assert(await page.locator(".retro-desktop-stage").count() === 1, "React workstation missing");

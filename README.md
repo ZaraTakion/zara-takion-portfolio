@@ -77,6 +77,8 @@ O workflow [React Aqua Workstation quality gate](.github/workflows/ci.yml) valid
 4. Build de produção Vite, conteúdo PT/EN, integridade de assets, páginas legais e cabeçalhos.
 5. Navegação Playwright Chromium real de 320 a 3840px, incluindo mobile, terminal, paleta, alternância de páginas e viewport desktop/tablet.
 
+O arquivo `/version.json` contém a revisão completa do Git associada ao build e recebe `Cache-Control: no-store`. Após a publicação, compare sua propriedade `revision` com o SHA de `main` para evitar confundir a versão anterior com a recém-publicada.
+
 **Publicação:** a branch `main` mantém a produção. Mudanças grandes passam por PR e CI primeiro. Cloudflare Workers publica a partir da branch configurada com `python scripts/build_site.py` e `npx wrangler deploy`; o Worker usa `./dist`.
 
 ## Ética do portfólio

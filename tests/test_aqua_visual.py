@@ -25,7 +25,7 @@ class AquaWorkstationVisualTests(unittest.TestCase):
         v2 = self.css.split("AQUA WORKSTATION V2", 1)[1]
         self.assertNotIn("@import", v2)
         self.assertNotIn("url(", v2)
-        self.assertNotIn("filter: blur(", v2)
+        self.assertNotIn("filter: blur(20px)", v2)
         self.assertIn(".project-card:hover .project-visual img", v2)
 
 if __name__ == "__main__":

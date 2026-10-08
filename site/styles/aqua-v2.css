@@ -1,0 +1,275 @@
+/* AQUA WORKSTATION 2.0 — a playful, credible developer desktop.
+   Mobile remains a readable, scrollable document. No assets or OC art edited. */
+:root {
+  --aqua-ink: #203735;
+  --aqua-wine: #78263d;
+  --aqua-glass: rgba(255, 252, 246, .96);
+  --aqua-focus: #6f223a;
+}
+body { background-color: #e5f6f1; }
+.hero {
+  background:
+    radial-gradient(ellipse at 89% 16%, rgba(128,210,210,.36), transparent 47%),
+    linear-gradient(130deg, #fbfbf2, #e7f6f1);
+}
+.hero-role { letter-spacing: .018em; }
+.hero h1 { letter-spacing: -.055em; }
+.hero-stack li { background: #e0f4ef; color: #203735; border-color: #476461; font-weight: 750; }
+.digital-profile {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(149deg, #fffdf6 0%, #d6eee8 100%);
+}
+.digital-profile::before {
+  position: absolute;
+  z-index: -1;
+  width: 160px;
+  height: 160px;
+  top: -64px;
+  right: -55px;
+  content: "";
+  border: 1px solid rgba(114,46,67,.25);
+  border-radius: 50%;
+  box-shadow: 0 0 0 17px rgba(111,194,185,.11), 0 0 0 38px rgba(111,194,185,.06);
+}
+.digital-avatar img { object-fit: cover; }
+
+/* A warm mechanical accent that preserves the Aqua × Classic Machine language. */
+.button { transition: translate 200ms cubic-bezier(.2,.75,.2,1), box-shadow 200ms ease, background 200ms ease; }
+@media (hover:hover) {
+  .button:hover { translate: 0 -2px; }
+  .project-card:hover { border-color: #385e58; }
+}
+.project-card, .education-entry, .skills-panel {
+  transition: border-color 180ms ease, box-shadow 240ms ease;
+}
+:focus-visible { outline-color: #87273f; outline-offset: 4px; }
+
+@media (min-width: 1200px) {
+  body.aqua-portfolio { background: #ddf1ed; }
+
+  .retro-desktop-stage.retro-enhanced {
+    background:
+      radial-gradient(ellipse at 56% 26%, rgba(255,255,255,.78) 0%, transparent 49%),
+      radial-gradient(ellipse at 10% 67%, rgba(104,190,190,.35), transparent 35%),
+      linear-gradient(180deg, #b4e8e2 0%, #c9f0e9 57%, #eaf7e8 79%, #cce3d8 100%);
+  }
+  .retro-desktop-stage.retro-enhanced::before,
+  .retro-desktop-stage.retro-enhanced::after {
+    width: 98px;
+    height: 15px;
+    border-radius: 1px;
+    background: rgba(255,255,250,.78);
+    box-shadow:
+      14px 0 rgba(255,255,250,.78),
+      -14px 0 rgba(255,255,250,.78),
+      0 -14px rgba(255,255,250,.78),
+      14px -14px rgba(255,255,250,.78),
+      -14px -14px rgba(255,255,250,.78);
+    opacity: .62;
+    pointer-events: none;
+    animation: aqua-cloud 22s ease-in-out infinite alternate;
+  }
+  .retro-desktop-stage.retro-enhanced::before { top: 23%; right: 9%; }
+  .retro-desktop-stage.retro-enhanced::after {
+    bottom: 19%; left: 8%;
+    transform: scale(.76);
+    animation-duration: 27s;
+    animation-direction: alternate-reverse;
+  }
+  @keyframes aqua-cloud {
+    from { translate: -12px 0; opacity: .48; }
+    to { translate: 22px -5px; opacity: .74; }
+  }
+
+  /* A real entry screen, not a second navigation header competing for attention. */
+  .startup-screen {
+    background:
+      radial-gradient(ellipse at center, rgba(255,255,248,.28), transparent 70%),
+      linear-gradient(135deg, #9bdcd6, #d0eee5 50%, #c0e4dd);
+  }
+  .startup-screen::before {
+    content: "AQUA.";
+    position: absolute;
+    inset: auto 3% -8%;
+    font: 900 clamp(9rem, 22vw, 28rem)/1 var(--font-mono);
+    letter-spacing: -.15em;
+    color: rgba(30,105,105,.08);
+    pointer-events: none;
+  }
+  .startup-window {
+    position: relative;
+    width: min(750px, 92vw);
+    border-radius: 10px;
+    background: rgba(255,252,244,.98);
+    box-shadow: 12px 12px 0 rgba(33,58,55,.92), 0 24px 90px rgba(30,69,67,.2);
+    animation: aqua-boot-enter 520ms cubic-bezier(.22,1,.36,1) both;
+  }
+  @keyframes aqua-boot-enter {
+    from { transform: translateY(14px) scale(.987); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  .startup-titlebar {
+    min-height: 46px;
+    background: linear-gradient(90deg,#d2ebe4,#f5e7d7);
+  }
+  .startup-content { padding: clamp(34px,4vw,64px); }
+  .startup-content h2 { max-width: 14ch; font-size: clamp(2.6rem, 4vw, 4.4rem); line-height: 1.02; }
+  .startup-content > p:not(.startup-kicker) { font-size: 1rem; }
+  .startup-actions { gap: 13px; margin-top: 27px; }
+
+  .desktop-widgets { gap: 13px; }
+  .desktop-widget {
+    background: rgba(255,251,242,.95);
+    border-color: #36514a;
+    box-shadow: 5px 5px 0 rgba(43,74,67,.72);
+    backdrop-filter: blur(12px);
+  }
+  .widget-title { background: #dfebe4; font-size: .69rem; }
+  .music-track { font-size: .75rem; }
+  .music-artist { font-size: .68rem; }
+  .music-widget-body a { font-size: .66rem; }
+  .system-widget-body p { font-size: .64rem; }
+  .system-clock { font-size: 1.45rem; color: #64273e; }
+
+  .desktop-apps { gap: 11px; }
+  .desktop-apps a {
+    min-height: 72px;
+    background: rgba(248,255,248,.16);
+    border-color: transparent;
+    font-size: .66rem;
+    text-shadow: 0 1px rgba(255,255,255,.6);
+    transition: background 170ms ease, border-color 170ms ease, transform 230ms ease;
+  }
+  .desktop-apps a > span { font-size: 1.65rem; }
+  .desktop-apps a:hover, .desktop-apps a:focus-visible {
+    transform: translateY(-3px);
+    background: rgba(255,252,244,.92);
+  }
+  .desktop-apps a[aria-current="page"] { background: #fff8ec; border-color: #572a40; }
+
+  .desktop-statusbar {
+    gap: 14px;
+    background: rgba(255,251,244,.96);
+    border-color: #355652;
+    box-shadow: 4px 4px 0 #274844;
+    min-height: 47px;
+    padding: 5px 10px;
+    backdrop-filter: blur(12px);
+  }
+  .desktop-statusbar-brand { font-size: .7rem; }
+  .desktop-task-tray {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .desktop-task-button {
+    flex: 0 1 auto;
+    min-width: 0;
+    max-width: 175px;
+    min-height: 32px;
+    padding: 5px 12px;
+    overflow: hidden;
+    border: 1px solid #6c8984;
+    border-radius: 5px;
+    background: #ebf5ec;
+    color: #1c3b37;
+    cursor: pointer;
+    font: 800 .63rem/1.3 var(--font-mono);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .desktop-task-button:hover, .desktop-task-button:focus-visible {
+    background: #d9f0e8;
+    border-color: #61243c;
+  }
+  .desktop-task-button.is-current {
+    background: #70273f;
+    color: #fff;
+    border-color: #70273f;
+  }
+  .desktop-task-button.is-minimized { opacity: .65; border-style: dashed; }
+
+  .retro-app-window {
+    border-color: #2a4844;
+    background: rgba(255,251,242,.98);
+    box-shadow: 7px 7px 0 rgba(39,72,65,.92), 0 16px 40px rgba(27,64,64,.12);
+    transition: box-shadow 180ms ease, border-color 180ms ease;
+  }
+  .retro-app-window.has-focus {
+    border-color: #63253e;
+    box-shadow: 8px 8px 0 #76243d, 0 26px 65px rgba(62,37,65,.21);
+  }
+  .retro-app-window.is-maximized {
+    top: 76px !important;
+    left: 12px !important;
+    width: calc(100vw - 24px) !important;
+    max-height: calc(100vh - 137px) !important;
+    transform: none !important;
+  }
+  .retro-window-titlebar {
+    min-height: 45px;
+    background: linear-gradient(90deg, #e0f0e9, #f9ebdd);
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+  }
+  .retro-window-titlebar.is-dragging { cursor: grabbing; }
+  .retro-app-window.has-focus > .retro-window-titlebar {
+    background: linear-gradient(90deg,#d5ece2 0%,#f6dadd 100%);
+    border-bottom-color: #663148;
+  }
+  .retro-window-title { font-size: .75rem; }
+  .retro-window-controls { gap: 7px; }
+  .retro-window-controls button {
+    width: 34px;
+    height: 32px;
+    border-radius: 4px;
+    background: #fffbef;
+    font-size: 1rem;
+  }
+  .retro-window-controls button:hover, .retro-window-controls button:focus-visible {
+    background: #70273f;
+    color: #fff;
+  }
+  #inicio .hero h1, #home .hero h1 {
+    font-size: clamp(2rem,2.5vw,2.7rem);
+    letter-spacing: -.06em;
+  }
+  .project-explorer-toolbar { background: #eef7ed; }
+  .project-explorer-list { background: #e0eee8; }
+  .project-explorer-item[aria-selected="true"] { border-color: #6c3d4c; background: #fff9ef; }
+  .project-explorer-item[aria-selected="true"] .folder-icon { box-shadow: 0 0 0 3px rgba(136,51,73,.12); }
+}
+
+@media (min-width: 1800px) and (min-height: 1000px) {
+  .desktop-widgets { width: 218px; }
+  .desktop-apps { width: 104px; }
+  .retro-app-window { width: min(1300px, calc(100vw - 540px)); }
+}
+@media (max-width: 1199px) {
+  .desktop-task-tray { display: none; }
+  .hero { background-image: radial-gradient(ellipse at 90% 5%,rgba(101,193,193,.26),transparent 55%),linear-gradient(130deg,#fefbf0,#e6f5f0); }
+  .digital-profile { box-shadow: 6px 6px 0 rgba(36,72,65,.27); }
+}
+@media (max-width: 620px) {
+  .hero h1 { letter-spacing: -.045em; }
+  .hero-role { font-size: .81rem; }
+  .hero-actions .button { min-height: 47px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .retro-desktop-stage.retro-enhanced::before,
+  .retro-desktop-stage.retro-enhanced::after,
+  .startup-window { animation: none !important; }
+  .button, .desktop-apps a, .retro-app-window { transition: none !important; }
+}
+@media (forced-colors: active) {
+  .desktop-task-button { forced-color-adjust: auto; border: 1px solid CanvasText; }
+  .desktop-task-button.is-current { outline: 2px solid Highlight; }
+}

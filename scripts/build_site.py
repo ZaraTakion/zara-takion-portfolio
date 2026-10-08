@@ -17,6 +17,7 @@ SOURCE = ROOT / "site"
 OUTPUT = ROOT / "dist"
 STYLESHEETS = (
     "aqua-workstation.css",
+    "aqua-v2.css",
 )
 REQUIRED_PROJECT_FIELDS = {
     "title",

@@ -42,18 +42,19 @@ async function assertNormalDocument(page, label) {
   }
 }
 
-async function assertSingleActiveWindow(page, expectedId, label) {
+async function assertActiveWindow(page, expectedId, label) {
   const state = await page.evaluate(() => {
     const stage = document.querySelector(".retro-desktop-stage");
     const open = [...stage.querySelectorAll(".retro-app-window.is-open")]
       .filter((node) => getComputedStyle(node).display !== "none")
       .map((node) => node.id);
+    const focused = [...stage.querySelectorAll(".retro-app-window.has-focus")].map(node => node.id);
     const current = stage.querySelector("[data-active-app]")?.textContent.trim();
-    return { open, current };
+    return { open, focused, current };
   });
 
-  if (state.open.length !== 1 || state.open[0] !== expectedId) {
-    throw new Error(`${label}: expected one active window "${expectedId}", got ${JSON.stringify(state)}`);
+  if (!state.open.includes(expectedId) || state.focused.length !== 1 || state.focused[0] !== expectedId) {
+    throw new Error(`${label}: expected focused window "${expectedId}", got ${JSON.stringify(state)}`);
   }
   return state;
 }
@@ -62,7 +63,7 @@ async function assertActiveWindowInsideStage(page, label) {
   const result = await page.evaluate(() => {
     const stage = document.querySelector(".retro-desktop-stage");
     const stageRect = stage.getBoundingClientRect();
-    const node = stage.querySelector(".retro-app-window.is-open");
+    const node = stage.querySelector(".retro-app-window.has-focus");
     const rect = node?.getBoundingClientRect();
     return {
       stage: { left: stageRect.left, top: stageRect.top, right: stageRect.right, bottom: stageRect.bottom },
@@ -102,7 +103,7 @@ for (const viewport of viewports) {
   await page.locator(".desktop-statusbar").waitFor();
 
   const homeId = await page.locator("#inicio, #home").first().getAttribute("id");
-  await assertSingleActiveWindow(page, homeId, `${viewport.name}/home`);
+  await assertActiveWindow(page, homeId, `${viewport.name}/home`);
   await assertActiveWindowInsideStage(page, `${viewport.name}/home`);
   await assertNoHorizontalOverflow(page, `${viewport.name}/home`);
 
@@ -115,7 +116,7 @@ for (const viewport of viewports) {
   );
   await page.locator(".project-explorer").waitFor({ state: "visible" });
 
-  const projectState = await assertSingleActiveWindow(page, projectsId, `${viewport.name}/projects`);
+  const projectState = await assertActiveWindow(page, projectsId, `${viewport.name}/projects`);
   if (!/project|projeto/i.test(projectState.current || "")) {
     throw new Error(`${viewport.name}: status bar did not update for projects: ${JSON.stringify(projectState)}`);
   }
@@ -123,12 +124,51 @@ for (const viewport of viewports) {
   if (currentLauncher !== "page") throw new Error(`${viewport.name}: project launcher is not marked active`);
 
   await assertActiveWindowInsideStage(page, `${viewport.name}/projects`);
+
+  if (viewport.width === 1366) {
+    if (await page.locator(".retro-app-window.is-open").count() !== 2) {
+      throw new Error("Multiple windows did not stay open simultaneously.");
+    }
+    const tray = page.locator(".desktop-task-tray .desktop-task-button");
+    if (await tray.count() !== 2) throw new Error("Taskbar must show two running windows");
+
+    const projectWindow = page.locator("#" + projectsId);
+    const maximize = projectWindow.locator(".retro-window-maximize");
+    await maximize.click();
+    if (!await projectWindow.evaluate(node => node.classList.contains("is-maximized"))) {
+      throw new Error("Maximize is not functional");
+    }
+    await maximize.click();
+    if (await projectWindow.evaluate(node => node.classList.contains("is-maximized"))) {
+      throw new Error("Restore is not functional");
+    }
+
+    const title = await projectWindow.locator(".retro-window-title").boundingBox();
+    const before = await projectWindow.boundingBox();
+    if (!title || !before) throw new Error("Missing window geometry");
+    const x = title.x + Math.min(36, title.width / 2);
+    const y = title.y + title.height / 2;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x + 32, y + 23, { steps: 4 });
+    await page.mouse.up();
+    const after = await projectWindow.boundingBox();
+    if (!after || Math.abs(after.x - before.x) + Math.abs(after.y - before.y) < 5) {
+      throw new Error("Window dragging did not move the project app");
+    }
+
+    await projectWindow.locator(".retro-window-minimize").click();
+    await assertActiveWindow(page, homeId, "minimize restores previous active window");
+    await tray.filter({ hasText: /projetos|projects/i }).click();
+    await assertActiveWindow(page, projectsId, "restore minimized project using taskbar");
+  }
+
   await assertNoHorizontalOverflow(page, `${viewport.name}/projects`);
   await page.screenshot({ path: `${outputDir}/${viewport.name}-projects.png`, fullPage: true });
 
   await page.goBack();
   await page.waitForFunction((id) => document.getElementById(id)?.classList.contains("is-open"), homeId);
-  await assertSingleActiveWindow(page, homeId, `${viewport.name}/browser-back`);
+  await assertActiveWindow(page, homeId, `${viewport.name}/browser-back`);
 
   if (viewport.width === 1366) {
     await page.setViewportSize({ width: 1024, height: 768 });
@@ -140,7 +180,7 @@ for (const viewport of viewports) {
     await page.setViewportSize({ width: 1366, height: 768 });
     await page.waitForFunction(() => document.querySelector(".retro-desktop-stage")?.classList.contains("retro-enhanced"));
     await page.waitForFunction(() => Boolean(document.querySelector(".project-explorer")));
-    await assertSingleActiveWindow(page, homeId, "laptop-to-desktop");
+    await assertActiveWindow(page, homeId, "laptop-to-desktop");
     await assertActiveWindowInsideStage(page, "laptop-to-desktop");
   }
 

@@ -127,6 +127,10 @@ try {
   await privacy.goto(`${base}/privacidade.html`, { waitUntil: "networkidle" });
   assert(await privacy.locator("h1").count() === 1, "Privacy page is missing");
   assert(await privacy.locator(".retro-desktop-stage").count() === 0, "React shell leaked into privacy page");
+  assert((await privacy.locator('link[rel="stylesheet"]').getAttribute("href")) === "/assets/css/site.css", "Privacy stylesheet missing");
+  const cssResponse = await privacy.request.get(`${base}/assets/css/site.css`);
+  assert(cssResponse.ok(), "Privacy stylesheet returned an error");
+  assert(await privacy.locator('script[src="/scripts/main.js"]').count() === 0, "Legal page uses removed legacy scripts");
   await privacy.close();
   console.log(`React Aqua Workstation: ${checks} assertions across ${cases.length} viewports, both languages, project explorer, terminal, palette and responsive transitions passed.`);
 } finally {

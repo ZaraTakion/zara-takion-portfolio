@@ -18,6 +18,8 @@ export function initRetroDesktop() {
     education: "education.sys",
     contact: "connect.exe",
     minimize: "Minimize window",
+    maximize: "Maximize window",
+    restore: "Restore window",
     close: "Close window",
     desktop: "desktop",
   } : {
@@ -28,6 +30,8 @@ export function initRetroDesktop() {
     education: "formacao.sys",
     contact: "connect.exe",
     minimize: "Minimizar janela",
+    maximize: "Maximizar janela",
+    restore: "Restaurar janela",
     close: "Fechar janela",
     desktop: "desktop",
   };
@@ -58,7 +62,14 @@ export function initRetroDesktop() {
 
   let bootTimer = null;
   let desktopStarted = false;
-  let activeKey = "inicio";
+  let activeKey = null;
+  let zCounter = 100;
+  const openWindows = new Set();
+  const launchedWindows = new Set();
+  const tray = document.createElement("nav");
+  tray.className = "desktop-task-tray";
+  tray.setAttribute("aria-label", isEnglish ? "Open applications" : "Aplicativos abertos");
+  main.querySelector(".desktop-statusbar-app")?.after(tray);
 
   const canonicalKey = (key) => windows.has(key) ? key : aliases[key];
   const appKeyForHref = (href = "") => sectionToKey.get(href.replace(/^#/, ""));
@@ -102,50 +113,82 @@ export function initRetroDesktop() {
     }
   }
 
+  function renderTaskTray() {
+    tray.replaceChildren();
+    for (const key of launchedWindows) {
+      if (!windows.get(key)) continue;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "desktop-task-button";
+      button.textContent = statusLabelFor(key);
+      const opened = openWindows.has(key);
+      button.classList.toggle("is-minimized", !opened);
+      button.classList.toggle("is-current", opened && activeKey === key);
+      button.setAttribute("aria-pressed", String(opened && activeKey === key));
+      button.setAttribute("aria-label", (isEnglish ? "Switch to " : "Alternar para ") + statusLabelFor(key));
+      button.addEventListener("click", () => setActiveWindow(key));
+      tray.append(button);
+    }
+  }
+
   function focusWindow(section) {
     if (!section || !desktopActive()) return;
-    window.requestAnimationFrame(() => {
-      section.querySelector("h1, h2")?.focus({ preventScroll: true });
-    });
+    window.requestAnimationFrame(() => section.querySelector("h1, h2")?.focus({ preventScroll: true }));
   }
 
   function setActiveWindow(key, { focus = true } = {}) {
     const section = windows.get(key);
-    if (!section) return false;
-
-    for (const [currentKey, current] of windows) {
-      if (!current) continue;
-      const selected = currentKey === key;
-      current.classList.toggle("is-open", selected);
-      current.classList.toggle("has-focus", selected);
+    if (!section || !desktopActive()) return false;
+    openWindows.add(key);
+    launchedWindows.add(key);
+    section.classList.add("is-open");
+    for (const [, current] of windows) {
+      current?.classList.toggle("has-focus", current === section);
     }
-
     activeKey = key;
+    section.style.zIndex = String(++zCounter);
     updateWorkspaceStatus(key);
+    renderTaskTray();
     if (focus) focusWindow(section);
     return true;
   }
 
   function clearSectionHash(section) {
-    if (!section || location.hash !== `#${section.id}`) return;
-    history.replaceState(null, "", `${location.pathname}${location.search}`);
+    if (!section || location.hash !== "#" + section.id) return;
+    history.replaceState(null, "", location.pathname + location.search);
+  }
+
+  function activateLastWindow() {
+    const last = [...openWindows].sort((a, b) =>
+      Number(windows.get(b)?.style.zIndex || 0) - Number(windows.get(a)?.style.zIndex || 0))[0];
+    if (last) setActiveWindow(last, { focus: false });
+    else {
+      activeKey = null;
+      updateWorkspaceStatus(null);
+      renderTaskTray();
+    }
   }
 
   function minimizeWindow(key, section) {
+    openWindows.delete(key);
     section.classList.remove("is-open", "has-focus");
-    updateWorkspaceStatus(null);
+    if (activeKey === key) activateLastWindow();
+    else renderTaskTray();
     launcherFor(key)?.focus({ preventScroll: true });
   }
 
   function closeWindow(key, section) {
     clearSectionHash(section);
-
-    if (key !== "inicio" && windows.get("inicio")) {
-      setActiveWindow("inicio");
-      return;
-    }
-
-    minimizeWindow(key, section);
+    openWindows.delete(key);
+    launchedWindows.delete(key);
+    section.classList.remove("is-open", "has-focus", "is-maximized");
+    section.style.left = "";
+    section.style.top = "";
+    section.style.transform = "";
+    section.style.zIndex = "";
+    if (activeKey === key) activateLastWindow();
+    else renderTaskTray();
+    launcherFor(key)?.focus({ preventScroll: true });
   }
 
   function createWindowChrome(key, section) {

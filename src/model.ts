@@ -12,6 +12,7 @@ export const slugMap: Record<Exclude<SectionKey, "terminal">, { pt: string; en: 
 export const slugFor = (key: Exclude<SectionKey, "terminal">, locale: Locale) => slugMap[key][locale];
 export function keyFromHash(hash: string): SectionKey | null {
   const id = hash.replace(/^#/, "");
+  if (id === "terminal") return "terminal";
   for (const [key, locales] of Object.entries(slugMap)) {
     if (id === locales.pt || id === locales.en) return key as SectionKey;
   }

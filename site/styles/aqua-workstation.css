@@ -1703,3 +1703,128 @@ ol { margin-top: 0; }
     box-shadow: none;
   }
 }
+
+/* ================================================================
+   AQUA WORKSTATION V2 — LIVING SKY / EDITORIAL DESKTOP
+   CSS-only atmosphere. No new assets, custom fonts or JS loops.
+   The workstation remains a real portfolio, not a mock operating system.
+   ================================================================ */
+:root {
+  --sky-dusk: #c5ece8;
+  --sky-glow: #effbf3;
+  --aqua-accent-soft: #82cfc8;
+  --retro-window-glow: rgb(18 91 90 / 13%);
+}
+@media (min-width: 1200px) {
+  .retro-desktop-stage.retro-enhanced {
+    background-color: #aee4e2;
+    background-image:
+      radial-gradient(ellipse at 72% 17%, rgb(253 249 228 / 90%), transparent 29%),
+      linear-gradient(165deg, rgb(178 230 225 / 92%) 0%, rgb(205 241 230 / 65%) 48%, rgb(253 249 231 / 66%) 100%),
+      repeating-linear-gradient(0deg, rgb(255 255 255 / 21%) 0 1px, transparent 1px 36px),
+      repeating-linear-gradient(90deg, rgb(255 255 255 / 21%) 0 1px, transparent 1px 36px);
+    background-size: cover, cover, auto, auto;
+    isolation: isolate;
+  }
+  /* Pixel-sky clouds are lightweight CSS, not generated artwork. */
+  .retro-desktop-stage.retro-enhanced::before,
+  .retro-desktop-stage.retro-enhanced::after {
+    pointer-events: none;
+    width: 92px;
+    height: 18px;
+    background: #fbfdf2;
+    border-radius: 0;
+    box-shadow:
+      18px 0 #fbfdf2, -18px 0 #fbfdf2,
+      0 -18px #fbfdf2, 18px -18px #fbfdf2,
+      -18px -18px #fbfdf2, 36px -18px #fbfdf2,
+      0 -36px rgb(251 253 242 / 78%),
+      18px -36px rgb(251 253 242 / 78%);
+    filter: drop-shadow(7px 7px 0 rgb(91 163 158 / 10%));
+    opacity: .83;
+    animation: aqua-cloud-drift 30s ease-in-out infinite alternate;
+  }
+  .retro-desktop-stage.retro-enhanced::before { top: 23%; right: 12%; }
+  .retro-desktop-stage.retro-enhanced::after {
+    bottom: 24%; left: 8%; scale: .64;
+    animation-duration: 38s; animation-delay: -10s;
+  }
+  @keyframes aqua-cloud-drift {
+    from { translate: -12px 0; }
+    to { translate: 26px -10px; }
+  }
+
+  .retro-desktop-stage .desktop-widget,
+  .retro-desktop-stage .retro-app-window,
+  .retro-desktop-stage .desktop-statusbar {
+    box-shadow: 0 13px 0 rgb(21 67 68 / 8%), 7px 7px 0 var(--ink-900), 0 30px 80px var(--retro-window-glow);
+  }
+  .retro-desktop-stage .retro-app-window.has-focus {
+    box-shadow: 0 13px 0 rgb(21 67 68 / 9%), 7px 7px 0 var(--wine-700), 0 32px 85px var(--retro-window-glow);
+  }
+  .retro-desktop-stage .retro-app-window.is-open {
+    animation: aqua-window-enter 360ms cubic-bezier(.22, 1, .36, 1) both;
+  }
+  @keyframes aqua-window-enter {
+    from { opacity: .65; translate: 0 11px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+  .retro-desktop-stage .desktop-apps a {
+    transition: transform 220ms cubic-bezier(.22, 1, .36, 1), background-color 200ms ease, box-shadow 200ms ease;
+  }
+  .retro-desktop-stage .desktop-apps a:hover,
+  .retro-desktop-stage .desktop-apps a:focus-visible {
+    transform: translateY(-3px);
+  }
+  .retro-desktop-stage .retro-window-titlebar {
+    background-image: linear-gradient(90deg, rgb(255 255 255 / 9%), transparent 80%);
+  }
+  .retro-desktop-stage .desktop-statusbar { backdrop-filter: blur(14px); }
+  .retro-desktop-stage .system-clock { font-variant-numeric: tabular-nums; }
+}
+
+/* The professional content gets the same care as the simulated desktop.
+   Give case studies a more intentional hierarchy and touch affordances. */
+.project-card {
+  transition: border-color 220ms ease, box-shadow 280ms ease, transform 280ms cubic-bezier(.22,1,.36,1);
+}
+.project-card .project-visual { overflow: hidden; }
+.project-card .project-visual img { transition: transform 650ms cubic-bezier(.22,1,.36,1); }
+.project-card a:focus-visible, .desktop-apps a:focus-visible {
+  outline-offset: 4px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .project-card:hover { transform: translateY(-3px); }
+  .project-card:hover .project-visual img { transform: scale(1.018); }
+}
+@media (max-width: 800px) {
+  .project-card, .project-explorer, .digital-profile {
+    max-width: 100%;
+  }
+  .hero-grid, .featured-project-grid, .project-archive-grid {
+    min-width: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .retro-desktop-stage.retro-enhanced::before,
+  .retro-desktop-stage.retro-enhanced::after,
+  .retro-desktop-stage .retro-app-window.is-open {
+    animation: none !important;
+  }
+  .retro-desktop-stage .desktop-apps a,
+  .project-card, .project-card .project-visual img {
+    transition: none !important;
+  }
+  .retro-desktop-stage .desktop-apps a:hover,
+  .project-card:hover {
+    transform: none !important;
+  }
+}
+@media (forced-colors: active) {
+  .retro-desktop-stage .retro-app-window,
+  .retro-desktop-stage .desktop-widget,
+  .retro-desktop-stage .desktop-statusbar,
+  .project-card {
+    box-shadow: none !important;
+  }
+}

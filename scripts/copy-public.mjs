@@ -24,5 +24,5 @@ await writeFile("dist/version.json", JSON.stringify({
   framework: "React / TypeScript / Vite",
   revision,
   shortRevision: revision.slice(0, 7),
-}) + "\\n", "utf8");
+}) + "\n", "utf8");
 console.log(`React Aqua Workstation: ${revision.slice(0, 7)} production release assembled.`);

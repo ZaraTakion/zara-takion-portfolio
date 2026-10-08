@@ -148,8 +148,14 @@ function ProjectExplorer({ projects, locale }: { projects: Project[]; locale: Lo
 function Projects({ locale, projects, loading, desktop }: { locale: Locale; projects: Project[]; loading: "loading"|"ready"|"error"; desktop: boolean }) {
   const t = translate(locale);
   const [filter, setFilter] = useState<ProjectTrack>("all");
-  const featured = filterProjects(projects.filter(p => p.featured), filter);
-  const counts = tracks.map(track => filterProjects(projects, track).length);
+  // "All" introduces the featured cases; a specific filter searches the
+  // complete archive, including data projects outside the featured set.
+  const featured = filter === "all"
+    ? projects.filter(p => p.featured)
+    : filterProjects(projects, filter);
+  const counts = tracks.map(track => track === "all"
+    ? projects.filter(p => p.featured).length
+    : filterProjects(projects, track).length);
   return <div className="wrap">
     <Heading index="01" path="ZARA_DISK / PROJECTS" title={t.projectTitle} description={t.projectDesc} />
     <div className="project-filters aqua-filter-bar" data-project-filters>
@@ -159,7 +165,7 @@ function Projects({ locale, projects, loading, desktop }: { locale: Locale; proj
           {t.filters[i]} <span>{counts[i]}</span>
         </button>)}
       </div>
-      <p className="project-filter-status" role="status" aria-live="polite">{filterProjects(projects, filter).length} {t.filters[tracks.indexOf(filter)]}</p>
+      <p className="project-filter-status" role="status" aria-live="polite">{featured.length} {t.filters[tracks.indexOf(filter)]}</p>
     </div>
     {loading !== "ready" ? <p role="status" className="aqua-data-state">{loading === "loading" ? t.loading : t.error}</p>
       : desktop ? <ProjectExplorer projects={featured} locale={locale} />
@@ -329,6 +335,16 @@ function CommandPalette({ locale, openApp, onClose }: {
   const t = translate(locale);
   const [query, setQuery] = useState("");
   const ref = useRef<HTMLInputElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const trapFocus = (event: ReactKeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Escape") { onClose(); return; }
+    if (event.key !== "Tab") return;
+    const buttons = [...(dialogRef.current?.querySelectorAll<HTMLElement>("button:not([disabled]), input:not([disabled])") ?? [])];
+    if (!buttons.length) return;
+    const first = buttons[0], last = buttons[buttons.length - 1];
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  };
   useEffect(() => {
     const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     ref.current?.focus();
@@ -336,8 +352,8 @@ function CommandPalette({ locale, openApp, onClose }: {
   }, []);
   const options = appKeys.filter((key, i) => (`${key} ${t.nav[i]} ${t.app[i]}`).toLowerCase().includes(query.toLowerCase()));
   return <div className="aqua-command-backdrop" onMouseDown={event => { if (event.target === event.currentTarget) onClose(); }}>
-    <div role="dialog" aria-modal="true" aria-labelledby="command-title" className="aqua-command-palette"
-      onKeyDown={event => { if (event.key === "Escape") onClose(); }}>
+    <div ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="command-title" className="aqua-command-palette"
+      onKeyDown={trapFocus}>
       <div className="aqua-command-head"><h2 id="command-title">ZARA_DISK / QUICK OPEN</h2><button type="button" onClick={onClose} aria-label={t.close}>×</button></div>
       <label htmlFor="command-search">{t.openApp}</label>
       <input id="command-search" ref={ref} value={query} placeholder={t.selectProject} autoComplete="off" onChange={event => setQuery(event.target.value)} />

@@ -98,3 +98,10 @@ jobs:
           test -s dist/privacidade.html
           test -s dist/en/privacy.html
           test -s dist/404.html
+          test -s dist/version.json
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          data = json.loads(Path("dist/version.json").read_text())
+          assert data["revision"] == os.environ["GITHUB_SHA"], "Build does not match checked-out commit"
+          PY

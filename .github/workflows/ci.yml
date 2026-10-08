@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - feat/react-aqua-workstation-v3-20261008
   pull_request:
     branches:
       - main

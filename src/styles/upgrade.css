@@ -273,12 +273,14 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
     animation: aqua-v3-appear 380ms cubic-bezier(.22,1,.36,1) both;
   }
   .aqua-v3 .retro-app-window.aqua-maximized {
+    /* Reserve space for the left widgets and right app launchers.
+       Maximization should never place its controls behind another app. */
     top: 76px;
-    left: 12px;
-    right: 12px;
-    width: calc(100vw - 24px);
+    left: calc(50% + 32px);
+    right: auto;
+    width: min(1550px, calc(100vw - 410px));
     max-height: calc(100vh - 136px);
-    transform: none;
+    transform: translateX(-50%);
   }
   .aqua-v3 .desktop-apps a[aria-current="page"] {
     border-color: #4e807e;

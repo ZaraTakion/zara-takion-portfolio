@@ -275,7 +275,11 @@ function Terminal({ locale, navigate }: { locale: Locale; navigate: (key: Sectio
   const [history, setHistory] = useState<string[]>([t.terminalWelcome, t.terminalHint]);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => { endRef.current?.scrollIntoView({ block: "nearest" }); }, [history]);
+  useEffect(() => {
+    // Other apps remain mounted for fast switching; never steal the initial
+    // mobile scroll position just because the terminal was mounted off-screen.
+    if (history.length > 2) endRef.current?.scrollIntoView({ block: "nearest" });
+  }, [history]);
   const execute = () => {
     const raw = value.trim().toLowerCase();
     setValue("");

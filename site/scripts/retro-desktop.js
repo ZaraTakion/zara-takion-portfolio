@@ -222,18 +222,77 @@ export function initRetroDesktop() {
     minimize.setAttribute("aria-label", labels.minimize);
     minimize.textContent = "−";
 
+    const maximize = document.createElement("button");
+    maximize.type = "button";
+    maximize.className = "retro-window-maximize";
+    maximize.setAttribute("aria-label", labels.maximize);
+    maximize.setAttribute("aria-pressed", "false");
+    maximize.textContent = "□";
+
     const close = document.createElement("button");
     close.type = "button";
     close.className = "retro-window-close";
     close.setAttribute("aria-label", labels.close);
     close.textContent = "×";
 
-    controls.append(minimize, close);
+    controls.append(minimize, maximize, close);
     titlebar.append(identity, title, controls);
     section.insertBefore(titlebar, section.firstChild);
 
+    const toggleMaximize = () => {
+      if (!desktopActive()) return;
+      setActiveWindow(key, { focus: false });
+      const maximized = section.classList.toggle("is-maximized");
+      maximize.setAttribute("aria-pressed", String(maximized));
+      maximize.setAttribute("aria-label", maximized ? labels.restore : labels.maximize);
+      maximize.textContent = maximized ? "❐" : "□";
+    };
+
     minimize.addEventListener("click", () => minimizeWindow(key, section));
+    maximize.addEventListener("click", toggleMaximize);
     close.addEventListener("click", () => closeWindow(key, section));
+
+    titlebar.addEventListener("pointerdown", (event) => {
+      if (!desktopActive() || event.button !== 0 || event.pointerType !== "mouse" ||
+          !(event.target instanceof Element) || event.target.closest("button") ||
+          section.classList.contains("is-maximized")) return;
+      setActiveWindow(key, { focus: false });
+      const rect = section.getBoundingClientRect();
+      const startX = event.clientX;
+      const startY = event.clientY;
+      const initialLeft = rect.left;
+      const initialTop = rect.top;
+      let moved = false;
+      const move = (next) => {
+        if (next.pointerId !== event.pointerId) return;
+        const deltaX = next.clientX - startX;
+        const deltaY = next.clientY - startY;
+        if (!moved && Math.abs(deltaX) + Math.abs(deltaY) < 4) return;
+        moved = true;
+        const boundX = Math.max(12, innerWidth - rect.width - 12);
+        const boundY = Math.max(76, innerHeight - 150);
+        section.style.left = Math.min(boundX, Math.max(12, initialLeft + deltaX)) + "px";
+        section.style.top = Math.min(boundY, Math.max(76, initialTop + deltaY)) + "px";
+        section.style.transform = "none";
+      };
+      const stop = () => {
+        window.removeEventListener("pointermove", move);
+        window.removeEventListener("pointerup", stop);
+        window.removeEventListener("pointercancel", stop);
+        titlebar.classList.remove("is-dragging");
+      };
+      titlebar.classList.add("is-dragging");
+      window.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", stop, { once: true });
+      window.addEventListener("pointercancel", stop, { once: true });
+    });
+    titlebar.addEventListener("dblclick", (event) => {
+      if (event.target instanceof Element && !event.target.closest("button")) toggleMaximize();
+    });
+    section.addEventListener("pointerdown", (event) => {
+      if (event.target instanceof Element && event.target.closest(".retro-window-titlebar")) return;
+      if (desktopActive() && !section.classList.contains("has-focus")) setActiveWindow(key, { focus: false });
+    });
   }
 
   for (const [key, section] of windows) {
@@ -307,7 +366,8 @@ export function initRetroDesktop() {
       main.classList.add("retro-enhanced");
       if (desktopStarted) {
         document.body.classList.add("retro-session-active");
-        setActiveWindow(activeKey, { focus: false });
+        if (activeKey && openWindows.has(activeKey)) setActiveWindow(activeKey, { focus: false });
+        else activateLastWindow();
       }
 
       const key = appKeyForHref(location.hash);
@@ -325,6 +385,14 @@ export function initRetroDesktop() {
 
     main.classList.remove("retro-enhanced");
     document.body.classList.remove("retro-session-active");
+    for (const section of windows.values()) {
+      if (!section) continue;
+      section.style.left = "";
+      section.style.top = "";
+      section.style.transform = "";
+      section.classList.remove("is-maximized");
+      section.querySelector(".retro-window-maximize")?.setAttribute("aria-pressed", "false");
+    }
   }
 
   main.querySelector("[data-desktop-start]")?.addEventListener("click", () => startDesktop());
@@ -346,7 +414,8 @@ export function initRetroDesktop() {
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape" || !desktopActive() || !desktopStarted) return;
+    if (event.key !== "Escape" || !desktopActive() || !desktopStarted || !activeKey) return;
+    if (event.target instanceof Element && event.target.closest("input, textarea, select, [contenteditable=true]")) return;
     const section = windows.get(activeKey);
     if (section) closeWindow(activeKey, section);
   });

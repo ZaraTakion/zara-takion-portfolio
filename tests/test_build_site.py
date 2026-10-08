@@ -67,6 +67,12 @@ class ReactPortfolioTests(unittest.TestCase):
         self.assertNotIn("'unsafe-inline'", headers)
         self.assertNotIn("'unsafe-eval'", headers)
         self.assertIn("portfolio.zaratakion.workers.dev/en/", (OUTPUT / "sitemap.xml").read_text(encoding="utf-8"))
+        self.assertTrue((OUTPUT / "assets" / "css" / "site.css").is_file())
+        self.assertIn(".site-header", (OUTPUT / "assets" / "css" / "site.css").read_text(encoding="utf-8"))
+        for name in ("privacidade.html", "en/privacy.html"):
+            html = (OUTPUT / name).read_text(encoding="utf-8")
+            self.assertIn('href="/assets/css/site.css"', html)
+            self.assertNotIn('/scripts/main.js', html)
 
     def test_existing_python_api_remains_independent(self):
         self.assertTrue((ROOT / "api" / "app.py").is_file())

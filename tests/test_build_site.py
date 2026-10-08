@@ -49,7 +49,7 @@ class ReactPortfolioTests(unittest.TestCase):
         self.assertTrue(css_files, "Vite stylesheet not emitted")
         self.assertTrue(js_files, "React bundle not emitted")
         css = "\n".join(path.read_text(encoding="utf-8") for path in css_files)
-        self.assertIn("AQUA WORKSTATION V2", css)
+        self.assertIn("aqua-cloud-drift", css)
         self.assertIn("aqua-command-palette", css)
         self.assertIn("aqua-react-explorer", css)
         self.assertIn("prefers-reduced-motion", css)

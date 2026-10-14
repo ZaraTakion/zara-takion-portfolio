@@ -1,101 +1,102 @@
 [
   {
-    "title": "UPA — Portal Acadêmico",
-    "title_en": "UPA — Academic Portal",
+    "title": "Takion Campus",
+    "title_en": "Takion Campus",
     "track": "web",
-    "category": "Full-stack · Educação",
-    "category_en": "Full-stack · Education",
-    "period": "Abr. 2026 – jun. 2026",
-    "period_en": "Apr. 2026 – Jun. 2026",
-    "description": "Aplicação acadêmica full-stack criada para modernizar a experiência do portal do aluno. Integra interface React/Vite e API Django REST, com autenticação JWT e recursos de disciplinas, notas, calendário, notificações e perfil.",
-    "description_en": "A full-stack academic application built to modernize the student portal experience. It connects a React/Vite interface to a Django REST API, with JWT authentication and features for courses, grades, calendar, notifications, and profiles.",
-    "highlights": [
-      "Integração de interface React/Vite com API Django REST",
-      "Autenticação de usuários com JWT",
-      "Recursos acadêmicos para disciplinas, notas, calendário, notificações e perfil",
-      "PostgreSQL em produção; SQLite no desenvolvimento local"
-    ],
-    "highlights_en": [
-      "React/Vite interface integrated with a Django REST API",
-      "JWT-based user authentication",
-      "Academic features for courses, grades, calendar, notifications, and profiles",
-      "PostgreSQL in production; SQLite for local development"
-    ],
+    "category": "Full-stack · Plataforma acadêmica",
+    "category_en": "Full stack · Academic platform",
+    "description": "Portal acadêmico com interface React/Vite e API Django REST para alunos, docentes e administração. Inclui autenticação por perfis, disciplinas, notas, frequência e testes automatizados.",
+    "description_en": "Academic portal with a React/Vite interface and Django REST API for students, teachers and administrators, including role-based access, courses, grades, attendance and automated tests.",
     "technologies": [
       "React",
       "Vite",
-      "JavaScript",
       "Python",
       "Django REST Framework",
-      "JWT",
-      "PostgreSQL",
-      "SQLite"
+      "PostgreSQL"
     ],
-    "url": "https://github.com/ZaraTakion/upa-portal-academico",
-    "demo_url": "https://upa-portal-academico.vercel.app/",
-    "image": "/assets/img/upa-cover.svg",
-    "alt": "Ilustração vetorial conceitual do portal acadêmico e das tecnologias React, Django REST e PostgreSQL",
-    "alt_en": "Conceptual vector illustration of an academic portal and its React, Django REST, and PostgreSQL technologies",
+    "url": "https://github.com/ZaraTakion/takion-campus",
+    "image": "/assets/img/takion-campus-cover.svg",
+    "alt": "Ilustração vetorial conceitual de um painel acadêmico, não uma captura do sistema",
+    "alt_en": "Concept vector illustration of an academic dashboard, not a screenshot of the application",
+    "visual_note": "Arte conceitual — não é captura de tela",
+    "visual_note_en": "Concept artwork — not a screenshot",
     "featured": true,
+    "highlights": [
+      "Fluxos distintos para aluno, professor e administração",
+      "Integração entre front-end React e API Python"
+    ],
+    "highlights_en": [
+      "Separate workflows for students, teachers and administrators",
+      "React front end integrated with a Python API"
+    ],
     "case_study": {
-      "problem": "Modernizar a experiência de consulta das informações acadêmicas.",
-      "approach": "Conectar uma interface React/Vite a uma API Django REST com autenticação JWT.",
+      "problem": "Reunir operações acadêmicas em uma interface acessível para diferentes perfis.",
+      "approach": "Integrar interface React/Vite a uma API Django REST com permissões por papel.",
       "details": {
-        "architecture": "Interface React/Vite integrada a uma API Django REST; o repositório documenta JWT e PostgreSQL em produção.",
-        "verification": "O README documenta verificações do Django e testes do backend, além de lint e build do frontend."
+        "architecture": "Camadas de front-end, API e persistência relacional separadas.",
+        "verification": "O repositório documenta testes de backend e frontend e execução local.",
+        "boundary": "A demonstração local usa dados fictícios; recursos externos dependem da configuração de produção."
       }
     },
     "case_study_en": {
-      "problem": "Modernize how students access their academic information.",
-      "approach": "Connect a React/Vite interface to a Django REST API with JWT authentication.",
+      "problem": "Bring academic workflows into an interface for distinct user roles.",
+      "approach": "Connect a React/Vite front end to a Django REST API with role-based permissions.",
       "details": {
-        "architecture": "A React/Vite interface integrates with a Django REST API; the repository documents JWT and PostgreSQL for production.",
-        "verification": "The README documents Django checks and backend tests, plus frontend linting and build commands."
+        "architecture": "Separate front-end, API and relational persistence layers.",
+        "verification": "The repository documents back-end and front-end tests and local execution.",
+        "boundary": "The local demo uses fictional data; external services require production configuration."
       }
-    },
-    "visual_note": "Ilustração conceitual — não é captura de tela",
-    "visual_note_en": "Concept illustration — not a product screenshot"
+    }
   },
   {
-    "title": "Task Manager API",
-    "title_en": "Task Manager API",
-    "track": "api",
-    "category": "Backend · API REST",
-    "category_en": "Backend · REST API",
-    "description": "API REST em FastAPI para criar, consultar, atualizar e excluir tarefas. Usa SQLite para persistir os dados entre reinícios e oferece documentação interativa dos endpoints.",
-    "description_en": "A FastAPI REST API for creating, reading, updating, and deleting tasks. SQLite keeps data across restarts, and interactive endpoint documentation is available.",
+    "title": "Biya — Parallel Worlds",
+    "title_en": "Biya — Parallel Worlds",
+    "track": "web",
+    "category": "Front-end · Site de artista",
+    "category_en": "Front end · Artist website",
+    "description": "Experiência digital de artista/VTuber desenvolvida em React e TypeScript, com mundos visuais, galeria interativa, navegação responsiva e idiomas PT/EN.",
+    "description_en": "React and TypeScript artist/VTuber website featuring distinct visual worlds, an interactive gallery, responsive navigation and PT/EN localization.",
     "technologies": [
-      "Python",
-      "FastAPI",
-      "SQLite",
-      "Pydantic",
-      "unittest"
+      "React",
+      "TypeScript",
+      "Vite",
+      "CSS",
+      "Acessibilidade"
     ],
-    "url": "https://github.com/ZaraTakion/task-manager-backend",
-    "image": "/assets/img/task-manager-cover.svg",
-    "alt": "Composição vetorial feita à mão com rotas reais de tarefas e armazenamento SQLite persistente da API",
-    "alt_en": "Handcrafted vector composition with the API's task routes and persistent SQLite storage",
+    "url": "https://github.com/ZaraTakion/biya-landing",
+    "demo_url": "https://biya-prism.zaratakion.workers.dev/",
+    "image": "/assets/img/biya-cover.svg",
+    "alt": "Composição vetorial conceitual dividida em dois mundos abstratos, sem utilizar artes de terceiros",
+    "alt_en": "Concept vector artwork split into two abstract worlds without using third-party artwork",
+    "visual_note": "Representação abstrata autoral — não é captura do site",
+    "visual_note_en": "Original abstract concept — not a website screenshot",
     "featured": true,
+    "highlights": [
+      "Múltiplos estados visuais e transições suaves",
+      "Galeria, conteúdo bilíngue e preferência por movimento reduzido"
+    ],
+    "highlights_en": [
+      "Distinct visual modes with gentle transitions",
+      "Gallery, bilingual copy and reduced-motion support"
+    ],
     "case_study": {
-      "problem": "Manter tarefas disponíveis após o encerramento e reinício do processo da API.",
-      "approach": "Persistir os registros em um arquivo SQLite e expor operações CRUD por rotas FastAPI.",
+      "problem": "Criar uma presença web reconhecível para uma identidade artística.",
+      "approach": "Construir uma experiência responsiva em React com dois universos visuais e conteúdo bilíngue.",
       "details": {
-        "architecture": "FastAPI e validação de dados com Pydantic sobre um banco SQLite configurável por caminho.",
-        "verification": "Os testes unittest cobrem o CRUD e recriam a aplicação com o mesmo arquivo SQLite para verificar a persistência após reinício.",
-        "boundary": "A persistência depende de o arquivo SQLite permanecer no disco; a documentação recomenda banco compartilhado, como PostgreSQL, para réplicas em vários servidores."
+        "architecture": "Componentes React/TypeScript e build Vite; deploy documentado em Cloudflare Workers.",
+        "verification": "README documenta build, testes e verificações automáticas.",
+        "boundary": "As obras exibidas no projeto seguem créditos e regras de uso; a ilustração deste portfólio é independente."
       }
     },
     "case_study_en": {
-      "problem": "Keep tasks available after the API process stops and restarts.",
-      "approach": "Persist records in a SQLite file and expose CRUD operations through FastAPI routes.",
+      "problem": "Create a recognizable web presence for an artistic identity.",
+      "approach": "Build a responsive React experience with two visual worlds and bilingual content.",
       "details": {
-        "architecture": "FastAPI and Pydantic validation over a SQLite database whose path can be configured.",
-        "verification": "The unittest suite covers CRUD and recreates the application with the same SQLite file to check persistence after restart.",
-        "boundary": "Persistence depends on the SQLite file remaining on disk; the documentation recommends a shared database such as PostgreSQL for multi-server replicas."
+        "architecture": "React/TypeScript components and Vite build; documented Cloudflare Workers deployment.",
+        "verification": "README documents build and automated checks.",
+        "boundary": "Artwork on the project follows its own credits and usage rules; this portfolio cover is independent."
       }
-    },
-    "visual_note": "Diagrama das rotas e da persistência SQLite",
-    "visual_note_en": "Diagram of routes and SQLite persistence"
+    }
   },
   {
     "title": "Chamados API",
@@ -137,6 +138,144 @@
     },
     "visual_note": "Diagrama dos papéis e estados dos chamados",
     "visual_note_en": "Diagram of ticket roles and states"
+  },
+  {
+    "title": "Bird — Sky Atelier",
+    "title_en": "Bird — Sky Atelier",
+    "track": "web",
+    "category": "Front-end · Galeria e landing page",
+    "category_en": "Front end · Gallery and landing page",
+    "description": "Landing page de artista com galeria interativa, navegação por teclado, idiomas PT/EN/JA e verificações de interface em diferentes tamanhos de tela.",
+    "description_en": "Artist landing page featuring an interactive gallery, keyboard navigation, PT/EN/JA localization and UI checks across multiple viewport sizes.",
+    "technologies": [
+      "React",
+      "TypeScript",
+      "Vite",
+      "CSS",
+      "Playwright"
+    ],
+    "url": "https://github.com/ZaraTakion/bird-landing-page",
+    "demo_url": "https://bird122-sky.zaratakion.workers.dev/",
+    "image": "/assets/img/bird-cover.svg",
+    "alt": "Ilustração vetorial original de um céu abstrato com cartões de galeria, sem reproduzir obras do artista",
+    "alt_en": "Original concept vector of an abstract sky with gallery cards, without reproducing the artist's artwork",
+    "visual_note": "Arte conceitual autoral — não é captura do site",
+    "visual_note_en": "Original concept artwork — not a screenshot",
+    "featured": false,
+    "case_study": {
+      "problem": "Organizar artes, links oficiais e informações de comissões em uma página navegável.",
+      "approach": "Construir uma interface responsiva com galeria, lightbox acessível e internacionalização.",
+      "details": {
+        "architecture": "Front-end React/TypeScript e assets próprios do projeto, publicados estaticamente.",
+        "verification": "O README descreve verificações TypeScript, build e testes de interface."
+      }
+    },
+    "case_study_en": {
+      "problem": "Organize art, official links and commissions information in a navigable page.",
+      "approach": "Build a responsive interface with a gallery, accessible lightbox and localization.",
+      "details": {
+        "architecture": "React/TypeScript front end and site assets served as static files.",
+        "verification": "README documents TypeScript checks, build and browser tests."
+      }
+    }
+  },
+  {
+    "title": "UPA — Portal Acadêmico",
+    "title_en": "UPA — Academic Portal",
+    "track": "web",
+    "category": "Full-stack · Educação",
+    "category_en": "Full-stack · Education",
+    "period": "Abr. 2026 – jun. 2026",
+    "period_en": "Apr. 2026 – Jun. 2026",
+    "description": "Aplicação acadêmica full-stack criada para modernizar a experiência do portal do aluno. Integra interface React/Vite e API Django REST, com autenticação JWT e recursos de disciplinas, notas, calendário, notificações e perfil.",
+    "description_en": "A full-stack academic application built to modernize the student portal experience. It connects a React/Vite interface to a Django REST API, with JWT authentication and features for courses, grades, calendar, notifications, and profiles.",
+    "highlights": [
+      "Integração de interface React/Vite com API Django REST",
+      "Autenticação de usuários com JWT",
+      "Recursos acadêmicos para disciplinas, notas, calendário, notificações e perfil",
+      "PostgreSQL em produção; SQLite no desenvolvimento local"
+    ],
+    "highlights_en": [
+      "React/Vite interface integrated with a Django REST API",
+      "JWT-based user authentication",
+      "Academic features for courses, grades, calendar, notifications, and profiles",
+      "PostgreSQL in production; SQLite for local development"
+    ],
+    "technologies": [
+      "React",
+      "Vite",
+      "JavaScript",
+      "Python",
+      "Django REST Framework",
+      "JWT",
+      "PostgreSQL",
+      "SQLite"
+    ],
+    "url": "https://github.com/ZaraTakion/upa-portal-academico",
+    "demo_url": "https://upa-portal-academico.vercel.app/",
+    "image": "/assets/img/upa-cover.svg",
+    "alt": "Ilustração vetorial conceitual do portal acadêmico e das tecnologias React, Django REST e PostgreSQL",
+    "alt_en": "Conceptual vector illustration of an academic portal and its React, Django REST, and PostgreSQL technologies",
+    "featured": false,
+    "case_study": {
+      "problem": "Modernizar a experiência de consulta das informações acadêmicas.",
+      "approach": "Conectar uma interface React/Vite a uma API Django REST com autenticação JWT.",
+      "details": {
+        "architecture": "Interface React/Vite integrada a uma API Django REST; o repositório documenta JWT e PostgreSQL em produção.",
+        "verification": "O README documenta verificações do Django e testes do backend, além de lint e build do frontend."
+      }
+    },
+    "case_study_en": {
+      "problem": "Modernize how students access their academic information.",
+      "approach": "Connect a React/Vite interface to a Django REST API with JWT authentication.",
+      "details": {
+        "architecture": "A React/Vite interface integrates with a Django REST API; the repository documents JWT and PostgreSQL for production.",
+        "verification": "The README documents Django checks and backend tests, plus frontend linting and build commands."
+      }
+    },
+    "visual_note": "Ilustração conceitual — não é captura de tela",
+    "visual_note_en": "Concept illustration — not a product screenshot"
+  },
+  {
+    "title": "Task Manager API",
+    "title_en": "Task Manager API",
+    "track": "api",
+    "category": "Backend · API REST",
+    "category_en": "Backend · REST API",
+    "description": "API REST em FastAPI para criar, consultar, atualizar e excluir tarefas. Usa SQLite para persistir os dados entre reinícios e oferece documentação interativa dos endpoints.",
+    "description_en": "A FastAPI REST API for creating, reading, updating, and deleting tasks. SQLite keeps data across restarts, and interactive endpoint documentation is available.",
+    "technologies": [
+      "Python",
+      "FastAPI",
+      "SQLite",
+      "Pydantic",
+      "unittest"
+    ],
+    "url": "https://github.com/ZaraTakion/task-manager-backend",
+    "image": "/assets/img/task-manager-cover.svg",
+    "alt": "Composição vetorial feita à mão com rotas reais de tarefas e armazenamento SQLite persistente da API",
+    "alt_en": "Handcrafted vector composition with the API's task routes and persistent SQLite storage",
+    "featured": false,
+    "case_study": {
+      "problem": "Manter tarefas disponíveis após o encerramento e reinício do processo da API.",
+      "approach": "Persistir os registros em um arquivo SQLite e expor operações CRUD por rotas FastAPI.",
+      "details": {
+        "architecture": "FastAPI e validação de dados com Pydantic sobre um banco SQLite configurável por caminho.",
+        "verification": "Os testes unittest cobrem o CRUD e recriam a aplicação com o mesmo arquivo SQLite para verificar a persistência após reinício.",
+        "boundary": "A persistência depende de o arquivo SQLite permanecer no disco; a documentação recomenda banco compartilhado, como PostgreSQL, para réplicas em vários servidores."
+      }
+    },
+    "case_study_en": {
+      "problem": "Keep tasks available after the API process stops and restarts.",
+      "approach": "Persist records in a SQLite file and expose CRUD operations through FastAPI routes.",
+      "details": {
+        "architecture": "FastAPI and Pydantic validation over a SQLite database whose path can be configured.",
+        "verification": "The unittest suite covers CRUD and recreates the application with the same SQLite file to check persistence after restart.",
+        "boundary": "Persistence depends on the SQLite file remaining on disk; the documentation recommends a shared database such as PostgreSQL for multi-server replicas."
+      }
+    },
+    "visual_note": "Diagrama das rotas e da persistência SQLite",
+    "visual_note_en": "Diagram of routes and SQLite persistence"
   },
   {
     "title": "Air Quality Analysis",

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="t d">
+<title id="t">Biya — Parallel Worlds — ilustração conceitual abstrata</title><desc id="d">Composição abstrata com áreas cristalinas à esquerda e formas de névoa à direita. Não usa obras de terceiros nem reproduz uma captura de tela.</desc>
+<defs><linearGradient id="crystal" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#123b64"/><stop offset="1" stop-color="#5a6cb8"/></linearGradient><linearGradient id="ghost" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#4b245f"/><stop offset="1" stop-color="#14142e"/></linearGradient><radialGradient id="glow"><stop stop-color="#cfbafc" stop-opacity=".35"/><stop offset="1" stop-color="#cfbafc" stop-opacity="0"/></radialGradient></defs>
+<rect width="800" height="900" fill="url(#crystal)"/><rect x="800" width="800" height="900" fill="url(#ghost)"/>
+<path d="M801 0v900" stroke="#e9e3ff" stroke-opacity=".4" stroke-width="3"/>
+<path d="M182 261L490 146 705 380 534 694 180 657 91 394Z" fill="none" stroke="#acdfff" stroke-width="5" opacity=".72"/><path d="M490 146L534 694M182 261L705 380M91 394L534 694" stroke="#a6ddff" stroke-opacity=".37" stroke-width="4"/><path d="M321 316L467 278 568 392 451 546 294 489Z" fill="#aedbff" opacity=".15"/>
+<circle cx="1278" cy="419" r="380" fill="url(#glow)"/><path d="M972 590C1075 440 1157 488 1240 336S1432 331 1492 218M929 681C1095 560 1121 605 1284 516S1413 499 1526 409" fill="none" stroke="#d7b4fa" stroke-width="45" stroke-opacity=".12" stroke-linecap="round"/>
+<text x="108" y="122" fill="#daedff" font-family="Arial,sans-serif" font-size="27" letter-spacing="6">CRYSTAL</text><text x="1495" y="122" text-anchor="end" fill="#f1d9ff" font-family="Arial,sans-serif" font-size="27" letter-spacing="6">GHOST</text>
+<rect x="0" y="669" width="1600" height="231" fill="#0b1125" opacity=".79"/>
+<text x="100" y="761" fill="#f4f3ff" font-family="Arial,sans-serif" font-weight="700" font-size="68">BIYA / PARALLEL WORLDS</text>
+<text x="105" y="832" fill="#c2c2e3" font-family="Arial,sans-serif" font-size="23" letter-spacing="4">REACT  ·  TYPESCRIPT  ·  WEB EXPERIENCE</text></svg>

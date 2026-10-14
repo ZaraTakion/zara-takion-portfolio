@@ -28,7 +28,11 @@ class ReactPortfolioTests(unittest.TestCase):
 
     def test_asset_integrity_and_provenance(self):
         projects = json.loads((OUTPUT / "data" / "projects.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(projects), 7)
+        self.assertEqual(len(projects), 10)
+        self.assertEqual(
+            {p["title"] for p in projects if p["featured"]},
+            {"Takion Campus", "Biya — Parallel Worlds", "Chamados API"},
+        )
         self.assertEqual(sum(p["featured"] for p in projects), 3)
         for project in projects:
             self.assertIn(project["track"], ("web", "api", "data"))

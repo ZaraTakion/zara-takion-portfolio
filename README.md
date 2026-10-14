@@ -13,7 +13,7 @@ Portfólio profissional bilíngue de **Zara Takion**, desenvolvido com **React, 
 - **`src/styles/upgrade.css`**: identidade visual V3, animações, layouts e estados acessíveis.
 - **`site/styles/aqua-workstation.css`**: direção de arte Aqua anterior preservada e importada como base pela aplicação React.
 - **`site/assets/img/`**: retrato original da Zara, capas e gráficos já existentes, **sem geração ou alteração por IA**.
-- **`site/data/projects.json`**: única fonte do acervo de sete projetos. Descrições em PT/EN e estudos de caso preservados. Não fabricamos métricas.
+- **`site/data/projects.json`**: única fonte do acervo de dez projetos. Em destaque: Takion Campus, Biya — Parallel Worlds e Chamados API; Bird — Sky Atelier aparece no acervo web. Descrições em PT/EN e estudos de caso sem métricas inventadas.
 - **`site/_headers`**: política CSP e cabeçalhos de segurança aplicáveis ao site publicado.
 - **`site/privacidade.html`, `site/en/privacy.html` e `site/404.html`**: páginas legais e de erro intencionalmente estáticas e acessíveis sem React, com CSS próprio preservado; scripts antigos não são publicados.
 - **`api/`**: API Flask independente. O contato na interface continua usando links diretos, sem fingir que há um serviço de e-mail conectado.
@@ -55,7 +55,7 @@ Para testes completos de interface em navegador, rode o build, inicie o servidor
 
 **Celular e tablet:** as mesmas seções são apresentadas como documento navegável e responsivo, sem obrigar a usar a metáfora de janelas. Botão de menu, âncoras e links funcionam com toque e teclado.
 
-**Explorador:** no desktop, os projetos são apresentados como pastas com abas de teclado (setas, Home e End). Em telas pequenas, voltam à grade de cards, preservando as informações. Filtros Web, APIs e Dados usam os projetos reais do JSON. A opção Todos mostra os três estudos de caso principais; filtros específicos procuram em todo o acervo.
+**Explorador:** no desktop, os projetos são apresentados como pastas com abas de teclado (setas, Home e End). Em telas pequenas, voltam à grade de cards, preservando as informações. Filtros Web, APIs e Dados usam os projetos reais do JSON. A opção Todos mostra três estudos de caso principais (full-stack, site e API); filtros específicos procuram em todo o acervo de dez projetos.
 
 **Terminal:** interpreta exclusivamente comandos conhecidos de **navegação**, como `help`, `projects`, `about`, `archive`, `skills`, `education`, `contact`, `home`, `clear`. Não executa código arbitrário nem comandos de sistema.
 
@@ -67,6 +67,7 @@ Para testes completos de interface em navegador, rode o build, inicie o servidor
 - `prefers-reduced-motion: reduce` desativa as animações não essenciais; o conteúdo permanece visível. `forced-colors` também tem fallback.
 - O build carrega React/CSS empacotados localmente e mantém CSP `script-src 'self'`.
 - Os arquivos de arte originais são copiados sem alteração. A integridade do retrato é verificada por testes.
+- As capas de Takion Campus, Biya e Bird neste portfólio são ilustrações vetoriais abstratas próprias, explicitamente identificadas como **conceitos, não capturas**; não substituem nem reproduzem artes de terceiros.
 
 ## Testes e publicação
 

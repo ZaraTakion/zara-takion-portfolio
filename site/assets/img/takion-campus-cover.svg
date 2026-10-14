@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="t d">
+<title id="t">Takion Campus — ilustração conceitual</title><desc id="d">Composição abstrata de uma interface acadêmica com métricas, calendário e blocos de informações. Não é captura de tela.</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#142b41"/><stop offset="1" stop-color="#0b142a"/></linearGradient><linearGradient id="panel" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1f4963"/><stop offset="1" stop-color="#183249"/></linearGradient></defs>
+<rect width="1600" height="900" fill="url(#bg)"/><circle cx="1340" cy="130" r="330" fill="#17696a" opacity=".22"/><circle cx="200" cy="800" r="300" fill="#218d93" opacity=".12"/>
+<text x="100" y="139" fill="#a9e9e0" font-family="Arial,sans-serif" font-size="28" letter-spacing="5">FULL-STACK / EDUCAÇÃO</text>
+<text x="100" y="225" fill="#fff" font-family="Arial,sans-serif" font-size="75" font-weight="700">TAKION CAMPUS</text>
+<rect x="100" y="297" width="1400" height="490" rx="28" fill="url(#panel)" stroke="#36758a" stroke-width="3"/>
+<rect x="100" y="297" width="280" height="490" rx="25" fill="#122c43"/><rect x="136" y="354" width="193" height="14" rx="7" fill="#a4ded9" opacity=".7"/>
+<rect x="136" y="420" width="171" height="36" rx="8" fill="#278b90"/><rect x="136" y="492" width="148" height="12" rx="6" fill="#709eaa"/><rect x="136" y="548" width="160" height="12" rx="6" fill="#709eaa"/><rect x="136" y="603" width="133" height="12" rx="6" fill="#709eaa"/>
+<text x="426" y="367" fill="#e5f4f4" font-family="Arial,sans-serif" font-size="30" font-weight="700">Visão geral</text>
+<rect x="426" y="401" width="296" height="138" rx="17" fill="#0c2338"/><rect x="749" y="401" width="296" height="138" rx="17" fill="#0c2338"/><rect x="1072" y="401" width="296" height="138" rx="17" fill="#0c2338"/>
+<rect x="451" y="425" width="110" height="9" rx="4" fill="#779eaa"/><text x="451" y="497" fill="#8ee2d2" font-family="Arial,sans-serif" font-size="45" font-weight="700">01</text>
+<rect x="774" y="425" width="135" height="9" rx="4" fill="#779eaa"/><text x="774" y="497" fill="#8ee2d2" font-family="Arial,sans-serif" font-size="45" font-weight="700">02</text>
+<rect x="1097" y="425" width="106" height="9" rx="4" fill="#779eaa"/><text x="1097" y="497" fill="#8ee2d2" font-family="Arial,sans-serif" font-size="45" font-weight="700">03</text>
+<rect x="426" y="569" width="943" height="174" rx="17" fill="#0c2338"/>
+<path d="M465 678 L553 629 632 657 703 603 798 638 874 594 970 622 1052 584 1146 615 1240 572 1332 596" stroke="#77e5d0" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="101" y="848" fill="#80aaa8" font-family="Arial,sans-serif" font-size="20" letter-spacing="3">ESTUDO DE CASO  ·  ARTE CONCEITUAL</text></svg>

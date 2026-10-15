@@ -7,6 +7,7 @@ import type { Locale, Project, ProjectTrack, SectionKey } from "./types";
 const GITHUB = "https://github.com/ZaraTakion";
 const LINKEDIN = "https://www.linkedin.com/in/rodrigo-pinheiro-94aa74358/";
 const EMAIL = "rm20022101@gmail.com";
+const resumePath = (locale: Locale, format: "pdf" | "docx" = "pdf") => `/downloads/Rodrigo_Pinheiro_2026_${locale === "pt" ? "PTBR" : "EN"}.${format}`;
 const DESKTOP_QUERY = "(min-width: 1200px)";
 const extraIds: Record<SectionKey, string> = {
   home: "home", projects: "projects", about: "about", archive: "archive",
@@ -71,11 +72,14 @@ function ProjectCard({ project, locale, featured = false }: { project: Project; 
   const data = projectText(project, locale);
   const caseStudy = data.caseStudy;
   return <article className={`project-card ${featured ? "featured" : "aqua-archive-card"}`} data-project-track={project.track}>
-    <div className="project-visual">
-      <img src={project.image} alt={data.alt} width={960} height={600} loading="lazy" decoding="async" />
-      <span className="aqua-visual-note">{data.note}</span>
-    </div>
+    {project.image && <figure className="project-visual authentic-capture">
+      <a href={project.image} target="_blank" rel="noopener noreferrer" aria-label={`${t.fullCapture}: ${data.title}`}>
+        <img src={project.image} alt={data.alt} width={project.image_width} height={project.image_height} loading="lazy" decoding="async" />
+      </a>
+      <figcaption className="aqua-visual-note">{data.note}</figcaption>
+    </figure>}
     <div className="project-copy">
+      <p className="project-context">{locale === "pt" ? project.context : project.context_en}</p>
       <p className="project-category">{data.category}{project.period ? <span> · {locale === "pt" ? project.period : project.period_en}</span> : null}</p>
       <h3>{data.title}</h3>
       <p className="project-description">{data.description}</p>
@@ -93,7 +97,8 @@ function ProjectCard({ project, locale, featured = false }: { project: Project; 
       <ul className="project-tags" aria-label={t.technology}>{project.technologies.map(tech => <li key={tech}>{tech}</li>)}</ul>
       <div className="project-links">
         {project.demo_url && <a href={project.demo_url} target="_blank" rel="noopener noreferrer">{t.demo} ↗</a>}
-        <a href={project.url} target="_blank" rel="noopener noreferrer">{t.repository} ↗</a>
+        {project.source_private ? <span className="private-source">{t.privateSource}</span> : <a href={project.url} target="_blank" rel="noopener noreferrer">{t.repository} ↗</a>}
+        {project.evidence_url && <a href={project.evidence_url} target="_blank" rel="noopener noreferrer">{t.evidence} ↗</a>}
       </div>
     </div>
   </article>;
@@ -137,9 +142,9 @@ function ProjectExplorer({ projects, locale }: { projects: Project[]; locale: Lo
         })}
       </div>
       <div className="project-explorer-panels">
-        <div className="project-explorer-panel" role="tabpanel" id={`aqua-panel-${safeIndex}`} aria-labelledby={`aqua-tab-${safeIndex}`} tabIndex={0}>
-          <ProjectCard project={selectedProject} locale={locale} featured />
-        </div>
+        {projects.map((project, i) => <div key={project.url} className="project-explorer-panel" role="tabpanel" id={`aqua-panel-${i}`} aria-labelledby={`aqua-tab-${i}`} tabIndex={0} hidden={i !== safeIndex}>
+          {i === safeIndex && <ProjectCard project={project} locale={locale} featured />}
+        </div>)}
       </div>
     </div>
   </div>;
@@ -192,22 +197,24 @@ function Home({ locale, navigate }: { locale: Locale; navigate: (key: SectionKey
         <h1 id="hero-title">{t.heroTitle}<span className="heading-period">.</span></h1>
         <p className="hero-intro">{t.heroDesc}</p>
         <ul className="hero-stack" aria-label={t.technology}>
-          {["Python", "Django", "REST APIs", "React", "TypeScript", "Git"].map(tech => <li key={tech}>{tech}</li>)}
+          {["Python", "Django REST", "PostgreSQL", "JWT", locale === "pt" ? "Testes" : "Testing", "Git"].map(tech => <li key={tech}>{tech}</li>)}
         </ul>
         <div className="hero-actions">
           <button className="button button-wine" type="button" onClick={() => navigate("projects")}>{t.projectsCTA} ↗</button>
-          <button className="button button-outline" type="button" onClick={() => navigate("contact")}>{t.contactCTA} ✉</button>
+          <a className="button button-outline resume-download" href={resumePath(locale)} download>{t.resumeCTA} ↓</a>
         </div>
         <div className="hero-socials">
           <a href={GITHUB} target="_blank" rel="noopener noreferrer">GitHub ↗</a>
           <a href={LINKEDIN} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+          <a href={`mailto:${EMAIL}`}>{t.contactCTA} ✉</a>
         </div>
+        <p className="hero-availability"><span className="status-led" aria-hidden="true" />{t.availability}</p>
       </div>
       <aside className="digital-profile aqua-identity" aria-label="Zara Takion — digital identity">
         <div className="digital-avatar"><img src="/assets/img/oc-portrait.jpg" alt="Zara Takion — original character" width="320" height="320" fetchPriority="high" /></div>
         <div className="digital-profile-copy">
-          <p className="digital-profile-name">Zara Takion</p>
-          <p className="digital-profile-status"><span className="status-led" aria-hidden="true" /> IDENTITY ONLINE</p>
+          <p className="digital-profile-name">Rodrigo Pinheiro</p>
+          <p className="digital-profile-status">Zara Takion · GitHub</p>
           <p className="digital-profile-location">Paraíba · Brasil</p>
           <p className="digital-profile-build">AQUA / REACT 3.0</p>
         </div>
@@ -260,6 +267,11 @@ function Contact({ locale }: { locale: Locale }) {
       <p className="section-kicker section-kicker-light"><span>05</span> CONNECT / MAIL</p>
       <h2>{t.contactTitle}</h2><p>{t.contactDesc}</p>
       <a className="contact-email" href={`mailto:${EMAIL}`}>{EMAIL} ↗</a>
+      <div className="resume-actions" aria-label={t.resumeFormats}>
+        <a className="button button-outline" href={resumePath(locale)} download>{t.resumeCTA} ↓</a>
+        <a href={resumePath(locale, "docx")} download>{t.editableResume} ↓</a>
+      </div>
+      <p className="contact-scope">{t.contactScope}</p>
     </div>
     <div className="contact-direct-links" aria-label="Contact links">
       <a href={`mailto:${EMAIL}`}><span aria-hidden="true">✉</span><span><strong>{t.email}</strong><small>{EMAIL}</small></span><span aria-hidden="true">↗</span></a>
@@ -376,7 +388,7 @@ export default function App({ locale }: { locale: Locale }) {
   const desktop = useMediaQuery(DESKTOP_QUERY);
   const { projects, state: projectsState } = useProjects();
   const time = useClock(locale);
-  const [stage, setStage] = useState<"start"|"boot"|"running">(() => keyFromHash(window.location.hash) ? "running" : "start");
+  const [stage, setStage] = useState<"start"|"boot"|"running">("running");
   const [active, setActive] = useState<SectionKey | null>(() => keyFromHash(window.location.hash) ?? "home");
   const [menuOpen, setMenuOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
@@ -501,12 +513,13 @@ export default function App({ locale }: { locale: Locale }) {
           aria-expanded={menuOpen} aria-label={menuOpen ? t.closeMenu : t.menu} onClick={() => setMenuOpen(value => !value)}>
           <span className="menu-icon" aria-hidden="true" />
         </button>
-        <nav id="main-nav" className={`main-nav${menuOpen ? " is-open" : ""}`} ref={navRef} aria-label="Navigation">
+        <nav id="main-nav" className={`main-nav${menuOpen ? " is-open" : ""}`} ref={navRef} aria-label={t.navigation}>
           {appKeys.slice(1,6).map(key => <a key={key} href={`#${slugFor(key as Exclude<SectionKey,"terminal">, locale)}`}
             onClick={event => handleLink(event, key)}>{t.nav[appKeys.indexOf(key)]}</a>)}
           <a className="language-switch" href={locale === "pt" ? "/en/" : "/"} hrefLang={locale === "pt" ? "en" : "pt-BR"}
             lang={locale === "pt" ? "en" : "pt-BR"} aria-label={t.language}>{t.otherLanguage}</a>
-          <button className="aqua-palette-trigger" type="button" onClick={() => setPaletteOpen(true)} aria-label="Quick open apps">⌕ <span>Ctrl K</span></button>
+          <button className="intro-replay" type="button" onClick={() => setStage("start")} data-open-intro>{t.replayIntro}</button>
+          <button className="aqua-palette-trigger" type="button" onClick={() => setPaletteOpen(true)} aria-label={t.quickOpen}>⌕ <span>Ctrl K</span></button>
         </nav>
       </div>
     </header>

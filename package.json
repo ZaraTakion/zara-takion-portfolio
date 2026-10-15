@@ -17,13 +17,14 @@
     "react-dom": "^19.2.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@types/node": "^22.15.0",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "playwright": "1.55.1",
     "typescript": "~5.9.3",
     "vite": "^7.1.0",
-    "vitest": "^3.2.0",
-    "playwright": "1.55.0"
+    "vitest": "4.1.11"
   }
 }

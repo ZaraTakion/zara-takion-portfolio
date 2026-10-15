@@ -10,3 +10,5 @@ __pycache__/
 !.env.example
 .pytest_cache/
 .coverage
+node_modules/
+artifacts/

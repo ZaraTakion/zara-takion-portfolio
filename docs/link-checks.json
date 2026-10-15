@@ -1,0 +1,97 @@
+[
+  {
+    "url": "https://bird122-sky.zaratakion.workers.dev/",
+    "status": 200,
+    "resolved": "https://bird122-sky.zaratakion.workers.dev/"
+  },
+  {
+    "url": "https://biya-prism.zaratakion.workers.dev/",
+    "status": 200,
+    "resolved": "https://biya-prism.zaratakion.workers.dev/"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/Curriculo",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/Curriculo"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/air-quality-analysis",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/air-quality-analysis"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/biya-landing",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/biya-landing"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/biya-landing#bateria-de-5",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/biya-landing#bateria-de-5"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/brazil-traffic-insight",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/brazil-traffic-insight"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/chamados-api",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/chamados-api"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/chamados-api/blob/main/docs/EVIDENCE.md",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/chamados-api/blob/main/docs/EVIDENCE.md"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/nba-dashboard",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/nba-dashboard"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/steam-price-predictor",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/steam-price-predictor"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/takion-campus",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/takion-campus"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/takion-campus/blob/main/docs/CASE_STUDY.md",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/takion-campus/blob/main/docs/CASE_STUDY.md"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/task-manager-backend",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/task-manager-backend"
+  },
+  {
+    "url": "https://github.com/ZaraTakion/zara-takion-portfolio/pull/12",
+    "status": 200,
+    "resolved": "https://github.com/ZaraTakion/zara-takion-portfolio/pull/12"
+  },
+  {
+    "url": "https://portfolio.zaratakion.workers.dev/",
+    "status": 200,
+    "resolved": "https://portfolio.zaratakion.workers.dev/"
+  },
+  {
+    "url": "https://portfolio.zaratakion.workers.dev/en/",
+    "status": 200,
+    "resolved": "https://portfolio.zaratakion.workers.dev/en/"
+  },
+  {
+    "url": "https://takion-campus.vercel.app/",
+    "status": 200,
+    "resolved": "https://takion-campus.vercel.app/"
+  },
+  {
+    "url": "https://www.linkedin.com/in/rodrigo-pinheiro-94aa74358/",
+    "status": 999,
+    "error": "HTTP Error 999: <none>"
+  }
+]

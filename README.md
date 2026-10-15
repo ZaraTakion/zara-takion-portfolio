@@ -1,90 +1,74 @@
-# ZARA // AQUA WORKSTATION V3
+# Rodrigo Pinheiro — Zara Aqua Workstation
 
-Portfólio profissional bilíngue de **Zara Takion**, desenvolvido com **React, TypeScript e Vite**. O produto apresenta estudos de caso reais de web development e back-end Python por meio de um pequeno ambiente desktop interativo, com estética Aqua, céu pixelado e detalhes em vinho.
+Portfólio bilíngue de **Rodrigo Araújo Maciel Pinheiro / Zara Takion**, com foco em **Back-End Python Júnior** e serviços de APIs, manutenção e integração web.
 
-**Site:** https://portfolio.zaratakion.workers.dev/  
-**Código:** https://github.com/ZaraTakion/zara-takion-portfolio
+- Site: https://portfolio.zaratakion.workers.dev/
+- English: https://portfolio.zaratakion.workers.dev/en/
+- Currículo: https://github.com/ZaraTakion/Curriculo
 
-## Arquitetura
+## Perfil e projetos
 
-- **`src/`**: aplicação React em TypeScript; componentes de home, estudos de caso, explorador, perfil, arquivo, educação, contato, terminal e paleta rápida, estado e internacionalização.
-- **`src/copy.ts`**: textos independentes em português e inglês.
-- **`src/model.ts`**: definição dos nomes de rotas, aliases e seleção dos projetos.
-- **`src/styles/upgrade.css`**: identidade visual V3, animações, layouts e estados acessíveis.
-- **`site/styles/aqua-workstation.css`**: direção de arte Aqua anterior preservada e importada como base pela aplicação React.
-- **`site/assets/img/`**: retrato original da Zara, capas e gráficos já existentes, **sem geração ou alteração por IA**.
-- **`site/data/projects.json`**: única fonte do acervo de dez projetos. Em destaque: Takion Campus, Biya — Parallel Worlds e Chamados API; Bird — Sky Atelier aparece no acervo web. Descrições em PT/EN e estudos de caso sem métricas inventadas.
-- **`site/_headers`**: política CSP e cabeçalhos de segurança aplicáveis ao site publicado.
-- **`site/privacidade.html`, `site/en/privacy.html` e `site/404.html`**: páginas legais e de erro intencionalmente estáticas e acessíveis sem React, com CSS próprio preservado; scripts antigos não são publicados.
-- **`api/`**: API Flask independente. O contato na interface continua usando links diretos, sem fingir que há um serviço de e-mail conectado.
-- **`scripts/copy-public.mjs`**: copia apenas os assets, dados, páginas legais, sitemap, robots e 404 para `dist/` após o build.
-- **`scripts/build_site.py`**: comando de build histórico mantido para compatibilidade com o Cloudflare. Valida dados e executa o build Vite.
-- **`scripts/ui-smoke.mjs`**: testes Chromium reais em 320, 360, 390, 768, 1024, 1200, 1366, 1920 e 3840px, com navegação e ações.
+A identidade Aqua Workstation é preservada: desktop com janelas, explorador, terminal de navegação e atalhos; no celular, documento responsivo. O perfil abre imediatamente. A introdução permanece opcional no desktop.
 
-## Execução local
+Três estudos de caso em destaque:
 
-Requisitos: Node.js 22+ e npm. Python 3.13+ é necessário para as validações/rotina histórica de build e para a API.
+1. **Chamados API** — Django REST, JWT, autorização, histórico e outbox transacional. Demonstração local, sem servidor público de API.
+2. **Takion Campus** — plataforma acadêmica independente com React/Vite e API Django REST. Evolução do UPA, apresentada uma única vez.
+3. **Biya — Parallel Worlds** — interface React/TypeScript, galeria, mundos visuais e PT/EN. Sem alegar contrato pago.
 
-```bash
-npm install
-npm run dev
-```
+Bird possui demonstração pública e código privado; a interface sinaliza isso e não oferece um link de código inacessível ao visitante. Outros projetos e estudos ficam no arquivo. Nenhum projeto é apresentado como emprego formal ou resultado comercial comprovado.
 
-Para preparar produção:
+## Capturas autênticas
+
+As capas conceituais foram removidas. As três capturas de sites públicos foram feitas diretamente no navegador; a de Chamados API vem do Chrome headless do CI da release `v1.0.0-local.1`. Nenhuma imagem foi gerada, editada, recortada ou reencodificada por IA.
+
+`site/data/image-provenance.json` registra origem, método, dimensões, créditos e SHA-256 dos quatro arquivos. O build valida os hashes e os textos PT/EN. Biya, Bird e demais titulares mantêm os direitos sobre as artes; o retrato da Bird continua creditado a `@Najinajimi`. O retrato original de Zara foi preservado byte a byte.
+
+Projetos de arquivo sem captura validada são apresentados em texto. Não há imagens genéricas usadas para representar produtos.
+
+## Desenvolvimento e verificação
+
+Requer Node.js 22+ e Python 3.
 
 ```bash
-npm run typecheck
-npm run test:unit
-npm run build
-npm run preview
+npm ci
+npm run check
+node --test tests/*.test.mjs
+python -m unittest discover -s tests -p 'test_*.py' -v
 ```
 
-O comando Cloudflare legado segue funcionando:
+O comando de produção existente foi preservado:
 
 ```bash
 python scripts/build_site.py
 ```
 
-Ele faz a verificação do JSON e, se faltar `node_modules/vite`, instala as dependências JavaScript antes de executar o build Vite. A saída continua sendo `dist/`, usada por `wrangler.jsonc`.
+Para os testes completos de interface:
 
-Para testes completos de interface em navegador, rode o build, inicie o servidor local na porta 4173 e execute `npm run test:ui`. A GitHub Actions automatiza o fluxo.
+```bash
+npx playwright install --only-shell chromium
+python -m http.server 4173 --directory dist
+# Em outro terminal:
+npm run test:ui
+```
 
-## Como usar
+A bateria cobre 320–3840 px, PT/EN, menu, teclado, explorador, terminal, atalhos, links de download e capturas. Axe verifica violações graves/críticas nas regras WCAG A/AA em mobile e desktop. Isso não é certificação integral de acessibilidade.
 
-**Desktop ≥1200px:** após carregar a página, escolha entrar direto ou observar a inicialização curta opcional. Os aplicativos incluem Home, Projetos, Sobre, Arquivo, Formação, Contato e Terminal. Só um aplicativo fica ativo de cada vez; janelas têm controles de minimizar, expandir/restaurar e fechar. Use a barra lateral para trocar de aplicativo. A paleta **Ctrl+K** fornece acesso rápido; **Alt+1–7** abre aplicativos, e **Esc** volta para Home.
+A API Flask em `api/` permanece independente. Para seus testes:
 
-**Celular e tablet:** as mesmas seções são apresentadas como documento navegável e responsivo, sem obrigar a usar a metáfora de janelas. Botão de menu, âncoras e links funcionam com toque e teclado.
+```bash
+python -m pip install -r api/requirements.txt
+python -m unittest discover -s api/tests -v
+```
 
-**Explorador:** no desktop, os projetos são apresentados como pastas com abas de teclado (setas, Home e End). Em telas pequenas, voltam à grade de cards, preservando as informações. Filtros Web, APIs e Dados usam os projetos reais do JSON. A opção Todos mostra três estudos de caso principais (full-stack, site e API); filtros específicos procuram em todo o acervo de dez projetos.
+## Currículos
 
-**Terminal:** interpreta exclusivamente comandos conhecidos de **navegação**, como `help`, `projects`, `about`, `archive`, `skills`, `education`, `contact`, `home`, `clear`. Não executa código arbitrário nem comandos de sistema.
+Os PDFs e DOCX PT/EN em `site/downloads/` correspondem aos documentos gerados no repositório Curriculo. Ao atualizá-los, copie os quatro arquivos validados para esta pasta antes do build. Cada PDF tem uma página A4, texto selecionável e links clicáveis.
 
-## Acessibilidade e desempenho
+## Publicação
 
-- Contraste, estados `:focus-visible`, labels, feedback `aria-live`, imagens com alt significativo, projeto com `details/summary` e navegação PT/EN.
-- A paleta de comandos gerencia foco e fecha com Esc; o menu mobile oferece estados acessíveis.
-- Animações de janelas, céu e microinterações são leves, sem vídeo em autoplay, bibliotecas de partículas, rastreamento ou dependências externas de fontes.
-- `prefers-reduced-motion: reduce` desativa as animações não essenciais; o conteúdo permanece visível. `forced-colors` também tem fallback.
-- O build carrega React/CSS empacotados localmente e mantém CSP `script-src 'self'`.
-- Os arquivos de arte originais são copiados sem alteração. A integridade do retrato é verificada por testes.
-- As capas de Takion Campus, Biya e Bird neste portfólio são ilustrações vetoriais abstratas próprias, explicitamente identificadas como **conceitos, não capturas**; não substituem nem reproduzem artes de terceiros.
+`dist/` é o artefato Cloudflare. `version.json` identifica a revisão do código. O quality gate executa tipos, testes, build, auditoria das dependências Python, regressões de conteúdo e testes de navegador. Alterações são entregues em PR, sem merge ou deploy automático nesta revisão.
 
-## Testes e publicação
+## English
 
-O workflow [React Aqua Workstation quality gate](.github/workflows/ci.yml) valida:
-
-1. TypeScript e testes de unidade React.
-2. Testes legados Node e suíte Python Flask.
-3. Auditoria de dependências Python.
-4. Build de produção Vite, conteúdo PT/EN, integridade de assets, páginas legais e cabeçalhos.
-5. Navegação Playwright Chromium real de 320 a 3840px, incluindo mobile, terminal, paleta, alternância de páginas e viewport desktop/tablet.
-
-O arquivo `/version.json` contém a revisão completa do Git associada ao build e recebe `Cache-Control: no-store`. Após a publicação, compare sua propriedade `revision` com o SHA de `main` para evitar confundir a versão anterior com a recém-publicada.
-
-**Publicação:** a branch `main` mantém a produção. Mudanças grandes passam por PR e CI primeiro. Cloudflare Workers publica a partir da branch configurada com `python scripts/build_site.py` e `npx wrangler deploy`; o Worker usa `./dist`.
-
-## Ética do portfólio
-
-Os projetos expõem o que suas documentações efetivamente comprovam, inclusive limites e condições de produção. Ilustrações conceituais são identificadas como tais e gráficos derivados de dados próprios permanecem intactos. Não acrescentamos imagens fabricadas, métricas fictícias ou testemunhos inexistentes.
-
-A identidade Aqua é o enquadramento. O conteúdo e a experiência de navegação são o produto.
+Bilingual portfolio for junior Python back-end opportunities. The Aqua desktop identity is retained, with immediate access to the profile and responsive document navigation on smaller screens. Projects include source/evidence links and explicit operational limits. Screenshots are authentic browser captures; image sources, rights and hashes are recorded in the provenance manifest. No professional experience, paid clients or business metrics are invented.

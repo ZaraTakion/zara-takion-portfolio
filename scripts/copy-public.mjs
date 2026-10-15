@@ -1,12 +1,14 @@
-import { copyFile, cp, mkdir, writeFile, readFile } from "node:fs/promises";
+import { copyFile, cp, mkdir, writeFile, readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
 
 // Vite handles React/TypeScript bundles. Copy only vetted public content:
 // never allow legacy index.html/scripts to shadow the new React app.
 await mkdir("dist/assets", { recursive: true });
+await rm("dist/assets/img", { recursive: true, force: true });
 await cp("site/assets/img", "dist/assets/img", { recursive: true });
 await cp("site/data", "dist/data", { recursive: true });
+await cp("site/downloads", "dist/downloads", { recursive: true });
 await copyFile("site/_headers", "dist/_headers");
 for (const name of ["404.html", "robots.txt", "sitemap.xml", "privacidade.html"]) {
   await copyFile(join("site", name), join("dist", name));

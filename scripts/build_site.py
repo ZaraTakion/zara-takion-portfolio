@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import html
+import hashlib
 import re
 import shutil
 from pathlib import Path
@@ -27,13 +28,10 @@ REQUIRED_PROJECT_FIELDS = {
     "description_en",
     "technologies",
     "url",
-    "image",
-    "alt",
-    "alt_en",
-    "visual_note",
-    "visual_note_en",
     "featured",
     "track",
+    "context",
+    "context_en",
 }
 
 
@@ -149,7 +147,10 @@ def validate_projects() -> None:
     if not isinstance(projects, list) or not projects:
         raise ValueError("A lista de projetos precisa conter ao menos um item.")
 
+    provenance = json.loads((SOURCE / "data" / "image-provenance.json").read_text(encoding="utf-8"))
+    captures = {item["file"]: item for item in provenance}
     featured_count = 0
+    seen_urls = set()
     for index, project in enumerate(projects, start=1):
         if not isinstance(project, dict):
             raise ValueError(f"Projeto {index} precisa ser um objeto.")
@@ -182,6 +183,11 @@ def validate_projects() -> None:
                     raise ValueError(f"Projeto em destaque {index} contém notas técnicas inválidas em {locale}.")
         if not isinstance(project["technologies"], list) or not project["technologies"]:
             raise ValueError(f"Projeto {index} precisa listar tecnologias.")
+        if project["url"] in seen_urls:
+            raise ValueError(f"Projeto duplicado: {project['url']}.")
+        seen_urls.add(project["url"])
+        if project.get("source_private") and not project.get("demo_url"):
+            raise ValueError("Projeto privado precisa de uma demonstração pública.")
         parsed_url = urlparse(project["url"])
         if parsed_url.scheme != "https" or parsed_url.hostname != "github.com":
             raise ValueError(f"Link de projeto inválido: {project['url']}.")
@@ -195,10 +201,26 @@ def validate_projects() -> None:
                 or not all(isinstance(item, str) and item.strip() for item in project[field])
             ):
                 raise ValueError(f"Projeto {index} contém destaques inválidos em {field}.")
-        if not re.fullmatch(r"/assets/img/[A-Za-z0-9._-]+", project["image"]):
-            raise ValueError(f"Caminho de imagem inválido: {project['image']}.")
-        if not (SOURCE / project["image"].lstrip("/")).is_file():
-            raise ValueError(f"Imagem local não encontrada: {project['image']}.")
+        if project.get("image"):
+            image = project["image"]
+            if not re.fullmatch(r"/assets/img/[A-Za-z0-9._-]+\.(jpg|png)", image):
+                raise ValueError(f"Captura inválida: {image}.")
+            asset = SOURCE / image.lstrip("/")
+            capture = captures.get(image)
+            if not asset.is_file() or not capture:
+                raise ValueError(f"Captura sem arquivo ou origem: {image}.")
+            if hashlib.sha256(asset.read_bytes()).hexdigest() != capture["sha256"]:
+                raise ValueError(f"Bytes da captura divergentes: {image}.")
+            if not capture.get("source_url", "").startswith("https://") or not capture.get("credit"):
+                raise ValueError(f"Captura sem origem ou crédito: {image}.")
+            for field in ("alt", "alt_en", "visual_note", "visual_note_en"):
+                if not isinstance(project.get(field), str) or not project[field].strip():
+                    raise ValueError(f"Captura sem texto acessível {field}.")
+            for dimension in ("width", "height"):
+                if project.get(f"image_{dimension}") != capture[dimension] or capture[dimension] <= 0:
+                    raise ValueError(f"Dimensão inconsistente de captura: {image}.")
+        elif project["featured"]:
+            raise ValueError("Projeto em destaque precisa de captura autêntica.")
     if featured_count != 3:
         raise ValueError("A seleção precisa conter exatamente três projetos em destaque.")
 
@@ -209,8 +231,8 @@ def render_project_card(project: dict[str, object], language: str) -> str:
     title = project["title_en"] if is_english else project["title"]
     category = project["category_en"] if is_english else project["category"]
     description = project["description_en"] if is_english else project["description"]
-    alt = project["alt_en"] if is_english else project["alt"]
-    visual_note = project["visual_note_en"] if is_english else project["visual_note"]
+    alt = project.get("alt_en" if is_english else "alt", "")
+    visual_note = project.get("visual_note_en" if is_english else "visual_note", "")
     period = project.get("period_en" if is_english else "period")
     tags = "".join(f"<li>{text(tag)}</li>" for tag in project["technologies"])
     highlights = project.get("highlights_en" if is_english else "highlights", [])
@@ -257,13 +279,14 @@ def render_project_card(project: dict[str, object], language: str) -> str:
     actions = []
     if project.get("demo_url"):
         actions.append(f'<a class="project-link" href="{text(project["demo_url"])}" target="_blank" rel="noopener noreferrer">{demo_label} <span aria-hidden="true">↗</span></a>')
-    actions.append(f'<a class="project-link" href="{text(project["url"])}" target="_blank" rel="noopener noreferrer">{repository_label} <span aria-hidden="true">↗</span></a>')
+    if not project.get("source_private"):
+        actions.append(f'<a class="project-link" href="{text(project["url"])}" target="_blank" rel="noopener noreferrer">{repository_label} <span aria-hidden="true">↗</span></a>')
+    visual_html = ""
+    if project.get("image"):
+        visual_html = f'<figure class="project-visual"><img src="{text(project["image"])}" alt="{text(alt)}" loading="lazy"><figcaption>{text(visual_note)}</figcaption></figure>'
     return f"""<article class="{card_class}" data-project-track="{text(project["track"])}">
   <div class="project-windowbar" aria-hidden="true"><span class="window-controls"><i></i><i></i></span><span>{project_window_label} · {text(title)}</span><span class="window-close">×</span></div>
-  <figure class="project-visual">
-    <img src="{text(project["image"])}" alt="{text(alt)}" width="640" height="360" loading="lazy">
-    <figcaption>{text(visual_note)}</figcaption>
-  </figure>
+  {visual_html}
   <div class="project-copy">
     <p class="project-category">{text(category)}</p>
     {period_html}

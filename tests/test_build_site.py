@@ -28,7 +28,7 @@ class ReactPortfolioTests(unittest.TestCase):
 
     def test_asset_integrity_and_provenance(self):
         projects = json.loads((OUTPUT / "data" / "projects.json").read_text(encoding="utf-8"))
-        self.assertEqual(len(projects), 10)
+        self.assertEqual(len(projects), 9)
         self.assertEqual(
             {p["title"] for p in projects if p["featured"]},
             {"Takion Campus", "Biya — Parallel Worlds", "Chamados API"},
@@ -36,7 +36,8 @@ class ReactPortfolioTests(unittest.TestCase):
         self.assertEqual(sum(p["featured"] for p in projects), 3)
         for project in projects:
             self.assertIn(project["track"], ("web", "api", "data"))
-            self.assertTrue((OUTPUT / project["image"].lstrip("/")).is_file())
+            if project.get("image"):
+                self.assertTrue((OUTPUT / project["image"].lstrip("/")).is_file())
             self.assertTrue(project["title_en"] and project["description_en"])
         portrait = OUTPUT / "assets" / "img" / "oc-portrait.jpg"
         self.assertTrue(portrait.is_file())
@@ -111,6 +112,35 @@ class ReactPortfolioTests(unittest.TestCase):
         self.assertIn('useProjects()', app)
         self.assertTrue((ROOT / "src" / "model.test.ts").is_file())
         self.assertTrue((ROOT / "src" / "copy.ts").is_file())
+
+    def test_authentic_captures_and_resume_downloads_are_published(self):
+        import hashlib
+        captures = json.loads((OUTPUT / "data/image-provenance.json").read_text())
+        self.assertEqual(len(captures), 4)
+        for capture in captures:
+            asset = OUTPUT / capture["file"].lstrip("/")
+            self.assertEqual(hashlib.sha256(asset.read_bytes()).hexdigest(), capture["sha256"])
+            self.assertTrue(capture["source_url"].startswith("https://"))
+            self.assertTrue(capture["credit"])
+        self.assertFalse(list((OUTPUT / "assets/img").glob("*-cover.svg")))
+        for language in ("PTBR", "EN"):
+            for extension in ("pdf", "docx"):
+                path = OUTPUT / f"downloads/Rodrigo_Pinheiro_2026_{language}.{extension}"
+                self.assertGreater(path.stat().st_size, 1000)
+
+    def test_provenance_rejects_an_altered_capture(self):
+        from tempfile import TemporaryDirectory
+        from unittest.mock import patch
+        import shutil
+        with TemporaryDirectory() as temp:
+            site = Path(temp) / "site"
+            shutil.copytree(SOURCE / "data", site / "data")
+            shutil.copytree(SOURCE / "assets/img", site / "assets/img")
+            image = site / "assets/img/chamados-api-real.png"
+            image.write_bytes(image.read_bytes() + b"tampered")
+            with patch.object(build_site, "SOURCE", site):
+                with self.assertRaisesRegex(ValueError, "Bytes da captura divergentes"):
+                    build_site.validate_projects()
 
 
 if __name__ == "__main__":

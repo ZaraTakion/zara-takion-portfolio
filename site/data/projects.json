@@ -1,12 +1,66 @@
 [
   {
+    "title": "Chamados API",
+    "title_en": "Support Tickets API",
+    "track": "api",
+    "category": "Backend · Suporte",
+    "category_en": "Backend · Support",
+    "description": "API de suporte em Django REST com JWT, permissões por usuário e equipe, histórico de alterações e notificações via outbox transacional. Testes automatizados e documentação OpenAPI; demonstração local reproduzível.",
+    "description_en": "Django REST support-ticket API with JWT, user and staff permissions, change history and transactional outbox notifications. Automated tests and OpenAPI documentation, with a reproducible local demo.",
+    "technologies": [
+      "Python",
+      "Django REST Framework",
+      "JWT",
+      "PostgreSQL",
+      "OpenAPI"
+    ],
+    "url": "https://github.com/ZaraTakion/chamados-api",
+    "featured": true,
+    "case_study": {
+      "problem": "Organizar a abertura e o acompanhamento de solicitações de suporte.",
+      "approach": "Modelar transições de status e autorização no servidor, registrar histórico e emitir eventos de notificação na mesma transação do chamado.",
+      "details": {
+        "architecture": "Django REST + JWT, banco relacional e outbox. Processador local ou worker Celery/Redis; contratos documentados em OpenAPI.",
+        "verification": "Testes de JWT, isolamento, transições e notificações; o CI do repositório também executa PostgreSQL e Redis/Celery. Evidências e comandos estão no repositório.",
+        "boundary": "Sem servidor público de API. A captura é do Swagger em execução local no CI da release; executar localmente conforme o README."
+      }
+    },
+    "case_study_en": {
+      "problem": "Organize the creation and tracking of support requests.",
+      "approach": "Model status transitions and server-side authorization, record change history and emit notification events in the same database transaction as the ticket.",
+      "details": {
+        "architecture": "Django REST + JWT, a relational database and an outbox. Local processor or Celery/Redis worker; OpenAPI contracts.",
+        "verification": "Tests cover JWT, isolation, transitions and notifications; repository CI also runs PostgreSQL and Redis/Celery. Evidence and commands are available in the repository.",
+        "boundary": "No public API server. The screenshot shows Swagger running locally in release CI; follow the README to run it locally."
+      }
+    },
+    "context": "Projeto pessoal / acadêmico",
+    "context_en": "Personal / academic project",
+    "image": "/assets/img/chamados-api-real.png",
+    "image_width": 1440,
+    "image_height": 1000,
+    "visual_note": "Captura real · Swagger no CI · execução local",
+    "visual_note_en": "Real screenshot · Swagger in CI · local execution",
+    "alt": "Captura de tela real de Chamados API mostrando a documentação Swagger e suas rotas.",
+    "alt_en": "Actual screenshot of Chamados API showing Swagger documentation and API routes.",
+    "evidence_url": "https://github.com/ZaraTakion/chamados-api/blob/main/docs/EVIDENCE.md",
+    "highlights": [
+      "Isolamento entre usuários e notas internas restritas à equipe",
+      "Outbox transacional e processamento de notificações sem Redis no modo local"
+    ],
+    "highlights_en": [
+      "User isolation and staff-only internal notes",
+      "Transactional outbox and notification processing without Redis in local mode"
+    ]
+  },
+  {
     "title": "Takion Campus",
     "title_en": "Takion Campus",
     "track": "web",
     "category": "Full-stack · Plataforma acadêmica",
     "category_en": "Full stack · Academic platform",
-    "description": "Portal acadêmico com interface React/Vite e API Django REST para alunos, docentes e administração. Inclui autenticação por perfis, disciplinas, notas, frequência e testes automatizados.",
-    "description_en": "Academic portal with a React/Vite interface and Django REST API for students, teachers and administrators, including role-based access, courses, grades, attendance and automated tests.",
+    "description": "Plataforma acadêmica independente com API Django REST e interface React. Implementei acesso por perfil, disciplinas, avaliações e frequência, com validações e testes automatizados.",
+    "description_en": "Independent academic platform with a Django REST API and React front end. I implemented role-based access, courses, assessments and attendance, with validation and automated tests.",
     "technologies": [
       "React",
       "Vite",
@@ -15,11 +69,6 @@
       "PostgreSQL"
     ],
     "url": "https://github.com/ZaraTakion/takion-campus",
-    "image": "/assets/img/takion-campus-cover.svg",
-    "alt": "Ilustração vetorial conceitual de um painel acadêmico, não uma captura do sistema",
-    "alt_en": "Concept vector illustration of an academic dashboard, not a screenshot of the application",
-    "visual_note": "Arte conceitual — não é captura de tela",
-    "visual_note_en": "Concept artwork — not a screenshot",
     "featured": true,
     "highlights": [
       "Fluxos distintos para aluno, professor e administração",
@@ -35,7 +84,7 @@
       "details": {
         "architecture": "Camadas de front-end, API e persistência relacional separadas.",
         "verification": "O repositório documenta testes de backend e frontend e execução local.",
-        "boundary": "A demonstração local usa dados fictícios; recursos externos dependem da configuração de produção."
+        "boundary": "Demonstração acadêmica independente. A tela pública é de acesso; os fluxos internos exigem conta. O módulo financeiro registra informações, sem processar pagamentos."
       }
     },
     "case_study_en": {
@@ -44,9 +93,20 @@
       "details": {
         "architecture": "Separate front-end, API and relational persistence layers.",
         "verification": "The repository documents back-end and front-end tests and local execution.",
-        "boundary": "The local demo uses fictional data; external services require production configuration."
+        "boundary": "Independent academic demo. The public screen is a sign-in page; internal workflows require an account. The finance module records information and does not process payments."
       }
-    }
+    },
+    "context": "Projeto pessoal / acadêmico",
+    "context_en": "Personal / academic project",
+    "image": "/assets/img/takion-campus-real.jpg",
+    "image_width": 1363,
+    "image_height": 936,
+    "visual_note": "Captura real · tela pública · 15/10/2026",
+    "visual_note_en": "Real screenshot · public screen · 15 Oct 2026",
+    "alt": "Captura de tela real de Takion Campus mostrando a tela de acesso.",
+    "alt_en": "Actual screenshot of Takion Campus showing the sign-in page.",
+    "demo_url": "https://takion-campus.vercel.app/",
+    "evidence_url": "https://github.com/ZaraTakion/takion-campus/blob/main/docs/CASE_STUDY.md"
   },
   {
     "title": "Biya — Parallel Worlds",
@@ -65,11 +125,6 @@
     ],
     "url": "https://github.com/ZaraTakion/biya-landing",
     "demo_url": "https://biya-prism.zaratakion.workers.dev/",
-    "image": "/assets/img/biya-cover.svg",
-    "alt": "Composição vetorial conceitual dividida em dois mundos abstratos, sem utilizar artes de terceiros",
-    "alt_en": "Concept vector artwork split into two abstract worlds without using third-party artwork",
-    "visual_note": "Representação abstrata autoral — não é captura do site",
-    "visual_note_en": "Original abstract concept — not a website screenshot",
     "featured": true,
     "highlights": [
       "Múltiplos estados visuais e transições suaves",
@@ -85,7 +140,7 @@
       "details": {
         "architecture": "Componentes React/TypeScript e build Vite; deploy documentado em Cloudflare Workers.",
         "verification": "README documenta build, testes e verificações automáticas.",
-        "boundary": "As obras exibidas no projeto seguem créditos e regras de uso; a ilustração deste portfólio é independente."
+        "boundary": "Implementação web apresentada como projeto, sem alegação de contrato pago. Artes e personagem pertencem à Biya e respectivos titulares; captura sem edição das obras."
       }
     },
     "case_study_en": {
@@ -94,50 +149,19 @@
       "details": {
         "architecture": "React/TypeScript components and Vite build; documented Cloudflare Workers deployment.",
         "verification": "README documents build and automated checks.",
-        "boundary": "Artwork on the project follows its own credits and usage rules; this portfolio cover is independent."
-      }
-    }
-  },
-  {
-    "title": "Chamados API",
-    "title_en": "Support Tickets API",
-    "track": "api",
-    "category": "Backend · Suporte",
-    "category_en": "Backend · Support",
-    "description": "API REST em Django REST Framework para chamados, com JWT, permissões por solicitante e equipe, busca e notas internas. Usa SQLite local e oferece Docker Compose com PostgreSQL e volume persistente.",
-    "description_en": "A Django REST Framework API for support tickets, with JWT, requester and staff permissions, search, and internal notes. It uses SQLite locally and provides Docker Compose with PostgreSQL and a persistent volume.",
-    "technologies": [
-      "Python",
-      "Django REST Framework",
-      "JWT",
-      "PostgreSQL",
-      "OpenAPI"
-    ],
-    "url": "https://github.com/ZaraTakion/chamados-api",
-    "image": "/assets/img/chamados-api-cover.svg",
-    "alt": "Composição vetorial feita à mão que resume o fluxo de chamados e os papéis de solicitante e equipe descritos na API",
-    "alt_en": "Handcrafted vector composition summarizing the support ticket flow and requester and staff roles described by the API",
-    "featured": true,
-    "case_study": {
-      "problem": "Organizar a abertura e o acompanhamento de solicitações de suporte.",
-      "approach": "Separar permissões de solicitantes e equipe, com JWT, filtros, comentários e documentação OpenAPI.",
-      "details": {
-        "architecture": "Django REST Framework com autenticação JWT; permissões distinguem o dono do chamado e a equipe de atendimento.",
-        "verification": "A documentação do repositório descreve testes automatizados, OpenAPI e exemplos executáveis das rotas.",
-        "boundary": "SQLite é a opção local; produção deve usar banco persistente. Notas internas dos chamados são restritas à equipe."
+        "boundary": "Presented as a web project without claiming paid client work. Artwork and character belong to Biya and the relevant rights holders; the screenshot does not edit the artwork."
       }
     },
-    "case_study_en": {
-      "problem": "Organize the creation and tracking of support requests.",
-      "approach": "Separate requester and staff permissions, with JWT, filters, comments, and OpenAPI documentation.",
-      "details": {
-        "architecture": "Django REST Framework with JWT authentication; permissions distinguish ticket owners from support staff.",
-        "verification": "The repository documents automated tests, OpenAPI, and runnable route examples.",
-        "boundary": "SQLite is the local option; production should use persistent storage. Internal ticket notes are restricted to staff."
-      }
-    },
-    "visual_note": "Diagrama dos papéis e estados dos chamados",
-    "visual_note_en": "Diagram of ticket roles and states"
+    "context": "Projeto web de artista · desenvolvimento da interface",
+    "context_en": "Artist website project · interface development",
+    "image": "/assets/img/biya-real.jpg",
+    "image_width": 1348,
+    "image_height": 926,
+    "visual_note": "Captura real · tela pública · 15/10/2026 · Artes: Biya e titulares",
+    "visual_note_en": "Real screenshot · public screen · 15 Oct 2026 · Artwork: Biya and rights holders",
+    "alt": "Captura de tela real de Biya — Parallel Worlds mostrando a página inicial publicada, com créditos das artes preservados.",
+    "alt_en": "Actual screenshot of Biya — Parallel Worlds showing the published home page with artwork credits preserved.",
+    "evidence_url": "https://github.com/ZaraTakion/biya-landing#bateria-de-5"
   },
   {
     "title": "Bird — Sky Atelier",
@@ -156,18 +180,14 @@
     ],
     "url": "https://github.com/ZaraTakion/bird-landing-page",
     "demo_url": "https://bird122-sky.zaratakion.workers.dev/",
-    "image": "/assets/img/bird-cover.svg",
-    "alt": "Ilustração vetorial original de um céu abstrato com cartões de galeria, sem reproduzir obras do artista",
-    "alt_en": "Original concept vector of an abstract sky with gallery cards, without reproducing the artist's artwork",
-    "visual_note": "Arte conceitual autoral — não é captura do site",
-    "visual_note_en": "Original concept artwork — not a screenshot",
     "featured": false,
     "case_study": {
       "problem": "Organizar artes, links oficiais e informações de comissões em uma página navegável.",
       "approach": "Construir uma interface responsiva com galeria, lightbox acessível e internacionalização.",
       "details": {
         "architecture": "Front-end React/TypeScript e assets próprios do projeto, publicados estaticamente.",
-        "verification": "O README descreve verificações TypeScript, build e testes de interface."
+        "verification": "O README descreve verificações TypeScript, build e testes de interface.",
+        "boundary": "Código privado; demonstração pública disponível. Direitos das artes mantidos com Passarinho122 e titulares; retrato creditado a @Najinajimi no site."
       }
     },
     "case_study_en": {
@@ -175,66 +195,20 @@
       "approach": "Build a responsive interface with a gallery, accessible lightbox and localization.",
       "details": {
         "architecture": "React/TypeScript front end and site assets served as static files.",
-        "verification": "README documents TypeScript checks, build and browser tests."
-      }
-    }
-  },
-  {
-    "title": "UPA — Portal Acadêmico",
-    "title_en": "UPA — Academic Portal",
-    "track": "web",
-    "category": "Full-stack · Educação",
-    "category_en": "Full-stack · Education",
-    "period": "Abr. 2026 – jun. 2026",
-    "period_en": "Apr. 2026 – Jun. 2026",
-    "description": "Aplicação acadêmica full-stack criada para modernizar a experiência do portal do aluno. Integra interface React/Vite e API Django REST, com autenticação JWT e recursos de disciplinas, notas, calendário, notificações e perfil.",
-    "description_en": "A full-stack academic application built to modernize the student portal experience. It connects a React/Vite interface to a Django REST API, with JWT authentication and features for courses, grades, calendar, notifications, and profiles.",
-    "highlights": [
-      "Integração de interface React/Vite com API Django REST",
-      "Autenticação de usuários com JWT",
-      "Recursos acadêmicos para disciplinas, notas, calendário, notificações e perfil",
-      "PostgreSQL em produção; SQLite no desenvolvimento local"
-    ],
-    "highlights_en": [
-      "React/Vite interface integrated with a Django REST API",
-      "JWT-based user authentication",
-      "Academic features for courses, grades, calendar, notifications, and profiles",
-      "PostgreSQL in production; SQLite for local development"
-    ],
-    "technologies": [
-      "React",
-      "Vite",
-      "JavaScript",
-      "Python",
-      "Django REST Framework",
-      "JWT",
-      "PostgreSQL",
-      "SQLite"
-    ],
-    "url": "https://github.com/ZaraTakion/upa-portal-academico",
-    "demo_url": "https://upa-portal-academico.vercel.app/",
-    "image": "/assets/img/upa-cover.svg",
-    "alt": "Ilustração vetorial conceitual do portal acadêmico e das tecnologias React, Django REST e PostgreSQL",
-    "alt_en": "Conceptual vector illustration of an academic portal and its React, Django REST, and PostgreSQL technologies",
-    "featured": false,
-    "case_study": {
-      "problem": "Modernizar a experiência de consulta das informações acadêmicas.",
-      "approach": "Conectar uma interface React/Vite a uma API Django REST com autenticação JWT.",
-      "details": {
-        "architecture": "Interface React/Vite integrada a uma API Django REST; o repositório documenta JWT e PostgreSQL em produção.",
-        "verification": "O README documenta verificações do Django e testes do backend, além de lint e build do frontend."
+        "verification": "README documents TypeScript checks, build and browser tests.",
+        "boundary": "Private source code; public demo available. Artwork rights remain with Passarinho122 and rights holders; the portrait is credited to @Najinajimi on the site."
       }
     },
-    "case_study_en": {
-      "problem": "Modernize how students access their academic information.",
-      "approach": "Connect a React/Vite interface to a Django REST API with JWT authentication.",
-      "details": {
-        "architecture": "A React/Vite interface integrates with a Django REST API; the repository documents JWT and PostgreSQL for production.",
-        "verification": "The README documents Django checks and backend tests, plus frontend linting and build commands."
-      }
-    },
-    "visual_note": "Ilustração conceitual — não é captura de tela",
-    "visual_note_en": "Concept illustration — not a product screenshot"
+    "context": "Projeto web de artista · código privado",
+    "context_en": "Artist website project · private source code",
+    "image": "/assets/img/bird-real.jpg",
+    "image_width": 1348,
+    "image_height": 926,
+    "visual_note": "Captura real · tela pública · 15/10/2026 · Bird · retrato: @Najinajimi",
+    "visual_note_en": "Real screenshot · public screen · 15 Oct 2026 · Bird · portrait: @Najinajimi",
+    "alt": "Captura de tela real de Bird — Sky Atelier mostrando a página inicial publicada, com créditos das artes preservados.",
+    "alt_en": "Actual screenshot of Bird — Sky Atelier showing the published home page with artwork credits preserved.",
+    "source_private": true
   },
   {
     "title": "Task Manager API",
@@ -252,9 +226,6 @@
       "unittest"
     ],
     "url": "https://github.com/ZaraTakion/task-manager-backend",
-    "image": "/assets/img/task-manager-cover.svg",
-    "alt": "Composição vetorial feita à mão com rotas reais de tarefas e armazenamento SQLite persistente da API",
-    "alt_en": "Handcrafted vector composition with the API's task routes and persistent SQLite storage",
     "featured": false,
     "case_study": {
       "problem": "Manter tarefas disponíveis após o encerramento e reinício do processo da API.",
@@ -274,8 +245,8 @@
         "boundary": "Persistence depends on the SQLite file remaining on disk; the documentation recommends a shared database such as PostgreSQL for multi-server replicas."
       }
     },
-    "visual_note": "Diagrama das rotas e da persistência SQLite",
-    "visual_note_en": "Diagram of routes and SQLite persistence"
+    "context": "Projeto pessoal / acadêmico",
+    "context_en": "Personal / academic project"
   },
   {
     "title": "Air Quality Analysis",
@@ -292,9 +263,6 @@
       "Plotly"
     ],
     "url": "https://github.com/ZaraTakion/air-quality-analysis",
-    "image": "/assets/img/air-quality.png",
-    "alt": "Gráfico original com a média de PM2.5 por cidade, calculado a partir dos dados do projeto",
-    "alt_en": "Project chart showing the average PM2.5 concentration by city, computed from the project dataset",
     "featured": false,
     "case_study": {
       "problem": "Examinar se variáveis meteorológicas e o mês ajudam a explicar o índice composto de poluição deste conjunto.",
@@ -304,8 +272,8 @@
       "problem": "Examine whether weather variables and month help explain the project dataset’s composite pollution index.",
       "approach": "OLS and Random Forest use temperature, humidity, wind speed, and month. The recorded Random Forest test scored R² −0.082, below the mean baseline."
     },
-    "visual_note": "Gráfico derivado dos dados do projeto",
-    "visual_note_en": "Chart derived from the project data"
+    "context": "Estudo de dados",
+    "context_en": "Data study"
   },
   {
     "title": "Brazil Traffic Insight",
@@ -322,12 +290,9 @@
       "Scikit-learn"
     ],
     "url": "https://github.com/ZaraTakion/brazil-traffic-insight",
-    "image": "/assets/img/traffic-insight.png",
-    "alt": "Mapa de pontos geográficos presentes no arquivo de acidentes usado pelo projeto",
-    "alt_en": "Map of geographic points contained in the crash records used by the project",
     "featured": false,
-    "visual_note": "Mapa produzido a partir dos dados do projeto",
-    "visual_note_en": "Map produced from the project data"
+    "context": "Estudo de dados",
+    "context_en": "Data study"
   },
   {
     "title": "NBA Dashboard",
@@ -344,12 +309,9 @@
       "Plotly"
     ],
     "url": "https://github.com/ZaraTakion/nba-dashboard",
-    "image": "/assets/img/nba-cover.png",
-    "alt": "Gráfico de pontos por partida das seis equipes líderes da temporada 2023 no conjunto do projeto",
-    "alt_en": "Chart of points per game for the six leading teams in the project's 2023 season dataset",
     "featured": false,
-    "visual_note": "Gráfico derivado do recorte de temporada do projeto",
-    "visual_note_en": "Chart derived from the project season data"
+    "context": "Estudo de dados",
+    "context_en": "Data study"
   },
   {
     "title": "Steam Price Predictor",
@@ -367,11 +329,8 @@
       "Plotly"
     ],
     "url": "https://github.com/ZaraTakion/steam-price-predictor",
-    "image": "/assets/img/steam-price-cover.svg",
-    "alt": "Composição vetorial feita à mão que resume os campos e as etapas da demonstração de previsão do preço de jogos; não apresenta resultados fabricados",
-    "alt_en": "Handcrafted vector composition summarizing the fields and steps in the game price prediction demo; it does not show fabricated results",
     "featured": false,
-    "visual_note": "Ilustração técnica — sem resultados fabricados",
-    "visual_note_en": "Technical illustration — no fabricated results"
+    "context": "Estudo de dados",
+    "context_en": "Data study"
   }
 ]

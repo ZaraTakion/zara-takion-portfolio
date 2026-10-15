@@ -1,5 +1,5 @@
 /* AQUA WORKSTATION V3 — React operating environment.
-   The original pixel sky / portrait / project artwork is preserved.
+   The original pixel sky and portrait are preserved; project visuals are authentic captures.
    Meaningful motion, no generated artwork, no tracking, no artificial data. */
 :root {
   --aqua-v3-night: #172d3b;
@@ -355,4 +355,34 @@ a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visibl
   .aqua-v3 .aqua-sky { display: none; }
   .aqua-v3 .aqua-identity, .aqua-v3 .project-card,
   .aqua-v3 .retro-app-window, .aqua-command-palette { forced-color-adjust: auto; box-shadow: none; }
+}
+
+/* Recruitment pass: preserve Aqua, make evidence and contact immediately available. */
+.aqua-v3 .hero h1 { max-width: 19ch; letter-spacing: -.055em; }
+.aqua-v3 .hero-availability { display: flex; align-items: center; gap: 8px; margin-top: 12px; color: #28574f; font-size: .8rem; }
+.aqua-v3 .intro-replay { min-height: 44px; padding: 6px 10px; border: 1px solid #5a817b; border-radius: 4px; background: #f8fbef; color: #23423f; font: 700 .65rem var(--font-mono); }
+.aqua-v3 .project-context { margin: 0 0 8px; font: 700 .66rem/1.5 var(--font-mono); color: #35685f; }
+.aqua-v3 .project-visual.authentic-capture { display: block; min-height: 0; aspect-ratio: auto; margin: 0; background: #f5f8f4; }
+.aqua-v3 .authentic-capture > a { display: block; padding: 10px; }
+.aqua-v3 .project-visual.authentic-capture img { display: block; width: 100%; height: auto; max-height: 340px; object-fit: contain; transform: none; border: 1px solid #b4c8c2; }
+.aqua-v3 .authentic-capture .aqua-visual-note { position: static; display: block; max-width: none; padding: 7px 12px; color: #334f47; background: #edf4eb; border: 0; border-top: 1px solid #c1d6ce; font: 600 .67rem/1.5 var(--font-mono); }
+.aqua-v3 .private-source { align-self: center; font-size: .75rem; color: #53635d; }
+.aqua-v3 .resume-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
+.aqua-v3 .resume-actions > a:not(.button) { display: inline-flex; align-items: center; min-height: 44px; font-size: .85rem; text-decoration: underline; }
+.aqua-v3 .contact-scope { margin-top: 18px; max-width: 62ch; font-size: .9rem; line-height: 1.7; }
+@media (min-width: 1200px) {
+  .aqua-v3 .aqua-react-explorer .project-card .authentic-capture img { max-height: 300px; object-fit: contain; }
+  .aqua-v3 .hero-copy .hero-intro { font-size: .88rem; line-height: 1.7; }
+  .aqua-v3 .hero .hero-stack { margin-bottom: 14px; }
+  .aqua-v3 .hero-availability { font-size: .7rem; }
+}
+@media (max-width: 1199px) {
+  .aqua-v3 .intro-replay { display: none; }
+}
+.aqua-v3 .entry-status { color: #185044; background: #e1eee4; }
+.aqua-v3 .contact-copy > .section-kicker-light,
+.aqua-v3 .contact-copy > .section-kicker-light > span { color: #f4fff4; }
+@media (min-width: 1200px) {
+  .aqua-v3 .contact-copy > .section-kicker-light,
+  .aqua-v3 .contact-copy > .section-kicker-light > span { color: #28574f; }
 }

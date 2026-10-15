@@ -1,4 +1,5 @@
 import { chromium } from "playwright";
+import AxeBuilder from "@axe-core/playwright";
 import { mkdir } from "node:fs/promises";
 
 const base = process.env.UI_BASE_URL || "http://127.0.0.1:4173";
@@ -64,9 +65,18 @@ try {
         assert(!(await page.locator("#main-nav").isVisible()), "Escape failed to close menu");
       }
       await checkLoadedArt(page,viewport.name);
+      for (const capture of await page.locator(".authentic-capture img").all()) {
+        await capture.scrollIntoViewIfNeeded();
+        await capture.evaluate(el => el.decode());
+      }
+      await page.evaluate(() => window.scrollTo(0, 0));
+      if (viewport.width === 390) await page.screenshot({ path: `${folder}/referral-home-mobile.png` });
       await page.screenshot({ path: `${folder}/${viewport.name}.png`, fullPage: true });
     } else {
-      assert(await page.locator(".startup-screen").isVisible(), `${viewport.name}: optional startup is missing`);
+      assert(!(await page.locator(".startup-screen").isVisible()), `${viewport.name}: introduction blocks recruiting content`);
+      assert(await page.locator("h1").isVisible(), "Recruiting content must be visible immediately");
+      await page.locator("[data-open-intro]").click();
+      assert(await page.locator(".startup-screen").isVisible(), "Optional introduction no longer available");
       await page.locator("[data-desktop-start]").click();
       await page.locator(".retro-desktop-stage.desktop-running").waitFor();
       assert(await page.locator(".retro-app-window.is-open").count() === 1, "Multiple windows visible");
@@ -116,11 +126,47 @@ try {
     const isEnglish = locale !== "";
     assert(await page.locator("html").getAttribute("lang") === (isEnglish ? "en" : "pt-BR"), "Incorrect locale tag");
     assert(await page.locator("h1").count() === 1, "Accessible heading hierarchy: missing single h1");
-    assert((await page.locator("h1").innerText()).includes(isEnglish ? "I build" : "Construo"), "React locale content mismatch");
+    assert((await page.locator("h1").innerText()).includes("Python"), "Back-end positioning is missing");
+    assert(await page.getByRole("link", { name: isEnglish ? "Download résumé PDF ↓" : "Baixar currículo PDF ↓", exact: true }).count() === 2, "Localized résumé CTAs missing");
+    const resumeLink = page.locator(".hero-actions .resume-download");
+    const resumeUrl = await resumeLink.getAttribute("href");
+    assert(resumeUrl.endsWith(isEnglish ? "_EN.pdf" : "_PTBR.pdf"), "Wrong résumé language");
+    const pdf = await page.request.get(`${base}${resumeUrl}`);
+    assert(pdf.ok() && (await pdf.body()).subarray(0, 5).toString() === "%PDF-", "PDF download is broken");
+    const docxUrl = await page.locator(".resume-actions a[download]").last().getAttribute("href");
+    const docx = await page.request.get(`${base}${docxUrl}`);
+    assert(docx.ok() && (await docx.body()).subarray(0, 2).toString() === "PK", "DOCX download is broken");
+    assert(await page.locator('a[href="https://github.com/ZaraTakion/bird-landing-page"]').count() === 0, "Private repository linked publicly");
+    for (const img of await page.locator(".authentic-capture img").all()) {
+      await img.scrollIntoViewIfNeeded();
+      await img.evaluate(el => el.decode());
+      assert(await img.evaluate(el => el.naturalWidth > 500 && el.naturalHeight > 300), "Project screenshot failed to load");
+    }
     assert(await page.locator(".project-card").count() >= 7, "Bilingual projects missing");
     assert(await page.locator(`a[href="${isEnglish ? "/" : "/en/"}"]`).count() > 0, "Language switch missing");
     await noOverflow(page, locale || "pt");
     await page.close();
+  }
+
+  for (const locale of ["", "en/"]) {
+    for (const width of [390, 1366]) {
+      const context = await browser.newContext({ viewport: { width, height: 900 }, reducedMotion: "reduce" });
+      const page = await context.newPage();
+      await page.goto(`${base}/${locale}`, { waitUntil: "networkidle" });
+      for (const key of width >= 1200 ? ["home", "projects", "contact"] : ["home"]) {
+        if (width >= 1200 && key !== "home") await page.locator(`[data-app-open="${key}"]`).click();
+        const audit = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"]).analyze();
+        const violations = audit.violations.filter(v => ["critical", "serious"].includes(v.impact));
+        assert(violations.length === 0, `Accessibility ${locale || "pt"}/${width}/${key}: ${JSON.stringify(violations.map(v => ({id:v.id, impact:v.impact, nodes:v.nodes.map(n=>n.target)})))}`);
+      }
+      if (width === 1366 && locale === "") {
+        await page.locator('[data-app-open="home"]').click();
+        await page.screenshot({ path: `${folder}/referral-home-desktop.png`, fullPage: true });
+        await page.locator('[data-app-open="projects"]').click();
+        await page.screenshot({ path: `${folder}/referral-evidence-desktop.png`, fullPage: true });
+      }
+      await context.close();
+    }
   }
 
   const privacy = await browser.newPage({ viewport: { width: 1366, height: 768 } });

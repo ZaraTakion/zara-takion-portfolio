@@ -1,0 +1,50 @@
+[
+  {
+    "project": "Takion Campus",
+    "file": "/assets/img/takion-campus-real.jpg",
+    "source_url": "https://takion-campus.vercel.app/",
+    "captured_or_retrieved_at": "2026-10-15",
+    "method": "Browser viewport, public sign-in screen. No authenticated data.",
+    "width": 1363,
+    "height": 936,
+    "sha256": "67e66c520bee336fdfe7bc098399ebf9d49e821578fd3ae914ea60de067856f6",
+    "processing": "none; original screenshot bytes",
+    "credit": "Interface do projeto Takion Campus; identidade Takion Software."
+  },
+  {
+    "project": "Biya — Parallel Worlds",
+    "file": "/assets/img/biya-real.jpg",
+    "source_url": "https://biya-prism.zaratakion.workers.dev/",
+    "captured_or_retrieved_at": "2026-10-15",
+    "method": "Browser viewport, Crystal home.",
+    "width": 1348,
+    "height": 926,
+    "sha256": "179b9a166d251d99628c665996969f423ff03fe1d539fd7ba1bc08d293b9c5c7",
+    "processing": "none; original screenshot bytes",
+    "credit": "Artes e personagem: Biya e respectivos titulares. Permissão de uso do projeto informada pelo autor; direitos preservados."
+  },
+  {
+    "project": "Bird — Sky Atelier",
+    "file": "/assets/img/bird-real.jpg",
+    "source_url": "https://bird122-sky.zaratakion.workers.dev/",
+    "captured_or_retrieved_at": "2026-10-15",
+    "method": "Browser viewport, public home.",
+    "width": 1348,
+    "height": 926,
+    "sha256": "1f5842ba696b38ff5d23bc6889cf0d5d489a45f4f5ee5a665d57bb0d87c551b8",
+    "processing": "none; original screenshot bytes",
+    "credit": "Passarinho122 e respectivos titulares. Retrato creditado a @Najinajimi no site. Permissão informada pelo autor; direitos preservados."
+  },
+  {
+    "project": "Chamados API",
+    "file": "/assets/img/chamados-api-real.png",
+    "source_url": "https://github.com/ZaraTakion/chamados-api/releases/download/v1.0.0-local.1/swagger-real-ci.png",
+    "captured_or_retrieved_at": "2026-10-15",
+    "method": "Existing Chrome headless screenshot from the release CI, local Swagger at http://127.0.0.1:8000/api/docs/.",
+    "width": 1440,
+    "height": 1000,
+    "sha256": "9b82658bbf02736bb3a4fd0dfdb8b7da72f31eb9bc2ff4007e85e9f12342d4c0",
+    "processing": "none; original screenshot bytes",
+    "credit": "Interface Swagger UI da Chamados API; execução real no CI da release v1.0.0-local.1."
+  }
+]

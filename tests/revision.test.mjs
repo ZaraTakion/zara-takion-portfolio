@@ -33,7 +33,10 @@ test("version describes the real checkout, dirtiness and unavailable Git honestl
     writeFileSync(join(cwd, "source.txt"), "uncommitted change");
     assert.equal(revisionManifest({ cwd }).dirty, true);
     assert.throws(() => revisionManifest({ cwd, production: true }), /clean checkout/);
-  } finally { rmSync(cwd, { recursive: true, forctest("Cloudflare production and review release have correct staging", () => {
+  } finally { rmSync(cwd, { recursive: true, force: true }); }
+});
+
+test("Cloudflare production and review release have correct staging", () => {
   const main = { WORKERS_CI: "1", WORKERS_CI_BRANCH: "main" };
   const preview = { WORKERS_CI: "1", WORKERS_CI_BRANCH: "feat/obsidiana-v42-review" };
   assert.doesNotThrow(() => assertReviewBuildAllowed(main));

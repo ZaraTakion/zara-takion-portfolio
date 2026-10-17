@@ -1,13 +1,13 @@
 import { execFileSync } from "node:child_process";
-import { assertReviewBuildAllowed, revisionManifest } from "./revision.mjs";
+import { assertReviewBuildAllowed, isProductionBuild, revisionManifest } from "./revision.mjs";
 
-// This branch is approved for integration only. Stop hosted builds before any
-// deployment/preview command can run, without changing the hosting settings.
 assertReviewBuildAllowed(process.env);
 const env = { ...process.env };
-if (process.argv.includes("--production")) env.PORTFOLIO_STAGE = "production";
-// Reject an untraceable production candidate before touching existing output.
-revisionManifest({ production: env.PORTFOLIO_STAGE === "production" });
+// Cloudflare main is indexable production, other local builds and review
+// branches remain noindex previews; no deploy command is run here.
+const production = isProductionBuild(env, process.argv.includes("--production"));
+env.PORTFOLIO_STAGE = production ? "production" : "preview";
+revisionManifest({ production });
 for (const args of [
   ["node_modules/typescript/bin/tsc", "--noEmit"],
   ["node_modules/vite/bin/vite.js", "build"],

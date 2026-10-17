@@ -83,6 +83,26 @@ jobs:
           PY
           UI_BASE_URL=http://127.0.0.1:4173 npm run test:ui
 
+      - name: Validate real production candidate without deployment
+        run: |
+          PORTFOLIO_STAGE=production python scripts/build_site.py
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          for page in (Path("dist/index.html"), Path("dist/en/index.html")):
+              html = page.read_text(encoding="utf-8")
+              assert 'content="index, follow"' in html
+              assert 'rel="canonical"' in html
+              assert 'hreflang="en"' in html and 'hreflang="pt-BR"' in html
+              assert 'content="#0D0D12"' in html
+          assert "Disallow: /" not in Path("dist/robots.txt").read_text(encoding="utf-8")
+          assert "<url>" in Path("dist/sitemap.xml").read_text(encoding="utf-8")
+          ver = json.loads(Path("dist/version.json").read_text(encoding="utf-8"))
+          assert ver["revision"] == os.environ["GITHUB_SHA"]
+          assert ver["stage"] == "production-candidate"
+          assert ver["dirty"] is False
+          PY
+
       - name: Upload visual snapshots
         if: always()
         uses: actions/upload-artifact@v4

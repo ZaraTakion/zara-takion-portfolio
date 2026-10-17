@@ -4,7 +4,7 @@ import { mkdtempSync, writeFileSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
-import { revisionManifest, assertReviewBuildAllowed } from "../scripts/revision.mjs";
+import { revisionManifest, assertReviewBuildAllowed, isProductionBuild } from "../scripts/revision.mjs";
 
 test("version describes the real checkout, dirtiness and unavailable Git honestly", () => {
   const cwd = mkdtempSync(join(tmpdir(), "portfolio-revision-"));
@@ -33,31 +33,30 @@ test("version describes the real checkout, dirtiness and unavailable Git honestl
     writeFileSync(join(cwd, "source.txt"), "uncommitted change");
     assert.equal(revisionManifest({ cwd }).dirty, true);
     assert.throws(() => revisionManifest({ cwd, production: true }), /clean checkout/);
-  } finally { rmSync(cwd, { recursive: true, force: true }); }
+  } finally { rmSync(cwd, { recursive: true, forctest("Cloudflare production and review release have correct staging", () => {
+  const main = { WORKERS_CI: "1", WORKERS_CI_BRANCH: "main" };
+  const preview = { WORKERS_CI: "1", WORKERS_CI_BRANCH: "feat/obsidiana-v42-review" };
+  assert.doesNotThrow(() => assertReviewBuildAllowed(main));
+  assert.doesNotThrow(() => assertReviewBuildAllowed(preview));
+  assert.equal(isProductionBuild(main), true);
+  assert.equal(isProductionBuild(preview), false);
+  assert.equal(isProductionBuild({}, true), true);
+  assert.equal(isProductionBuild({ PORTFOLIO_STAGE: "production" }), true);
+  assert.equal(isProductionBuild({}), false);
+  for (const env of [
+    { WORKERS_CI: "1" }, { WORKERS_CI: "1", WORKERS_CI_BRANCH: "other" },
+    { ...preview, PORTFOLIO_STAGE: "production" }, { NETLIFY: "true" }, { CF_PAGES: "1" }
+  ]) assert.throws(() => assertReviewBuildAllowed(env), /restricted to Cloudflare main/);
 });
 
-test("hosted build guard allows only the exact Cloudflare review preview branch", () => {
-  const preview = {
-    CI: "true",
-    WORKERS_CI: "1",
-    WORKERS_CI_BRANCH: "feat/obsidiana-v42-review",
-    WORKERS_CI_COMMIT_SHA: "f".repeat(40),
-  };
-  assert.doesNotThrow(() => assertReviewBuildAllowed(preview));
-  for (const env of [
-    { WORKERS_CI: "1" },
-    { WORKERS_CI: "1", WORKERS_CI_BRANCH: "main" },
-    { WORKERS_CI: "1", WORKERS_CI_BRANCH: "feat/other" },
-    { ...preview, PORTFOLIO_STAGE: "production" },
-    { ...preview, NETLIFY: "true" },
-    { ...preview, CF_PAGES: "1" },
-    { NETLIFY: "true" },
-    { CF_PAGES: "1" },
-  ]) {
-    assert.throws(() => assertReviewBuildAllowed(env), /Preview of feat\/obsidiana-v42-review only/);
+test("final React site includes approved Zara Original palette A", () => {
+  const app = readFileSync(new URL("../src/v42/App.tsx", import.meta.url), "utf8");
+  const css = readFileSync(new URL("../src/v42/styles/zara-original.css", import.meta.url), "utf8");
+  assert.ok(app.includes('import "./styles/zara-original.css";'));
+  for (const color of ["#0D0D12","#FF6773","#F7F7FA","#F9F9FA","#B61C34","#17171F"]) {
+    assert.ok(css.includes(color), "Expected color " + color);
   }
-  assert.doesNotThrow(() => assertReviewBuildAllowed({ GITHUB_ACTIONS: "true", CI: "true" }));
-  assert.doesNotThrow(() => assertReviewBuildAllowed({}));
+  assert.ok(css.includes(':root[data-theme="light"]'));
 });
 
 test("Wrangler Preview configuration is present without changing production targets", () => {

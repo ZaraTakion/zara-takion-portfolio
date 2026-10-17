@@ -1,24 +1,21 @@
 import { execFileSync } from "node:child_process";
 
 export function assertReviewBuildAllowed(env) {
-  // Authorised only for the Cloudflare Worker Preview of this draft branch.
-  // The Cloudflare build command is shared with production; the exact branch
-  // check prevents this provisional site from being deployed on main.
-  const cloudflareHosted = env.WORKERS_CI === "1";
-  const previewAllowed =
-    cloudflareHosted &&
-    env.WORKERS_CI_BRANCH === "feat/obsidiana-v42-review" &&
-    env.PORTFOLIO_STAGE !== "production";
-
-  if (
-    (cloudflareHosted && !previewAllowed) ||
-    env.NETLIFY === "true" ||
-    env.CF_PAGES === "1"
-  ) {
-    throw new Error(
-      "V4.2 is approved for a Cloudflare Preview of feat/obsidiana-v42-review only; production and other hosted builds remain blocked."
-    );
+  // Cloudflare publishes main, and may preview the authorised review branch.
+  const hosted = env.WORKERS_CI === "1";
+  const main = hosted && env.WORKERS_CI_BRANCH === "main";
+  const preview = hosted && env.WORKERS_CI_BRANCH === "feat/obsidiana-v42-review";
+  if ((hosted && !main && !preview) ||
+      (preview && env.PORTFOLIO_STAGE === "production") ||
+      env.NETLIFY === "true" || env.CF_PAGES === "1") {
+    throw new Error("Portfolio hosted builds are restricted to Cloudflare main (production) and the V4.2 review branch.");
   }
+}
+
+// Cloudflare uses the same build command for production and preview.
+export function isProductionBuild(env, explicit = false) {
+  if (env.WORKERS_CI === "1") return env.WORKERS_CI_BRANCH === "main";
+  return explicit || env.PORTFOLIO_STAGE === "production";
 }
 
 export function revisionManifest({ cwd = process.cwd(), production = false } = {}) {

@@ -13,6 +13,7 @@ import {
 import "./styles/tokens.css";
 import "./styles/layout.css";
 import "./styles/proposal.css";
+import "./styles/zara-original.css";
 function SectionHeading({
   number,
   kicker,

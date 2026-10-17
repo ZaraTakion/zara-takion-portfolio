@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
+import { mkdtempSync, writeFileSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { execFileSync } from "node:child_process";
@@ -58,4 +58,13 @@ test("hosted build guard allows only the exact Cloudflare review preview branch"
   }
   assert.doesNotThrow(() => assertReviewBuildAllowed({ GITHUB_ACTIONS: "true", CI: "true" }));
   assert.doesNotThrow(() => assertReviewBuildAllowed({}));
+});
+
+test("Wrangler Preview configuration is present without changing production targets", () => {
+  const config = JSON.parse(readFileSync(new URL("../wrangler.jsonc", import.meta.url), "utf8"));
+  assert.deepEqual(config.previews, {});
+  assert.equal(config.name, "portfolio");
+  assert.equal(config.workers_dev, true);
+  assert.equal(config.assets.directory, "./dist");
+  assert.equal(config.assets.not_found_handling, "404-page");
 });

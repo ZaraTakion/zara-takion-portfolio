@@ -1,0 +1,20 @@
+[
+  {
+    "host": "Cloudflare",
+    "exit_code": 1,
+    "publication_blocked": true,
+    "existing_build_unchanged": true
+  },
+  {
+    "host": "Netlify",
+    "exit_code": 1,
+    "publication_blocked": true,
+    "existing_build_unchanged": true
+  },
+  {
+    "host": "Pages",
+    "exit_code": 1,
+    "publication_blocked": true,
+    "existing_build_unchanged": true
+  }
+]

@@ -1,0 +1,85 @@
+@font-face {
+  font-family: Cormorant;
+  src: url("/assets/fonts/Cormorant_Garamond.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: Source;
+  src: url("/assets/fonts/Source_Sans_3.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+:root {
+  color-scheme: dark;
+  --bg: #141216;
+  --surface: #201b22;
+  --surface-raised: #2c232c;
+  --text: #f1e9db;
+  --muted: #c0b5ac;
+  --accent: #d4ae84;
+  --wine: #682b3b;
+  --wine-soft: #3d222d;
+  --line: #62524e;
+  --control: #99877e;
+  --button: #f1e9db;
+  --button-text: #301e29;
+  --focus: #efc78f;
+  --serif: Cormorant, Georgia, serif;
+  --sans: Source, "Segoe UI", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Consolas, monospace;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 5rem;
+  --measure: 82rem;
+  --duration: 180ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+  font-family: var(--sans);
+  font-size: 18px;
+  line-height: 1.6;
+  background: var(--bg);
+  color: var(--text);
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f1e9db;
+  --surface: #e8decd;
+  --surface-raised: #e0d2bf;
+  --text: #241c22;
+  --muted: #5e5053;
+  --accent: #73502e;
+  --wine: #682b3b;
+  --wine-soft: #e4cdd0;
+  --line: #9f8e81;
+  --control: #7b6865;
+  --button: #682b3b;
+  --button-text: #fff6e9;
+  --focus: #782e44;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration: 0ms;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+:root[data-motion="reduced"] {
+  --duration: 0ms;
+}
+:root[data-motion="reduced"] *,
+:root[data-motion="reduced"] *::before,
+:root[data-motion="reduced"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}

@@ -1,7 +1,7 @@
 # V4.2 Ateliê Obsidiana — roteiro de integração React (pré-PR)
 **Decisão:** direção visual aceita para a etapa de integração; **nenhum merge/deploy autorizado**.
 **Base da branch:** main `c9d6036e934234e6679a9b645f0acfdfe50011cb`.
-**Material de origem:** `Zara_Takion_V4.2_Proposta_React.zip`, `Zara_Takion_V4.1_Fonte_Completo.zip` e dossiê V4.2, fornecidos pelo proprietário na conversa. **Os ZIPs ainda não estão incorporados nesta branch.**
+**Material de origem:** `Zara_Takion_V4.2_Proposta_React.zip`, `Zara_Takion_V4.1_Fonte_Completo.zip` e dossiê V4.2, fornecidos pelo proprietário na conversa. **Os ZIPs foram examinados e o código React foi integrado seletivamente; ver INTEGRATION_REPORT.md.**
 
 ## P0 — preservar produção e integrar corretamente
 - Importar **seletivamente** os componentes React/TS/Vite da V4.2. Não sobrepor às cegas a `main`, `site/`, `api/`, `.github/workflows/`, `wrangler.jsonc` ou scripts de publicação.
@@ -23,5 +23,6 @@
 - `/version.json` rastreável; metadados corretos para preview versus produção; PDFs e certificado íntegros; imagens autênticas e créditos preservados.
 - Revisão manual e autorização expressa **antes de merge/deploy**.
 
-## Status deste documento
-Este commit cria **apenas o roteiro de integração** para o Codex. Não contém ainda a implementação React da V4.2 e seu CI não pode ser tomado como homologação dela. É necessário anexar os ZIPs na tarefa do Codex e transferir os componentes reais para esta branch antes de solicitar revisão final.
+## Status da integração
+
+Os componentes reais V4.2, SSR PT/EN, tipografia, testes e manifesto Git estão implementados nesta branch. A API Python, suas auditorias, os originais de `site/` e `wrangler.jsonc` foram preservados. A PR #15 continua em draft; [INTEGRATION_REPORT.md](INTEGRATION_REPORT.md) registra a comparação, testes, evidências e limites. Nenhum merge, deploy ou alteração de Worker é autorizado por esta etapa.

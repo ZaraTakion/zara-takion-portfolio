@@ -1,3 +1,15 @@
+# Ateliê Obsidiana V4.2 — integração em revisão
+
+Esta branch implementa a direção visual V4.2 na PR #15, que permanece **draft**. A autorização é de integração, não de publicação. A versão pública V3 não foi alterada.
+
+- [Plano](docs/v4.2/INTEGRATION_PLAN.md), [relatório de integração e validação](docs/v4.2/INTEGRATION_REPORT.md) e [fontes das evidências](docs/v4.2/SOURCE_EVIDENCE.json).
+- Desenvolvimento: `npm ci`, `npm run dev`. PT em `/`, EN em `/en/`. Fontes e documentos locais; sem dependência de CDN.
+- Verificação: `npm run check`, `node --test tests/*.test.mjs`, testes Python abaixo e `npm run test:ui`. Este último inicia um servidor temporário próprio ou usa `UI_BASE_URL`; aceita `PLAYWRIGHT_EXECUTABLE_PATH` para Chromium instalado.
+- `npm run build` gera preview **noindex**, com revisão Git real e estado `dirty`. `npm run build:production` apenas gera um candidato local e exige checkout limpo; **não publica**. Builds hospedados estão bloqueados durante esta revisão.
+- Foto pessoal e ilustração Zara continuam preservadas na base, mas **excluídas do artefato V4.2**. Quatro capturas autorizadas, quatro currículos, certificado e licenças permanecem íntegros.
+
+## Histórico e documentação da base V3 publicada
+
 # Rodrigo Pinheiro — Zara Aqua Workstation
 
 Portfólio bilíngue de **Rodrigo Araújo Maciel Pinheiro / Zara Takion**, com foco em **Back-End Python Júnior** e serviços de APIs, manutenção e integração web.

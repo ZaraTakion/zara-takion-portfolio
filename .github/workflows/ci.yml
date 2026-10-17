@@ -1,4 +1,4 @@
-name: React Aqua Workstation quality gate
+name: React portfolio quality gate
 
 on:
   push:
@@ -87,8 +87,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: react-aqua-v3-visual-checks
-          path: artifacts/ui
+          name: atelier-obsidiana-v42-review
+          path: artifacts/v42
           if-no-files-found: ignore
 
       - name: Production artifact gate
@@ -97,7 +97,12 @@ jobs:
           test -s dist/en/index.html
           test -s dist/_headers
           test -s dist/data/projects.json
-          test -s dist/assets/img/oc-portrait.jpg
+          test ! -e dist/assets/img/oc-portrait.jpg
+          test -s dist/assets/img/chamados-api-real.png
+          test -s dist/assets/img/takion-campus-real.jpg
+          test -s dist/assets/img/biya-real.jpg
+          test -s dist/assets/img/bird-real.jpg
+          test -s dist/documents/Certificado_Udemy_Python_Geek_University.pdf
           test -s dist/privacidade.html
           test -s dist/en/privacy.html
           test -s dist/404.html

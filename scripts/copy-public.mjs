@@ -1,12 +1,21 @@
 import { copyFile, cp, mkdir, writeFile, readFile, rm } from "node:fs/promises";
 import { join } from "node:path";
-import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
+import { revisionManifest } from "./revision.mjs";
 
 // Vite handles React/TypeScript bundles. Copy only vetted public content:
 // never allow legacy index.html/scripts to shadow the new React app.
 await mkdir("dist/assets", { recursive: true });
 await rm("dist/assets/img", { recursive: true, force: true });
-await cp("site/assets/img", "dist/assets/img", { recursive: true });
+await mkdir("dist/assets/img", { recursive: true });
+const captures = JSON.parse(await readFile("site/data/image-provenance.json", "utf8"));
+for (const capture of captures) {
+  if (!/^\/assets\/img\/[\w.-]+\.(png|jpg)$/.test(capture.file)) throw new Error("Invalid capture path");
+  const bytes = await readFile(`site${capture.file}`);
+  if (createHash("sha256").update(bytes).digest("hex") !== capture.sha256) throw new Error(`Capture integrity failed: ${capture.file}`);
+  await copyFile(`site${capture.file}`, `dist${capture.file}`);
+}
+// Preserve personal/character originals in site/, but never ship them in V4.2.
 await cp("site/data", "dist/data", { recursive: true });
 await cp("site/downloads", "dist/downloads", { recursive: true });
 await copyFile("site/_headers", "dist/_headers");
@@ -28,16 +37,6 @@ for (const file of ["dist/privacidade.html", "dist/en/privacy.html"]) {
     "utf8",
   );
 }
-const revision = process.env.GITHUB_SHA
-  || process.env.CF_PAGES_COMMIT_SHA
-  || execFileSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).trim();
-if (!/^[a-f0-9]{40}$/i.test(revision)) {
-  throw new Error("Unable to identify the Git revision used to build production.");
-}
-await writeFile("dist/version.json", JSON.stringify({
-  site: "zara-aqua-workstation",
-  framework: "React / TypeScript / Vite",
-  revision,
-  shortRevision: revision.slice(0, 7),
-}) + "\n", "utf8");
-console.log(`React Aqua Workstation: ${revision.slice(0, 7)} production release assembled.`);
+const manifest = revisionManifest({ production: process.env.PORTFOLIO_STAGE === "production" });
+await writeFile("dist/version.json", JSON.stringify(manifest) + "\n", "utf8");
+console.log(`Ateliê Obsidiana: ${manifest.shortRevision ?? "revision unavailable"}; ${manifest.stage}; dirty=${manifest.dirty}.`);

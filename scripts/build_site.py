@@ -353,7 +353,7 @@ def build() -> None:
     validate_projects()
     if not (ROOT / "node_modules" / "vite").exists():
         subprocess.run(
-            ["npm", "install", "--no-audit", "--no-fund"],
+            ["npm", "ci", "--no-audit", "--no-fund"],
             cwd=ROOT,
             check=True,
         )

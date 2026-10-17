@@ -1,0 +1,11 @@
+✔ project filters count items, update selection, and hide unrelated projects (10.603607ms)
+✔ version describes the real checkout, dirtiness and unavailable Git honestly (40.851642ms)
+✔ hosted build guards block automatic review publication while local/GitHub checks remain usable (0.354483ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 110.698617

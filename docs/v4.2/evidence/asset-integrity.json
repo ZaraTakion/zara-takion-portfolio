@@ -1,0 +1,52 @@
+{
+  "captures": [
+    {
+      "file": "/assets/img/takion-campus-real.jpg",
+      "sha256": "67e66c520bee336fdfe7bc098399ebf9d49e821578fd3ae914ea60de067856f6",
+      "credit": "Interface do projeto Takion Campus; identidade Takion Software."
+    },
+    {
+      "file": "/assets/img/biya-real.jpg",
+      "sha256": "179b9a166d251d99628c665996969f423ff03fe1d539fd7ba1bc08d293b9c5c7",
+      "credit": "Artes e personagem: Biya e respectivos titulares. Permissão de uso do projeto informada pelo autor; direitos preservados."
+    },
+    {
+      "file": "/assets/img/bird-real.jpg",
+      "sha256": "1f5842ba696b38ff5d23bc6889cf0d5d489a45f4f5ee5a665d57bb0d87c551b8",
+      "credit": "Passarinho122 e respectivos titulares. Retrato creditado a @Najinajimi no site. Permissão informada pelo autor; direitos preservados."
+    },
+    {
+      "file": "/assets/img/chamados-api-real.png",
+      "sha256": "9b82658bbf02736bb3a4fd0dfdb8b7da72f31eb9bc2ff4007e85e9f12342d4c0",
+      "credit": "Interface Swagger UI da Chamados API; execução real no CI da release v1.0.0-local.1."
+    }
+  ],
+  "downloads": [
+    {
+      "file": "Rodrigo_Pinheiro_2026_EN.docx",
+      "bytes": 38302,
+      "sha256": "24926044f6c06a8f94608046c73e105be5a27d3d1b037a67066679d9d83e9f6b"
+    },
+    {
+      "file": "Rodrigo_Pinheiro_2026_EN.pdf",
+      "bytes": 59216,
+      "sha256": "4220f6666fb607051628da6f3e3c471eec4aac7160e1123e9b144c861730b14b"
+    },
+    {
+      "file": "Rodrigo_Pinheiro_2026_PTBR.docx",
+      "bytes": 38351,
+      "sha256": "8b8cdb0bc44487e7d62e2d7ee2fd5aa8dddca75ae485cc3741f78cc922ba5ffe"
+    },
+    {
+      "file": "Rodrigo_Pinheiro_2026_PTBR.pdf",
+      "bytes": 60383,
+      "sha256": "a72788d677a5c7ca1dbba09997b8f283e65da071e1047ad92e2c14306833e4d6"
+    }
+  ],
+  "certificate": {
+    "file": "Certificado_Udemy_Python_Geek_University.pdf",
+    "sha256": "7d3b23fa19f97508cc96e4387accbc13de77be780b43d57c8be9fc6fbe6037cd"
+  },
+  "private_images_excluded": true,
+  "preserved_main_sources": true
+}

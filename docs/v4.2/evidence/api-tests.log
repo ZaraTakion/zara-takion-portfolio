@@ -1,0 +1,17 @@
+test_allowed_origin_receives_cors_header (test_app.ContactApiTests.test_allowed_origin_receives_cors_header) ... ok
+test_contact_endpoint_limits_repeated_submissions (test_app.ContactApiTests.test_contact_endpoint_limits_repeated_submissions) ... ok
+test_contact_is_not_sent_without_smtp_configuration (test_app.ContactApiTests.test_contact_is_not_sent_without_smtp_configuration) ... ok
+test_header_injection_is_rejected (test_app.ContactApiTests.test_header_injection_is_rejected) ... ok
+test_health_check_does_not_require_email_configuration (test_app.ContactApiTests.test_health_check_does_not_require_email_configuration) ... ok
+test_honeypot_returns_success_without_sending (test_app.ContactApiTests.test_honeypot_returns_success_without_sending) ... ok
+test_invalid_email_is_rejected_before_sending (test_app.ContactApiTests.test_invalid_email_is_rejected_before_sending) ... ok
+test_production_requires_shared_redis_rate_limit_storage (test_app.ContactApiTests.test_production_requires_shared_redis_rate_limit_storage) ... ok
+test_short_message_is_rejected (test_app.ContactApiTests.test_short_message_is_rejected) ... ok
+test_smtp_defaults_to_work_email_recipient (test_app.ContactApiTests.test_smtp_defaults_to_work_email_recipient) ... ok
+test_unknown_browser_origin_is_rejected (test_app.ContactApiTests.test_unknown_browser_origin_is_rejected) ... ok
+test_valid_contact_calls_mailer_and_returns_success (test_app.ContactApiTests.test_valid_contact_calls_mailer_and_returns_success) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.065s
+
+OK

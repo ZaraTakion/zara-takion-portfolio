@@ -1,0 +1,37 @@
+{
+  "sources": [
+    {
+      "repo": "chamados-api",
+      "commit": "e6ea48d5235d46f8e8da87e52b88f6954775c384",
+      "path": "docs/EVIDENCE.md",
+      "sha256": "9bfd7b18eb9290e150a4ca860477d277a72f0f1bc221e6bd76a8fbdab6f47986",
+      "url": "https://github.com/ZaraTakion/chamados-api/blob/e6ea48d5235d46f8e8da87e52b88f6954775c384/docs/EVIDENCE.md"
+    },
+    {
+      "repo": "takion-campus",
+      "commit": "777884a364cb7e9291acb88dbbbf94b0c7062614",
+      "path": "docs/CASE_STUDY.md",
+      "sha256": "fed9a8511b73e6535e71eb8cdb5a20c203a4c8b4fe9095d0f206eb640c9a3901",
+      "url": "https://github.com/ZaraTakion/takion-campus/blob/777884a364cb7e9291acb88dbbbf94b0c7062614/docs/CASE_STUDY.md"
+    },
+    {
+      "repo": "task-manager-backend",
+      "commit": "e7e8666060b2c6c2ab491b7fcdc77022899a3726",
+      "path": "README.md",
+      "sha256": "43ad574525c43fbdde1f65adf12ee32078c42af6a9455d3082a0e1ac7cb5e149",
+      "url": "https://github.com/ZaraTakion/task-manager-backend/blob/e7e8666060b2c6c2ab491b7fcdc77022899a3726/README.md"
+    },
+    {
+      "repo": "biya-landing",
+      "commit": "6ed584e396d97af38b87fd8f91ab133dce44a0ea",
+      "path": "README.md",
+      "sha256": "192d777a0b8777bb48161d6ec98c0c8cc75c42ebdd62157e50d3c8c7512c9d2b",
+      "url": "https://github.com/ZaraTakion/biya-landing/blob/6ed584e396d97af38b87fd8f91ab133dce44a0ea/README.md"
+    }
+  ],
+  "limits": "Read-only primary-source review; external project test suites were not rerun. Bird remains private; claims limited to the supplied portfolio catalog and existing public capture.",
+  "archives": {
+    "V4.2": "127579c92398441dde57d81e9c398492f8b2f9d29ac58e789f2d22a94ac2f9ca",
+    "V4.1": "2130baacbcf1c54ec499df2cf2746b838ad2c1eeb8cbd4034eec1f09e70190ae"
+  }
+}

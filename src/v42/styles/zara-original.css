@@ -1,0 +1,41 @@
+/* Zara Original - Palette A exactly as approved. Chromatic overrides only. */
+:root {
+  color-scheme: dark;
+  --bg: #0D0D12;
+  --surface: #191B22;
+  --surface-raised: #262832;
+  --text: #F7F7FA;
+  --muted: #CACCD5;
+  --accent: #FF6773;
+  --wine: #C8253F;
+  --wine-soft: #39202B;
+  --line: #71717D;
+  --control: #AAAAB8;
+  --button: #F7F7FA;
+  --button-text: #15141C;
+  --focus: #FFC2CB;
+  --signature-surface: #361E2A;
+  --technical-surface: #191D25;
+  --diagram-line: #9295A0;
+  --paper-shadow: 0 14px 32px #00000044;
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #F9F9FA;
+  --surface: #FFFFFF;
+  --surface-raised: #EFF0F3;
+  --text: #17171F;
+  --muted: #4E505B;
+  --accent: #B61C34;
+  --wine: #B61C34;
+  --wine-soft: #F5DDE1;
+  --line: #A7A8B0;
+  --control: #696B77;
+  --button: #B61C34;
+  --button-text: #FFFFFF;
+  --focus: #8E1028;
+  --signature-surface: #F5DDE1;
+  --technical-surface: #ECEEF2;
+  --diagram-line: #757986;
+  --paper-shadow: 0 14px 32px #11131A18;
+}

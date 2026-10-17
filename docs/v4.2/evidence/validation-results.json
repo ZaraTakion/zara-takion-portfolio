@@ -1,0 +1,103 @@
+{
+  "results": [
+    {
+      "check": "check",
+      "command": [
+        "npm",
+        "run",
+        "check"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "node-tests",
+      "command": [
+        "node",
+        "--test",
+        "tests/project-filters.test.mjs",
+        "tests/revision.test.mjs"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "compile-python",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "compileall",
+        "-q",
+        "api",
+        "scripts"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "api-tests",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "api/tests",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "cloudflare-build-entrypoint",
+      "command": [
+        ".venv/bin/python",
+        "scripts/build_site.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "site-tests",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "npm-audit",
+      "command": [
+        "npm",
+        "audit",
+        "--audit-level=high",
+        "--cache",
+        "/workspace/.npm-cache"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "pip-audit",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pip_audit",
+        "-r",
+        "api/requirements.txt"
+      ],
+      "exit_code": 0
+    },
+    {
+      "check": "browser",
+      "command": [
+        "npm",
+        "run",
+        "test:ui"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "recorded_at_utc": "2026-10-17T02:41:05.269183+00:00"
+}

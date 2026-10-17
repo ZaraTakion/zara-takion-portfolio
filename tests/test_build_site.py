@@ -21,7 +21,7 @@ class ReactPortfolioTests(unittest.TestCase):
     def test_localized_react_entries_exist(self):
         for path, language in (("index.html", "pt-BR"), ("en/index.html", "en")):
             content = (OUTPUT / path).read_text(encoding="utf-8")
-            self.assertIn(f'<html lang="{language}">', content)
+            self.assertRegex(content, rf'<html\b[^>]*\blang="{language}"')
             self.assertIn('id="root"', content)
             self.assertRegex(content, r'<script[^>]+type="module"')
             self.assertNotIn('src="/scripts/main.js"', content)
@@ -39,13 +39,13 @@ class ReactPortfolioTests(unittest.TestCase):
             if project.get("image"):
                 self.assertTrue((OUTPUT / project["image"].lstrip("/")).is_file())
             self.assertTrue(project["title_en"] and project["description_en"])
-        portrait = OUTPUT / "assets" / "img" / "oc-portrait.jpg"
-        self.assertTrue(portrait.is_file())
-        self.assertEqual(
-            portrait.read_bytes(),
-            (SOURCE / "assets" / "img" / "oc-portrait.jpg").read_bytes(),
-            "Original character asset must remain byte-for-byte unchanged",
-        )
+        import hashlib
+        self.assertFalse((OUTPUT / "assets/img/oc-portrait.jpg").exists(), "Character publication requires separate authorization")
+        self.assertEqual(hashlib.sha256((SOURCE / "assets/img/oc-portrait.jpg").read_bytes()).hexdigest(),
+                         "ac4617a87786abd75d5ef62aa0a7575cea22f1a91a573b6525d0b0d3207ad8f8")
+        captures = json.loads((SOURCE / "data/image-provenance.json").read_text())
+        self.assertEqual({p.name for p in (OUTPUT / "assets/img").iterdir()},
+                         {Path(p["file"]).name for p in captures})
 
     def test_css_and_modules_are_bundled(self):
         html = (OUTPUT / "index.html").read_text(encoding="utf-8")
@@ -54,11 +54,13 @@ class ReactPortfolioTests(unittest.TestCase):
         self.assertTrue(css_files, "Vite stylesheet not emitted")
         self.assertTrue(js_files, "React bundle not emitted")
         css = "\n".join(path.read_text(encoding="utf-8") for path in css_files)
-        self.assertIn("aqua-cloud-drift", css)
-        self.assertIn("aqua-command-palette", css)
-        self.assertIn("aqua-react-explorer", css)
+        self.assertIn("journey-nodes", css)
+        self.assertIn("transaction-exhibit", css)
+        self.assertIn("author-signature", css)
         self.assertIn("prefers-reduced-motion", css)
-        self.assertIn("retro-app-window", css)
+        self.assertIn("forced-colors", css)
+        js = "\n".join(path.read_text(encoding="utf-8") for path in js_files)
+        self.assertNotIn("oc-portrait.jpg", js)
 
     def test_privacy_security_and_bilingual_public_paths_remain(self):
         for path in (
@@ -71,7 +73,15 @@ class ReactPortfolioTests(unittest.TestCase):
         self.assertIn("script-src 'self'", headers)
         self.assertNotIn("'unsafe-inline'", headers)
         self.assertNotIn("'unsafe-eval'", headers)
-        self.assertIn("portfolio.zaratakion.workers.dev/en/", (OUTPUT / "sitemap.xml").read_text(encoding="utf-8"))
+        manifest = json.loads((OUTPUT / "version.json").read_text())
+        if manifest["stage"] == "production-candidate":
+            self.assertIn("portfolio.zaratakion.workers.dev/en/", (OUTPUT / "sitemap.xml").read_text())
+        else:
+            self.assertIn("Disallow: /", (OUTPUT / "robots.txt").read_text())
+            self.assertIn("X-Robots-Tag: noindex, nofollow", headers)
+            self.assertNotIn('<loc>', (OUTPUT / "sitemap.xml").read_text())
+            self.assertIn('content="noindex, nofollow"', (OUTPUT / "index.html").read_text())
+            self.assertNotIn('rel="canonical"', (OUTPUT / "index.html").read_text())
         self.assertTrue((OUTPUT / "assets" / "css" / "site.css").is_file())
         self.assertIn(".site-header", (OUTPUT / "assets" / "css" / "site.css").read_text(encoding="utf-8"))
         for name in ("privacidade.html", "en/privacy.html"):
@@ -95,23 +105,28 @@ class ReactPortfolioTests(unittest.TestCase):
         manifest = json.loads((OUTPUT / "version.json").read_text(encoding="utf-8"))
         self.assertEqual(manifest["site"], "zara-aqua-workstation")
         self.assertEqual(manifest["framework"], "React / TypeScript / Vite")
-        self.assertRegex(manifest["revision"], r"^[a-f0-9]{40}$")
-        self.assertEqual(manifest["shortRevision"], manifest["revision"][:7])
+        if manifest["revisionSource"] == "unavailable":
+            self.assertIsNone(manifest["revision"])
+            self.assertIsNone(manifest["shortRevision"])
+            self.assertEqual(manifest["stage"], "private-preview")
+        else:
+            self.assertRegex(manifest["revision"], r"^[a-f0-9]{40}$")
+            self.assertEqual(manifest["shortRevision"], manifest["revision"][:7])
 
     def test_current_project_schema_validation_still_runs(self):
         build_site.validate_projects()
 
     def test_frontend_sources_are_real_react_and_typescript(self):
-        app = (ROOT / "src" / "App.tsx").read_text(encoding="utf-8")
-        self.assertIn("function ProjectExplorer", app)
-        self.assertIn("function Terminal", app)
-        self.assertIn("function CommandPalette", app)
-        self.assertIn("function ProjectCard", app)
-        self.assertIn('aria-expanded={menuOpen}', app)
-        self.assertIn('role="tabpanel"', app)
-        self.assertIn('useProjects()', app)
-        self.assertTrue((ROOT / "src" / "model.test.ts").is_file())
-        self.assertTrue((ROOT / "src" / "copy.ts").is_file())
+        # Pre-rendered React output must be useful before JavaScript runs.
+        for path, words in (("index.html", ("Desenvolvedor Back-End Júnior", "CADERNO DE DECISÕES", "Como a mesma plataforma")),
+                            ("en/index.html", ("Junior Back-End Developer", "DECISION NOTES", "How can one platform"))):
+            html = (OUTPUT / path).read_text()
+            for word in words:
+                self.assertIn(word, html)
+            self.assertEqual(len(re.findall(r'class="project-case ', html)), 5)
+            self.assertIn("aria-live", html)
+            self.assertIn("Certificado_Udemy_Python_Geek_University.pdf", html)
+            self.assertNotIn("oc-portrait.jpg", html)
 
     def test_authentic_captures_and_resume_downloads_are_published(self):
         import hashlib
@@ -120,6 +135,7 @@ class ReactPortfolioTests(unittest.TestCase):
         for capture in captures:
             asset = OUTPUT / capture["file"].lstrip("/")
             self.assertEqual(hashlib.sha256(asset.read_bytes()).hexdigest(), capture["sha256"])
+            self.assertEqual(asset.read_bytes(), (ROOT / "public" / capture["file"].lstrip("/")).read_bytes())
             self.assertTrue(capture["source_url"].startswith("https://"))
             self.assertTrue(capture["credit"])
         self.assertFalse(list((OUTPUT / "assets/img").glob("*-cover.svg")))
@@ -127,6 +143,16 @@ class ReactPortfolioTests(unittest.TestCase):
             for extension in ("pdf", "docx"):
                 path = OUTPUT / f"downloads/Rodrigo_Pinheiro_2026_{language}.{extension}"
                 self.assertGreater(path.stat().st_size, 1000)
+                self.assertEqual(path.read_bytes(), (SOURCE / path.relative_to(OUTPUT)).read_bytes())
+                self.assertEqual(path.read_bytes(), (ROOT / "public" / path.relative_to(OUTPUT)).read_bytes())
+
+    def test_original_certificate_and_font_licenses_are_preserved(self):
+        import hashlib
+        certificate = OUTPUT / "documents/Certificado_Udemy_Python_Geek_University.pdf"
+        self.assertEqual(hashlib.sha256(certificate.read_bytes()).hexdigest(),
+                         "7d3b23fa19f97508cc96e4387accbc13de77be780b43d57c8be9fc6fbe6037cd")
+        for name in ("cormorantgaramond-OFL.txt", "sourcesans3-OFL.txt"):
+            self.assertIn("SIL OPEN FONT LICENSE", (OUTPUT / "assets/fonts" / name).read_text())
 
     def test_provenance_rejects_an_altered_capture(self):
         from tempfile import TemporaryDirectory

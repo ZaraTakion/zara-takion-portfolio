@@ -1,0 +1,20 @@
+test_motion_respects_accessibility_preference (test_aqua_visual.AquaWorkstationVisualTests.test_motion_respects_accessibility_preference) ... ok
+test_no_external_asset_or_font_dependency_in_v2 (test_aqua_visual.AquaWorkstationVisualTests.test_no_external_asset_or_font_dependency_in_v2) ... ok
+test_pixel_sky_only_applies_to_desktop_enhancement (test_aqua_visual.AquaWorkstationVisualTests.test_pixel_sky_only_applies_to_desktop_enhancement) ... ok
+test_asset_integrity_and_provenance (test_build_site.ReactPortfolioTests.test_asset_integrity_and_provenance) ... ok
+test_authentic_captures_and_resume_downloads_are_published (test_build_site.ReactPortfolioTests.test_authentic_captures_and_resume_downloads_are_published) ... ok
+test_build_entrypoint_handles_vite (test_build_site.ReactPortfolioTests.test_build_entrypoint_handles_vite) ... ok
+test_css_and_modules_are_bundled (test_build_site.ReactPortfolioTests.test_css_and_modules_are_bundled) ... ok
+test_current_project_schema_validation_still_runs (test_build_site.ReactPortfolioTests.test_current_project_schema_validation_still_runs) ... ok
+test_existing_python_api_remains_independent (test_build_site.ReactPortfolioTests.test_existing_python_api_remains_independent) ... ok
+test_frontend_sources_are_real_react_and_typescript (test_build_site.ReactPortfolioTests.test_frontend_sources_are_real_react_and_typescript) ... ok
+test_localized_react_entries_exist (test_build_site.ReactPortfolioTests.test_localized_react_entries_exist) ... ok
+test_original_certificate_and_font_licenses_are_preserved (test_build_site.ReactPortfolioTests.test_original_certificate_and_font_licenses_are_preserved) ... ok
+test_privacy_security_and_bilingual_public_paths_remain (test_build_site.ReactPortfolioTests.test_privacy_security_and_bilingual_public_paths_remain) ... ok
+test_provenance_rejects_an_altered_capture (test_build_site.ReactPortfolioTests.test_provenance_rejects_an_altered_capture) ... ok
+test_release_revision_manifest_is_valid_and_traceable (test_build_site.ReactPortfolioTests.test_release_revision_manifest_is_valid_and_traceable) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.046s
+
+OK

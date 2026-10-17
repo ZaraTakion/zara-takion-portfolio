@@ -1,0 +1,180 @@
+
+> zara-aqua-workstation@4.2.0 test:ui
+> node tests/v42/browser.mjs
+
+{
+  "date": "2026-10-17T02:40:05.407Z",
+  "states": [
+    {
+      "locale": "pt",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 76
+    },
+    {
+      "locale": "pt",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 76
+    },
+    {
+      "locale": "pt",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 78.46875
+    },
+    {
+      "locale": "pt",
+      "theme": "dark",
+      "width": 1366,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 92
+    },
+    {
+      "locale": "pt",
+      "theme": "dark",
+      "width": 3840,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 92
+    },
+    {
+      "locale": "pt",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 76
+    },
+    {
+      "locale": "pt",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 76
+    },
+    {
+      "locale": "pt",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 78.46875
+    },
+    {
+      "locale": "pt",
+      "theme": "light",
+      "width": 1366,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 92
+    },
+    {
+      "locale": "pt",
+      "theme": "light",
+      "width": 3840,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 92
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 320,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 76
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 390,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 76
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 768,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 78.46875
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 1366,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 92
+    },
+    {
+      "locale": "en",
+      "theme": "dark",
+      "width": 3840,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 92
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 320,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 76
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 390,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 76
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 768,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 78.46875
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 1366,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 92
+    },
+    {
+      "locale": "en",
+      "theme": "light",
+      "width": 3840,
+      "overflow": false,
+      "axeViolations": 0,
+      "headerHeight": 92
+    }
+  ],
+  "checks": [
+    "Mobile menu, keyboard Enter/Escape/focus return, preferences, motion persistence and expanded-menu axe",
+    "PT/EN reading modes, request steps, outbox diagram and keyboard activation",
+    "320px text-spacing, closed and expanded menu",
+    "System reduced motion disables motion and preserves control state",
+    "Current build identity, localized original PDF/DOCX downloads, certificate, case details, privacy and 404",
+    "200% text resize at 320px with expanded menu"
+  ],
+  "errors": [],
+  "violations": [],
+  "result": "PASS"
+}

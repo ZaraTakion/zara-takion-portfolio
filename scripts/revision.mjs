@@ -1,8 +1,23 @@
 import { execFileSync } from "node:child_process";
 
 export function assertReviewBuildAllowed(env) {
-  if (env.WORKERS_CI === "1" || env.NETLIFY === "true" || env.CF_PAGES === "1") {
-    throw new Error("V4.2 is approved for draft review only. Hosted builds/previews are blocked until a separate release authorization. No deployment was attempted.");
+  // Authorised only for the Cloudflare Worker Preview of this draft branch.
+  // The Cloudflare build command is shared with production; the exact branch
+  // check prevents this provisional site from being deployed on main.
+  const cloudflareHosted = env.WORKERS_CI === "1";
+  const previewAllowed =
+    cloudflareHosted &&
+    env.WORKERS_CI_BRANCH === "feat/obsidiana-v42-review" &&
+    env.PORTFOLIO_STAGE !== "production";
+
+  if (
+    (cloudflareHosted && !previewAllowed) ||
+    env.NETLIFY === "true" ||
+    env.CF_PAGES === "1"
+  ) {
+    throw new Error(
+      "V4.2 is approved for a Cloudflare Preview of feat/obsidiana-v42-review only; production and other hosted builds remain blocked."
+    );
   }
 }
 
